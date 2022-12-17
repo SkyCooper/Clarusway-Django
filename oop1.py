@@ -227,10 +227,10 @@ print(person3)
     #* Abstraction
     #* Inheritance
     #* Polymorphism
-
-        
+    
         
 #? Encapsulation (Kapsülleme)
+""" 
 # izinsiz girişleri ve değiştirmeleri engelleme (python da tam olarak uygulaması yoktur.)
   
 # The princible in which we determine how much of the classes, data and methods can be viewed and how much can be changed by the user.
@@ -263,10 +263,12 @@ print(person1._id) # _ olursa ulaşılır
 # print(person1.__number) # __ olursa daha koruyucu, ulaşılmaz
 print(person1._Person__number) #* böyle ulaşılır, kesin bir kapsülleme yok.
 
-  
+"""  
   
   
 #? Abstraction (Soyutlama)
+"""
+
 # Abstraction is the process of hiding the internal complex details of an application from the outer world. Abstraction is used to describe things in simple terms. It's used to create a boundary between the application and the client programs.  
 
 # kullanıcı gereksiz detaylardan ve bilmesine ihtiyaç olmayan yapıdan uzaklaştırarak yormamak - soyutlama
@@ -281,27 +283,100 @@ print(mylist)
 
 # mesela listeyi sort etti ama nasıl eeti , arka planda ne yaptı bizim için çok da önemli değil, gereksiz bir sürü detay...
 
-
-
-
-
+"""
 
 
 #? Inheritance
-        #? Multiple inheritance
+    #? Multiple inheritance 
+    
+
+
+# * inheritance   => kalıtım. Parent'tan chield'a aktarılması        
         
+class Person:
+  company = "clarusway"
+  
+  def __init__(self, name, age):
+    self.name = name
+    self.age = age
+    
+  def __str__(self):
+    return f"{self.name} - {self.age}"
+    
+  def get_details(self):
+    print(f"{self.name} - {self.age}")
+    
+
+class Lang:
+  def __init__(self, langs):
+    self.langs = langs
+    
+  def display_langs(self):
+    print(self.langs)     
         
+#! Persondan yeni class oluşturma;
+#* class keywordu ve () içine miras alındığı class yazılır.
+
+class Employee123(Person):
+  pass # Person clasının birebir aynısı bir class oluşturur.
+  # pass # burada indentation'dan dolayı pass yazmazsak hata verir. geç birşey yapma demek
+
+class Employee(Person, Lang):
+#* hem person hemde Lang clasınından miraz alır,
+#* super() komutu, inherit edilen İLK parent classı temsil eder.
+  
+  def __init__(self, name, age, path, langs):
+    # self.name = name #! override ederken tekrar aynılarını yazmaya gerek yok, super kullan
+    # self.age = age
+    super().__init__(name, age) #!bir üst parentten al, değiştirme demek
+    #! super() kullanınca self parametresine gerek kalmaz ve ilk parenti temsil ettiğimizi belirtir.
+    Lang.__init__(self, langs) #* tekrar super kullanılmaz, Class ismi yazılır.
+    self.path = path # Personda olmayan bir özellik ekledik, owerrite ettik.
+
+  def get_details(self):
+    # print(f"{self.name} - {self.age} - {self.path}") #* böyle tek tek yazılır veya super kullanılır.
+    super().get_details() #! parentin aynısını al
+    print(self.path) #! sonra eklenen path'de ayrıca çıktı al
+    return super().get_details()
+
+
+
+emp1 = Employee("barry", 20, "FS", "Python")        
+emp1.get_details()
+emp1.display_langs()
+print(emp1.company) #clasurway        
         
-        
-        
-        
-        
-        
-        
-        
-        
+      
+    
+
+      
 #? Polymorphism
-        #? Overriding methods
+  #? Overriding methods
+#* overriding = parent'tan gelen yapı ihtiyacımızı tam karşılamıyorsa update edebilmemiz.
+
+#* overloading = parent'tan gelen yapıyı farklı parametrelerle değiştirebilmemiz. veya methodu birden farklı tanımlayabilmemizdir. Verilen parametlere göre kendisi seçerek kullanır.
+  # Python overloading modelini desteklemez. Bunu, ekstra moduller ile gerçekleştirebilirsiniz.
+  
+  
+  
+  
+#? Other Topics (Bonus)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
