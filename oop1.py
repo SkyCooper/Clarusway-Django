@@ -22,8 +22,7 @@ print("--------------------------------")
     #? Polymorphism
         #? Overriding methods
 #* Inner class
-#* Overloading an operator (optional)
-#* Abstract base class 
+#* extra subjects
 
 
 #! What is OOP?
@@ -362,13 +361,47 @@ print(emp1.company) #clasurway
   
 #? Other Topics (Bonus)
 
+print(Employee.mro()) #mro => Method resolution order: #! Kalıtım zinciri demek
+
+print(help(Employee)) #! clasın bütün özelliklerini yazdırır.
+#? terminalde help'ten çıkmak için :q yapmak lazım..
+
+print(emp1.__dict__) # bu instancen özelliklerine bakmak için
+
+print(isinstance(emp1, Employee)) # True / False çıktı verir. --> True
+
+print(issubclass(Lang, Person)) # True / False çıktı verir. ---> False 
 
 
+#! getattr(instance, attribute) : returns attribute value of instance
+#! setattr(instance, attribute, new value) : update attribute of instance
+#! hasattr(instance, attribute) : return boolean
+#! delattr(instance, attribute) : delete attribute of instance
+
+print(getattr(emp1, "name")) #  emp1 instancenın name attrubute
+x = getattr(emp1, "name")  #  emp1 instancenın name attrubute bir değişkene atanması
+print(x)
+
+setattr(emp1,"name", "cooper")
+print(getattr(emp1, "name"))
+
+print(hasattr(emp1, "name"))
+
+delattr(emp1, "age")
+print(emp1.__dict__) # artık age yok, silindi.
 
 
+#? inner class;
 
+from django.db import models
 
-
+class Makale(models.Model):
+    name = models.CharField(max_length=50)
+    author = models.CharField(max_length=50)
+    
+    class Meta:
+        ordering = ["name"]
+        verbose_name = "makaleler"
 
 
 
