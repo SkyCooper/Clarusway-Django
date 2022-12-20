@@ -1,0 +1,92 @@
+MVT (Model, View, and Template)
+Django Template Language (DTL)
+Object Relational Model (ORM)
+
+--Check the versions of python and pip
+python --version
+pip --version
+
+python -m venv env
+
+# Powershell    => .\env\Scripts\activate
+# bash          => source env/Scripts/Activate
+# linux/mac     => source env/bin/activate 
+
+deactivate => 
+
+Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
+
+pip install django
+pip install --upgrade pip
+
+pip freeze (kurulan paketleri gösterir)
+pip freeze > requirements.txt 
+
+.gitignore oluştur.
+https://www.toptal.com/developers/gitignore/api/django
+
+django-admin startproject main .
+
+python manage.py runserver
+
+ctrl + c durdur
+
+python manage.py migrate --> warningleri düzeltir.
+
+python manage.py startapp fscohort
+
+pip install -r requirements.txt (pull edilen projeyi ayağa kaldırmak için)
+
+--Install virtual environment
+pip install virtualenv
+(sistemlerin, paketlerin versiyonlşarı değişse bile daha sonradan hata vermeden kullanılabilsin diye global'de değil virtual'da çalışmak lazım.)
+
+--Set virtual environment
+virtualenv nameofyourvitualenv(cooperdjango vs.)
+
+--Change directory to your vitualenv
+cd nameofyourvitualenv(cooperdjango vs.)
+
+--Go to Scripts directory inside your virtualenv and activate virtualenv
+cd Scripts
+activate
+
+--Install Django
+pip install django
+
+--Return to your virtualenv directory
+cd ..
+
+--Start a project by following command
+django-admin startproject nameofyourproject
+
+--Change directory to your project
+cd nameofyourproject
+
+--Start the server by following command
+python manage.py runserver
+
+--To check wether server is running or not go to web browser and 
+enter http://127.0.0.1:8000/ as url. You should see a site.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
