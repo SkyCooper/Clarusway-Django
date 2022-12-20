@@ -1,92 +1,74 @@
-MVT (Model, View, and Template)
-Django Template Language (DTL)
-Object Relational Model (ORM)
-
 --Check the versions of python and pip
 python --version
 pip --version
 
-python -m venv env
+--Install virtual environment
+(bunu yapmamızın sebebi sistemlerin, paketlerin versiyonları değişse bile
+daha sonradan hata vermeden kullanılabilsin diye global'de değil virtual'da çalışmak lazım.)
+python -m venv env (buradaki env => bestpractice dosya ismi)
 
+--activate virtual environment
 # Powershell    => .\env\Scripts\activate
 # bash          => source env/Scripts/Activate
 # linux/mac     => source env/bin/activate 
 
-deactivate => 
+--deactivate virtual environment
+deactivate
 
+--activate esnasında hata olursa bu komutu kullan;
 Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy Unrestricted
 
+--django kurumak için;
 pip install django
+
+--pip update için;
 pip install --upgrade pip
 
-pip freeze (kurulan paketleri gösterir)
-pip freeze > requirements.txt 
 
-.gitignore oluştur.
-https://www.toptal.com/developers/gitignore/api/django
+--gitignore dosyası oluşturma;
+ana dizine .gitignore isminde dosya oluştur.
+https://www.toptal.com/developers/gitignore/api/django adresinden Template olarak al
+env'den farklı bir isim verdiysen gitignore içine ilgili bölüme dosya ismini ekle..
 
+--yeni bir proje başlatmak için;
+main klasörü ekle (bestpractice), nokta(.) kullan, iç içe olmaması için
 django-admin startproject main .
 
-python manage.py runserver
+--server çalıştır.
+python manage.py runserver (default port 8000)
+python manage.py runserver 8080 (port numarasını değiştirme )
 
+--server durdur.
 ctrl + c durdur
 
-python manage.py migrate --> warningleri düzeltir.
+( terminalden proje başlattıktan sonra artık terminale konut yazılamaz,
+bunun için yeni bir terminal aç )
 
-python manage.py startapp fscohort
+--terminaldeki migrate uyarılarını düzeltmek için,
+python manage.py migrate
 
-pip install -r requirements.txt (pull edilen projeyi ayağa kaldırmak için)
+--yeni bir app(klasör) oluşturma;
+python manage.py startapp nameofyourproject (fscohort vs.)
 
---Install virtual environment
-pip install virtualenv
-(sistemlerin, paketlerin versiyonlşarı değişse bile daha sonradan hata vermeden kullanılabilsin diye global'de değil virtual'da çalışmak lazım.)
+(bunu yaptıktan sonra proje dizinine(main) gidip settings.py içinde
+INSTALLED_APPS listesi içine proje ismini eklememiz gerekiyor)
 
---Set virtual environment
-virtualenv nameofyourvitualenv(cooperdjango vs.)
-
---Change directory to your vitualenv
-cd nameofyourvitualenv(cooperdjango vs.)
-
---Go to Scripts directory inside your virtualenv and activate virtualenv
-cd Scripts
-activate
-
---Install Django
-pip install django
-
---Return to your virtualenv directory
-cd ..
-
---Start a project by following command
-django-admin startproject nameofyourproject
-
---Change directory to your project
-cd nameofyourproject
-
---Start the server by following command
-python manage.py runserver
-
---To check wether server is running or not go to web browser and 
-enter http://127.0.0.1:8000/ as url. You should see a site.
+(eklerken karışmaması için önce #myapps gibi bir yorum satırı ekleyip
+sonra tırnak içinde app ismi ve sonrasında virgül koymak gerekiyor.
+'nameofyourproject',
+'fscohort',
+'dscohort',
+'awscohort',)
 
 
+--kurulan paketleri görmek için;
+pip freeze veya 
+pip list
 
+--kurulan paketleri görmek için;
+pip freeze > requirements.txt
+( yüklü paketleri txt dosyasına kaydettik bunu yapmamızın sebebi
+projeyi sunduğumuzda kullandığımız paketleri göstermesi için )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+--pull edilen projeyi ayağa kaldırmak için
+pip install -r requirements.txt
