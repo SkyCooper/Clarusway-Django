@@ -48,6 +48,7 @@ bunun için yeni bir terminal aç )
 python manage.py migrate
 
 --yeni bir app(klasör) oluşturma;
+(manage.py ile aynı dizinde olduğundan emin ol, ondan sonra terminale bu komutu yaz )
 python manage.py startapp nameofyourproject (fscohort vs.)
 
 (bunu yaptıktan sonra proje dizinine(main) gidip settings.py içinde
@@ -72,3 +73,34 @@ projeyi sunduğumuzda kullandığımız paketleri göstermesi için )
 
 --pull edilen projeyi ayağa kaldırmak için
 pip install -r requirements.txt
+
+--Admin olarak LOGIN olmak için;
+python manage.py createsuperuser
+
+(fakat bu kod çalışmadan migrate hatası verebilir, eğer önceden migrate yapılmamış ise;
+python manage.py migrate 	bu komuttan sonra tekrar yukarıfaki komutu çalıştır. )
+
+Username :
+Email adress:
+Password: **********
+Password (again): *********
+Superuser created successfully.
+
+http://127.0.0.1:8000/admin/ daha sonra bu adresten login ekranına gidilir.
+
+(LMS teki kurulum vido linki =>  How to Install and Use Django 
+https://youtu.be/osKPG2ripmw ) 
+
+--models.py dosyası içerisine bir model oluşturduktan sonra sırasıyla bu komutları çalıştır;
+1 -python manage.py makemigrations nameofyourproject (fscohort vs.)
+(Django'ya modellerinizde bazı değişiklikler yaptığınızı (bu durumda yenilerini yaptığınızı)
+ve değişikliklerin depolanmasını istediğinizi söylüyorsunuz.)
+
+2- python manage.py migrate 
+( Migrate komutu, uygulanmamış değişiklikleri alır ve bunları veritabanınızda çalıştırır - temel olarak, modellerinizde yaptığınız değişiklikleri veritabanındaki şema ile senkronize eder.)
+
+
+
+
+
+
