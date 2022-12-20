@@ -92,12 +92,14 @@ http://127.0.0.1:8000/admin/ daha sonra bu adresten login ekranına gidilir.
 https://youtu.be/osKPG2ripmw ) 
 
 --models.py dosyası içerisine bir model oluşturduktan sonra sırasıyla bu komutları çalıştır;
-1 -python manage.py makemigrations nameofyourproject (fscohort vs.)
+1 - python manage.py makemigrations nameofyourproject (fscohort vs.)
 (Django'ya modellerinizde bazı değişiklikler yaptığınızı (bu durumda yenilerini yaptığınızı)
 ve değişikliklerin depolanmasını istediğinizi söylüyorsunuz.)
 
 2- python manage.py migrate 
 ( Migrate komutu, uygulanmamış değişiklikleri alır ve bunları veritabanınızda çalıştırır - temel olarak, modellerinizde yaptığınız değişiklikleri veritabanındaki şema ile senkronize eder.)
+
+ORM-> python ile yazılan sorgu kodlarını arka plandaki database için SQL formatına çevirir.
 
 
 

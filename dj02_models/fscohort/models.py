@@ -23,4 +23,12 @@ class Student(models.Model):
     ordering = ["number"]
     verbose_name_plural = "Student_list"
     
-  
+  def student_year_status(self):
+    "Returns the student's year status"
+    import datetime
+    if self.register < datetime.date(2019, 1, 1):
+      return "Senior"
+    if self.register > datetime.date(2020, 1, 1):
+      return "Junior"
+    else:
+      return "Freshman"
