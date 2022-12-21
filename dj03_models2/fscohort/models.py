@@ -32,3 +32,6 @@ class Student(models.Model):
 
 class Teacher(models.Model):
   pass
+
+#! look-up's;
+# repodan al...

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     
     # my Apps
     'fscohort',
+    'relation',
     
     # third part Apps
 ]
