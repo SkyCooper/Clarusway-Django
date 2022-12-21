@@ -23,6 +23,7 @@ pip install django
 
 --pip update için;
 pip install --upgrade pip
+python -m --pip install --upgrade pip
 
 
 --gitignore dosyası oluşturma;
