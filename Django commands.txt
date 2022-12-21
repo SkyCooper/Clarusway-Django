@@ -43,7 +43,9 @@ python manage.py runserver 8080 (port numarasını değiştirme )
 ctrl + c durdur
 
 ( terminalden proje başlattıktan sonra artık terminale konut yazılamaz,
-bunun için yeni bir terminal aç )
+bunun için yeni bir terminal aç ve server AKTIF et;
+# bash          => source env/Scripts/Activate
+ )
 
 --terminaldeki migrate uyarılarını düzeltmek için,
 python manage.py migrate
@@ -120,6 +122,37 @@ sonradan ; admin.site.register(Student) komutunu yazıp tabloyu register ediyoru
 
 (LMS teki kurulum vido linki =>  How to Install and Use Django 
 https://youtu.be/osKPG2ripmw ) 
+
+--image (resim) işleme eklentisi kurma 
+pip install pillow
+
+-- main settings içine 
+STATIC_URL = 'static/' altına ekle;
+1-
+MEDIA_URL = 'media/'
+
+2-
+MEDIA_ROOT = BASE_DIR / 'media/'
+
+media_url -> hangi urlyi kullanacaksın
+media_root -> hangi klasöre yüklemek istersin.
+
+https://docs.djangoproject.com/en/4.1/howto/static-files/
+bu adresten nasıl yapılacağına bak, import vs. nasıl yapılacak...
+
+
+-- main urls içine 
+3-
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
+
+
+
 
 
 

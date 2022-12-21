@@ -17,7 +17,7 @@ class Student(models.Model): #!Student isimli bir tablo oluştu db içinde
   is_active = models.BooleanField()
                                                      # DateTimeField tarih/saat DateField sadece tarih
   #? str medotu ile tablonun admin panelde nasıl görüneceğini ayarlıyoruz.
-  #? str medotunda yapılan değişikliş db değiştirmiyor, 
+  #? str medotunda yapılan değişiklik db değiştirmiyor, 
   #? bunun için migrate komutlarını tekrar çalıştırmaya gerek kalmıyor. 
   def __str__(self):
     return f"{self.number} {self.first_name}"
