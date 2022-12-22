@@ -150,6 +150,9 @@ urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 
+--USER model olarak kullanmak için models içine;
+from django.contrib.auth.models import User import et
+
 
 
 
