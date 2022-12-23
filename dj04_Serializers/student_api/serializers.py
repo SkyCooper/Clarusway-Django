@@ -35,13 +35,19 @@ class StudentSerializer(serializers.ModelSerializer):
       born_year = serializers.SerializerMethodField() #! SerializerMethodField => read-only
       #* bunu fields = ["born_year"] içine eklememiz gerekli
       
+      #! read-only ; yani sadece veri çekerken / okurken kullanılır.
+      #* create ederken / POST yaparken read-only olanlar kullanılmaz.
+      #* DB tablosunda olmayan veri ile create yapılamaz, born_year ve path kullanılamaz bundan dolayı.
+      
       path = serializers.StringRelatedField() #!StringRelatedField => read-only
-      #* StringRelatedField eklenen path'ın id olarak değil ismen gelmesini sağlar.
-      #* Fakat öğrenci create ederken "aws, data, fs" bunu anlamaz
       #* bunu fields = ["path"] içine eklememiz gerekli
+      #* StringRelatedField eklenen path'ın id olarak değil ismen gelmesini sağlar.
+      #* Fakat öğrenci create ederken path ismini yazamayız. "aws, data, fs" bunu anlamaz (read-only olduğundan)
+      #* Çünkü db'de id var, id ile kayıt ekleyebilmek için path_id oluşturuyoruz,
       
       path_id = serializers.IntegerField()
       #* bunu fields = ["path_id"] içine eklememiz gerekli
+      #* Artık öğrenci create ederken path_id yazabiliriz.
       
       
       # Student model'den gelen fieldlar..
@@ -49,7 +55,8 @@ class StudentSerializer(serializers.ModelSerializer):
             model = Student
             # fields = "__all__"
             #* "__all__" herşeyi dataya JSON olarak atar
-            fields = ["id", "first_name", "last_name", "number", "age","born_year", "path", "path_id"]
+            fields = ["id", "first_name", "last_name", "number", "age", "born_year", "path", "path_id"]
+            #! bestpractice böyle kullanmak gerekli , ne istiyorsak onu yazıyoruz
             # fields = ["first_name", "last_name"]
             #* ["first_name", "last_name"] istediklerimizi dataya JSON olarak atar
             # exculue = ["number"]
@@ -61,6 +68,23 @@ class StudentSerializer(serializers.ModelSerializer):
             return current_time.year - obj.age    
       
 class PathSerializer(serializers.ModelSerializer):
+      
+      # models.py'den alıntı: (anlamak için oraya bak)
+      # yani child tabloda --> related_name='students' yazıyor olması  ;
+      # students = ... (sanki böyle bir field varmış demektir.)
+      
+      # bundan dolayı burada students tanımlanabilir.
+      
+      # students = StudentSerializer(many=True)
+      #* StudentSerializer'den alınca postmen çıktısı çok kalabalık oluyor.
+      
+      students = serializers.HyperlinkedRelatedField(
+            many=True,
+            read_only=True,
+            view_name='detail'
+      )
+      #* HyperlinkedRelatedField'den alınca tek tek her öğrencinin endpoint name'ini verir.
+      # urls içine --> name="detail" ekle yoksa hata verir.
       class Meta:
             model = Path
             # fields = "__all__"

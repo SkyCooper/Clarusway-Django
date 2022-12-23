@@ -2,6 +2,8 @@ from django.db import models
 
 class Path(models.Model):
     path_name = models.CharField(max_length=50)
+    # aşağıda class'da, yani child tabloda --> related_name='students' yazıyor olması  ;
+    # students = ... (sanki böyle bir field varmış demektir.)
 
     def __str__(self):
         return f"{self.path_name}"
