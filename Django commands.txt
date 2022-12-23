@@ -148,10 +148,36 @@ from django.conf.urls.static import static
 
 urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-
+--djangonun admin panelde otomatik oluşturduğu "Users" tablosuna(modeline) ulaşmak için;
+models.py içine;
+from django.contrib.auth.models import User => ile import ediyoruz.
 
 --USER model olarak kullanmak için models içine;
 from django.contrib.auth.models import User import et
+
+SECRET_KEY kullanmak için eklenecek paket;
+pip install python-decouple
+
+.env dosyası içine main/settings.py içindeki;
+SECRET_KEY = 'django-insecure-c#l(2*++o(+ywyek#isx%g!=fr3)*xgdm=4#=qf)6sx=n6fs4x'
+bunu alıp tırnakları ve boşlukları kaldırarak . env için kayıt et;
+SECRET_KEY =django-insecure-c#l(2*++o(+ywyek#isx%g!=fr3)*xgdm=4#=qf)6sx=n6fs4x
+
+main/settings.py içine;
+from decouple import config => bunu import et 
+SECRET_KEY = config("SECRET_KEY") => bu hale getir.
+
+
+DJANGO-API gibi çalışması için mikro-framework kurulumu yapılıyor,
+
+1- pip install djangorestframework
+2- main/settings.py INSTALLED_APPS =>  'rest_framework', EKLE
+3- serializers.py isimli dosyayı oluştur;
+
+from rest_framework import serializers
+
+class StudentSerializer(serializers.Serializer):
+  pass
 
 
 
