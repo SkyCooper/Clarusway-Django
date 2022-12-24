@@ -3,6 +3,7 @@ from .views import Student, Path
 
 #? 1nci yöntem serializers'dan inherit
 #? serializers'dan inherit edilirse create ve update metodlarınıda yazmak gerekli
+#? model yapısındaki fieldType ların burada da aynı olması gerekiyor..
 
 # class StudentSerializer(serializers.Serializer):
 #   first_name = serializers.CharField(max_length=30)
@@ -12,6 +13,7 @@ from .views import Student, Path
   
 #   def create(self, validated_data):
 #         return Student.objects.create(**validated_data)
+
 
 #   def update(self, instance, validated_data):
 #       instance.first_name = validated_data.get('first_name', instance.first_name)
@@ -61,7 +63,8 @@ class StudentSerializer(serializers.ModelSerializer):
             #* ["first_name", "last_name"] istediklerimizi dataya JSON olarak atar
             # exculue = ["number"]
             #* ["number"] hariç, kalan hepsini dataya JSON olarak atar
-      
+            
+      #? yukarıda tanımlanan born_year başına get yazılıp kullanılır;
       def get_born_year(self, obj):
             import datetime
             current_time = datetime.datetime.now()
