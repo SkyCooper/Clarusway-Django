@@ -148,6 +148,8 @@ from django.conf.urls.static import static
 
 urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
+
+-- USER 
 --djangonun admin panelde otomatik oluşturduğu "Users" tablosuna(modeline) ulaşmak için;
 models.py içine;
 from django.contrib.auth.models import User => ile import ediyoruz.
