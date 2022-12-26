@@ -13,7 +13,7 @@ class Album(models.Model):
   artist = models.ManyToManyField(Artist)
   name = models.CharField(max_length=100)
   released = models.DateField(null = True, blank=True)
-  cover = models.ImageField(upload_to='covers')
+  cover = models.ImageField(upload_to='covers', null=True, blank=True)
   
   def __str__(self):
     return self.name

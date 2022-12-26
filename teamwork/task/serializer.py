@@ -9,13 +9,12 @@ from .models import (
 class ArtistSerializer(serializers.ModelSerializer):
   class Meta:
     model = Artist
-    fields = "__all__"
-    # fields = ["first_name", "last_name"]
+    fields = ["first_name", "last_name", "artist_pic", "num_stars"]
     
 class AlbumSerializer(serializers.ModelSerializer):
   class Meta:
     model = Album
-    fields = ["artist", "name"]
+    fields = ["artist", "name", "released", "cover"]
     
 class LyricSerializer(serializers.ModelSerializer):
   class Meta:
@@ -25,11 +24,10 @@ class LyricSerializer(serializers.ModelSerializer):
 class SongSerializer(serializers.ModelSerializer):
   class Meta:
     model = Song
-    fields = ["name", "artist"]
+    fields = ["name", "artist", "lyric", "album", "released"]
 
 class SongLyricSerializer(serializers.ModelSerializer):
-    items = SongSerializer(many=True, read_only=True)
-
-    class Meta:
-        model = Lyric
-        fields = ["title","items"]
+  items = SongSerializer(many=True, read_only=True)
+  class Meta:
+    model = Lyric
+    fields = ["title","items"]
