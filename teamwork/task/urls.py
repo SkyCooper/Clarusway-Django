@@ -1,18 +1,31 @@
 from django.urls import path
-from .views import (get_artist_list, 
-                    post_artist_list, 
-                    artist_list, 
-                    artist_detail, 
-                    artist_update,
-                    artist_delete, 
-                    artist_update_delete,
-                    song_lyric)
+    
+# artist views;
+from .views import (
+    get_artist_list,
+    post_artist_list,
+    artist_list,
+    artist_detail,
+    artist_update,
+    artist_delete,
+    artist_update_delete,
+    song_lyric)
 
+# album views;
 from .views import (
     get_album_list,
     post_album_list,
-    get_album_detail
+    get_album_detail,
+    album_update,
+    album_delete,
+    album_list,
+    album_get_update_delete
 )
+
+# lyric views;
+
+
+# song views;
 
 
 urlpatterns = [
@@ -26,9 +39,13 @@ urlpatterns = [
     path('artist/updatedelete/<int:pk>', artist_update_delete),
     
     # album paths;
-    path('album-list/', get_album_list),
+    path('album-list/get', get_album_list),
     path('album-list/<int:pk>', get_album_detail),
     path('album-update/', post_album_list),
+    path('album-update/<int:pk>', album_update),
+    path('album-delete/<int:pk>', album_delete),
+    path('album-list/', album_list),
+    path('album-all/<int:pk>', album_get_update_delete),
     
     # lyric paths;
     
