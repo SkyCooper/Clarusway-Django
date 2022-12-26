@@ -7,7 +7,7 @@ class Artist(models.Model):
   num_stars = models.IntegerField(default=0, blank = True)
   
   def __str__(self):
-    return f"{self.first_name}  {self.last_name}"
+    return f"{self.first_name}  {self.last_name} {self.num_stars}"
   
 class Album(models.Model):
   artist = models.ManyToManyField(Artist)

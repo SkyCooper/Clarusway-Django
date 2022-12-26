@@ -10,7 +10,8 @@ from .serializer import (
   AlbumSerializer,
   ArtistSerializer,
   SongSerializer,
-  LyricSerializer
+  LyricSerializer,
+  SongLyricSerializer
 )
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -72,3 +73,42 @@ def artist_update(request, pk):
     }
     return Response(message, status=status.HTTP_201_CREATED)
   return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['DELETE'])
+def artist_delete(request, pk):
+  artist = get_object_or_404(Artist, id=pk)
+  artist.delete()
+  message = {
+      "message" : "Artist DELETED"
+    }
+  return Response(message)
+
+@api_view(['PUT', 'DELETE'])
+def artist_update_delete(request, pk):
+  if request.method == 'PUT':
+    artist = get_object_or_404(Artist, id=pk)
+    print(artist)
+    serializer = ArtistSerializer(instance=artist, data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      message = {
+      "message" : "Artist Updated"
+    }
+      return Response(message, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+  elif request.method == 'DELETE':
+    artist = get_object_or_404(Artist, id=pk)
+    artist.delete()
+    message = {
+        "message" : "Artist DELETED"
+      }
+    return Response(message)
+  
+@api_view()
+def song_lyric(request):
+  detailsong = Song.objects.all()
+  serializer = SongLyricSerializer(detailsong, many=True)
+  return Response(serializer.data)
+  
+  
+  
