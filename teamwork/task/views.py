@@ -21,7 +21,10 @@ from rest_framework import status
 # def artist_list(request):
 #   return HttpResponse("Welcome TASK page")
 
+
+#? ======================================
 #? Artist views;
+#? ======================================
 
 @api_view(['GET'])
 def get_artist_list(request):
@@ -69,6 +72,9 @@ def artist_delete(request, pk):
     }
   return Response(message)
 
+#! ==========================================================
+#! Birleştirilmiş fonksiyon
+#! ==========================================================
 @api_view(['GET', 'POST'])
 def artist_list(request):
   if request.method == 'GET':
@@ -85,6 +91,9 @@ def artist_list(request):
       return Response(message, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
+#! ==========================================================
+#! pk gerekli olanlar için birleştirilmiş fonksiyon
+#! ==========================================================
 @api_view(['PUT', 'DELETE'])
 def artist_update_delete(request, pk):
   if request.method == 'PUT':
@@ -106,8 +115,9 @@ def artist_update_delete(request, pk):
       }
     return Response(message)
   
-  
+#? ======================================  
 #? Album views;
+#? ======================================
 
 @api_view(['GET'])
 def get_album_list(request):
@@ -147,6 +157,9 @@ def album_delete(request, pk):
   message = {"message" : "Album DELETED"}
   return Response(message)
 
+#! ==========================================================
+#! Birleştirilmiş fonksiyon
+#! ==========================================================
 @api_view(['GET', 'POST'])
 def album_list(request):
   if request.method == 'GET':
@@ -161,6 +174,9 @@ def album_list(request):
       return Response(serializer.data, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
 
+#! ==========================================================
+#! pk gerekli olanlar için birleştirilmiş fonksiyon
+#! ==========================================================
 @api_view(['GET', 'PUT', 'DELETE', 'PATCH'])
 def album_get_update_delete(request, pk):
   album = get_object_or_404(Album, id=pk)
