@@ -9,7 +9,8 @@ from .models import (
 class ArtistSerializer(serializers.ModelSerializer):
   class Meta:
     model = Artist
-    fields = ["first_name", "last_name"]
+    fields = "__all__"
+    # fields = ["first_name", "last_name"]
     
 class AlbumSerializer(serializers.ModelSerializer):
   class Meta:
