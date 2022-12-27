@@ -17,6 +17,13 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+# CLASS BASED VIEW
+from rest_framework.views import APIView
+from rest_framework.generics import GenericAPIView, mixins, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from rest_framework.viewsets import ModelViewSet
+
+
+
 # Create your views here.
 # def artist_list(request):
 #   return HttpResponse("Welcome TASK page")
@@ -114,7 +121,136 @@ def artist_update_delete(request, pk):
         "message" : "Artist DELETED"
       }
     return Response(message)
+
+
+#* ==========================================================
+#TODO                     CLASS BASED VİEWS
+#* ==========================================================
+
+
+#? ==========================================================
+#? 1-APIVIEW 
+#? ==========================================================
+
+class ArtistListCreate(APIView):
   
+  def get(self, request):
+    artists = Artist.objects.all()
+    serializer = ArtistSerializer(artists, many=True)
+    return Response(serializer.data)
+  
+  def post(self, request):
+    serializer = ArtistSerializer(data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      data = {"message" : "POST succes"}
+      return Response(serializer.data, status=status.HTTP_201_CREATED )
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ArtistDetail(APIView):
+  
+  def get_obj(self, pk):
+    return get_object_or_404(Artist, id=pk)
+  
+  def get(self, request, pk):
+    artist = self.get_obj(pk)
+    serializer = ArtistSerializer(artist)
+    return Response(serializer.data)
+  
+  def put(self, request, pk):
+    artist = self.get_obj(pk)
+    serializer = ArtistSerializer(artist, data=request.data)
+    if serializer.is_valid():
+      serializer.save()
+      message = {
+      "message" : "Artist Updated"
+    }
+      return Response(message, status=status.HTTP_201_CREATED)
+    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)    
+    
+  def delete(self, requset, pk):
+    artist = self.get_obj(pk)
+    artist.delete()
+    message = {
+        "message" : "Artist DELETED"
+      }
+    return Response(message)
+
+#? ==========================================================
+#? 2-GENERIC APIVIEW  -  MIXINS  (ASLINDA KULLANILMIYOR, GEÇİŞİ ANLAMAK İÇİN ANLATILDI)
+#? ==========================================================
+
+class ArtistGAV(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
+    
+    # GenericAPIView
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    
+    # ListModelMixin
+    def get(self, request, *args, **kwargs):
+      return self.list(request, *args, **kwargs)
+    
+    # CreateModelMixin
+    def post(self, request, *args, **kwargs):
+      return self.create(request, *args, **kwargs)
+  
+class ArtistDetailGAV(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericAPIView):
+  
+    # GenericAPIView
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    
+    # RetrieveModelMixin
+    def get(self, request, *args, **kwargs):
+      return self.retrieve(request, *args, **kwargs)
+    
+    # UpdateModelMixin
+    def put(self, request, *args, **kwargs):
+      return self.update(request, *args, **kwargs)
+    
+    # DestroyModelMixin
+    def delete(self, request, *args, **kwargs):
+      return self.destroy(request, *args, **kwargs)
+
+
+#? ==========================================================
+#? 3-CONCRETE VIEWS  --  çok sık kullanılan yöntem
+#? ==========================================================
+
+class ArtistCV(ListCreateAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+    
+class ArtistDetailCV(RetrieveUpdateDestroyAPIView):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+
+
+#? ==========================================================
+#? VIEWSETS
+#? ==========================================================
+
+class ArtistMVS(ModelViewSet):
+    queryset = Artist.objects.all()
+    serializer_class = ArtistSerializer
+class SongMVS(ModelViewSet):
+    queryset = Song.objects.all()
+    serializer_class = SongSerializer
+class LyricMVS(ModelViewSet):
+    queryset = Lyric.objects.all()
+    serializer_class = LyricSerializer
+
+
+
+
+
+
+
+
+
+
+
+
 #? ======================================  
 #? Album views;
 #? ======================================
@@ -218,7 +354,7 @@ def album_get_update_delete(request, pk):
   
 @api_view()
 def song_lyric(request):
-  songs = Song.objects.all()
-  serializer = SongLyricSerializer(songs, many=True, context={'request': request})
+  lyrics = Lyric.objects.all()
+  serializer = SongLyricSerializer(lyrics, many=True)
   return Response(serializer.data)
   

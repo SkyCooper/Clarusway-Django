@@ -256,7 +256,7 @@ class StudentDetailGAV(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixin
     
     # RetrieveModelMixin
     def get(self, request, *args, **kwargs):
-        return self.retrive(request, *args, **kwargs)    
+        return self.retrieve(request, *args, **kwargs)    
     
     # UpdateModelMixin
     def put(self, request, *args, **kwargs):
