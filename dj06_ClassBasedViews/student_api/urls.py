@@ -73,4 +73,5 @@ urlpatterns = [
 ]
 
 #! böyle de kullanılıyor, karşımıza çıkabilir.
+# path('', include(router.urls)), yerine bunu yazsak çalışır.
 # urlpatterns += router.urls
