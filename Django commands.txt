@@ -50,6 +50,8 @@ bunun için yeni bir terminal aç ve server AKTIF et;
 --terminaldeki migrate uyarılarını düzeltmek için,
 python manage.py migrate
 
+--You have 18 unapplied migration(s). bu uyarı default olarak djangonun oluşturduğu app'lerden kaynaklanıyor.
+
 --yeni bir app(klasör) oluşturma;
 (manage.py ile aynı dizinde olduğundan emin ol, ondan sonra terminale bu komutu yaz )
 python manage.py startapp nameofyourproject (fscohort vs.)
