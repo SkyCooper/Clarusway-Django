@@ -166,6 +166,7 @@ def student_api_get_update_delete(request, pk):
 #? APIVIEW 
 #? ==========================================================
 
+#! pk istemeyenler için bir tane fonksiyon
 class StudentListCreate(APIView):
     
     def get(self, request):  #? fonksiyon ismi get olmak zorunda;
@@ -183,6 +184,7 @@ class StudentListCreate(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)        
 
 
+#! pk GEREKLİ OLANLAR için bir tane fonksiyon
 class StudentDetail(APIView):
     
     def get_obj(self, pk): #? student objesini üretmek için bir metod yazıyoruz;
@@ -234,6 +236,7 @@ class StudentDetail(APIView):
 - DestroyModelMixin
     - destroy method 
     """
+#! pk istemeyenler için bir tane fonksiyon
 class StudentGAV(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView):
     
     # GenericAPIView
@@ -247,7 +250,8 @@ class StudentGAV(mixins.ListModelMixin, mixins.CreateModelMixin, GenericAPIView)
     # CreateModelMixin
     def post(self, request, *args, **kwargs):
         return self.create(request, *args, **kwargs)
-    
+
+#! pk GEREKLİ OLANLAR için bir tane fonksiyon    
 class StudentDetailGAV(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericAPIView):
     
     # GenericAPIView
@@ -271,10 +275,12 @@ class StudentDetailGAV(mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixin
 #? CONCRETE VIEWS  --  çok sık kullanılan yöntem
 #? ==========================================================
 
+#! pk istemeyenler için bir tane fonksiyon
 class StudentCV(ListCreateAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     
+#! pk GEREKLİ OLANLAR için bir tane fonksiyon 
 class StudentDetailCV(RetrieveUpdateDestroyAPIView):
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
@@ -296,23 +302,40 @@ There are two main advantages of using a ViewSet class over using a View class.
 Both of these come with a trade-off. Using regular views and URL confs is more explicit and gives you more control. ViewSets are helpful if you want to get up and running quickly, or when you have a large API and you want to enforce a consistent URL configuration throughout.
 """
 
+#! Tek bir view oluşturarak hem pk/id (lookup) gerekli olmayan,(GET, POST)
+#! Hem de pk/id (lookup) isteyen bütün bütün işlemleri yapabiliyoruz. (GET, PUT, PATCH, DELETE)
 class StudentMVS(ModelViewSet):
+    
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     
-    #! action ile viewsetşere extra kabiliyetler yazabiliyoruz..
-    @action(detail=False, methods=["GET"]) #? tek (spesifik) bir öğrenci olmadığı için False,  default method GET
+    #? action decarator  ile viewset'lere extra kabiliyetler yazabiliyoruz..
+    #? bir class yapısı içinde olduğumuzdan içine method yazabiliriz.
+    
+    @action(detail=False, methods=["GET"])
+    
+    #? tek (spesifik) bir öğrenci olmadığı için False,  default method GET
+    #? action ile yeni bir endpoint oluşuyor, ....../api/student/student_count(fonksiyonun ismi)  olan.
+    #!  ....../api/prefix/url_path(fonksiyonun ismi) (dokümanda böyle açıklanmış)
+    
     def student_count(self, request):
-        count = {"student-count" : self.queryset.count()}  #? queryset içindeki objeleri sayar
+        count = {"student-count" : self.queryset.count()}
+        #? queryset içindeki objeleri sayar (yani Student class'ından üretilmiş bütün objeler, öğrenciler)
         return Response(count)
 
 class PathMVS(ModelViewSet):
-    queryset = Student.objects.all()
+    
+    queryset = Path.objects.all()
     serializer_class = PathSerializer
     
-    @action(detail=True) #? tek (spesifik) bir öğrenci olduğu için True, default method GET
-    def student_names(self, request):
+    @action(detail=True) 
+    #? tek (spesifik) bir Path için işlem yapılacağından True, default method GET (belirtmeye gerek yok)
+    #? action ile yeni bir endpoint oluşuyor, ....../api/path/1/student_names(fonksiyonun ismi)  olan.
+    #!  ....../api/prefix/lookup/url_path(fonksiyonun ismi) (dokümanda böyle açıklanmış)
+    
+    def student_names(self, request, pk=None):
         path = self.get_object()
         students = path.students.all()
+        #? Her path'de bulunan öğrenci isimlerini getiren bir method yazdık.
         return Response([i.first_name for i in students])
 
