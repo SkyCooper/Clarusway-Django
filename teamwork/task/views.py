@@ -218,7 +218,7 @@ def album_get_update_delete(request, pk):
   
 @api_view()
 def song_lyric(request):
-  detailsong = Song.objects.all()
-  serializer = SongLyricSerializer(detailsong, many=True)
+  songs = Song.objects.all()
+  serializer = SongLyricSerializer(songs, many=True, context={'request': request})
   return Response(serializer.data)
   

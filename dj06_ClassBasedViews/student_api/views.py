@@ -6,7 +6,8 @@ from rest_framework import status
 # CLASS BASED VIEW
 from rest_framework.views import APIView
 from rest_framework.generics import GenericAPIView, mixins, ListCreateAPIView, RetrieveUpdateDestroyAPIView
-
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.decorators import action
 
 #? my imports,
 from .models import Student, Path
@@ -279,10 +280,39 @@ class StudentDetailCV(RetrieveUpdateDestroyAPIView):
     serializer_class = StudentSerializer
 
 
+#? ==========================================================
+#? VIEWSETS
+#? ==========================================================
+"""
+- Django REST framework allows you to combine the logic for a set of related views in a single class, called a ViewSet. 
 
+- Typically, rather than explicitly registering the views in a viewset in the urlconf, you'll register the viewset with a router class, that automatically determines the urlconf for you.
 
+There are two main advantages of using a ViewSet class over using a View class.
 
+ - Repeated logic can be combined into a single class. In the above example, we only need to specify the queryset once, and it'll be used across multiple views.
+ - By using routers, we no longer need to deal with wiring up the URL conf ourselves.
 
+Both of these come with a trade-off. Using regular views and URL confs is more explicit and gives you more control. ViewSets are helpful if you want to get up and running quickly, or when you have a large API and you want to enforce a consistent URL configuration throughout.
+"""
 
+class StudentMVS(ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    
+    #! action ile viewsetşere extra kabiliyetler yazabiliyoruz..
+    @action(detail=False, methods=["GET"]) #? tek (spesifik) bir öğrenci olmadığı için False,  default method GET
+    def student_count(self, request):
+        count = {"student-count" : self.queryset.count()}  #? queryset içindeki objeleri sayar
+        return Response(count)
 
+class PathMVS(ModelViewSet):
+    queryset = Student.objects.all()
+    serializer_class = PathSerializer
+    
+    @action(detail=True) #? tek (spesifik) bir öğrenci olduğu için True, default method GET
+    def student_names(self, request):
+        path = self.get_object()
+        students = path.students.all()
+        return Response([i.first_name for i in students])
 

@@ -1,4 +1,5 @@
 https://lms.clarusway.com/mod/lesson/view.php?id=6932
+
 #! What is views in Django?
 # Whenever you visit a page on the internet, your browser sends a request which contains things like headers (metadata about who you are), parameters (variables), HTTP process, and sometimes a body of data. Upon doing so, you expect to receive a response in return, which consists of much the same pieces. You should expect a different answer to come back to you, depending on the type of the request you make.
 

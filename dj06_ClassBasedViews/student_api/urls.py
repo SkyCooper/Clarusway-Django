@@ -1,4 +1,7 @@
-from django.urls import path
+from django.urls import path, include
+# VIEWSETS için router import
+from rest_framework import routers
+
 from .views import (
     home,
     
@@ -21,11 +24,21 @@ from .views import (
     # StudentDetailGAV,
     
     #* CONCRETE VIEWS
-    StudentCV,
-    StudentDetailCV
+    # StudentCV,
+    # StudentDetailCV,
+    
+    #* VIEWSETS
+    StudentMVS,
+    PathMVS
     
     
 )
+
+#* VIEWSETS için router kur
+router = routers.DefaultRouter()
+router.register("student", StudentMVS) #? buradaki student prefix
+router.register("path", PathMVS)
+
 
 urlpatterns = [
     path("", home),
@@ -50,6 +63,12 @@ urlpatterns = [
     # path('student/<int:pk>', StudentDetailGAV.as_view()),
     
     #* CONCRETE VIEWS
-    path('student', StudentCV.as_view()),
-    path('student/<int:pk>', StudentDetailCV.as_view()),
+    # path('student', StudentCV.as_view()),
+    # path('student/<int:pk>', StudentDetailCV.as_view()),
+    
+    #* VIEWSETS
+    path('', include(router.urls)),
 ]
+
+#! böyle de yazılabilir,
+# urlpatterns += router.urls

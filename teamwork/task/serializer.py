@@ -22,12 +22,13 @@ class LyricSerializer(serializers.ModelSerializer):
     fields = ["title", "content"]
     
 class SongSerializer(serializers.ModelSerializer):
+  album_id = serializers.IntegerField()
   class Meta:
     model = Song
     fields = ["name", "artist", "lyric", "album", "released"]
 
 class SongLyricSerializer(serializers.ModelSerializer):
-  songs = SongSerializer(many=True, read_only=True)
+  songs = SongSerializer(many=True)
   class Meta:
     model = Lyric
-    fields = ["title","songs"]
+    fields = ["content", "songs"]
