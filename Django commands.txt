@@ -183,6 +183,84 @@ from rest_framework import serializers
 class StudentSerializer(serializers.Serializer):
   pass
 
+--FAKER;
+pip install Faker
+pip freeze > requirements.txt
+faker.py isimli dosya oluştur.
+python manage.py shell
+from student_api.faker import run
+run()
+exit()
+
+--PAGINATION İÇİN;
+settings en sonuna;
+
+hangisini kullanacaksan o kalsın diğer ikili grupları sil...
+REST_FRAMEWORK = {
+        'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 30,
+    
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 30,
+    
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.CursorPagination',
+    'PAGE_SIZE': 30,
+}
+
+custimize etmek için pagination.py ekle;
+
+yapılan paginationı views içine import et,
+from .pagination import * (hepsini ekle demek)
+
+views.py içindeki view altına;
+pagination_class = CustomPageNumberPagination
+(hangisini kullanacaksan adını yaz)
+
+---FİLTER/SEARCH için;
+
+pip install django-filter
+pip freeze > requirements.txt
+
+'django_filters',  --> ekle settings içine
+
+settings sonuna ekle;
+REST_FRAMEWORK = {
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+}
+
+
+import et;
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.filters import SearchFilter
+
+
+views.py içindeki view altına;
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ["id", "first_name", "last_name"]
+    search_fields = ["first_name", "last_name"]  ekle
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
