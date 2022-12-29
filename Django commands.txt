@@ -183,16 +183,16 @@ from rest_framework import serializers
 class StudentSerializer(serializers.Serializer):
   pass
 
---FAKER;
+--FAKER; (dj-08)
 pip install Faker
 pip freeze > requirements.txt
 faker.py isimli dosya oluştur.
 python manage.py shell
-from student_api.faker import run
+from nameofapp.faker import run
 run()
 exit()
 
---PAGINATION İÇİN;
+--PAGINATION İÇİN; (dj-08)
 settings en sonuna;
 
 hangisini kullanacaksan o kalsın diğer ikili grupları sil...
@@ -216,7 +216,7 @@ views.py içindeki view altına;
 pagination_class = CustomPageNumberPagination
 (hangisini kullanacaksan adını yaz)
 
----FİLTER/SEARCH için;
+---FİLTER/SEARCH için; (dj-08)
 
 pip install django-filter
 pip freeze > requirements.txt
@@ -231,13 +231,16 @@ REST_FRAMEWORK = {
 
 import et;
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 
 views.py içindeki view altına;
-    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
     filterset_fields = ["id", "first_name", "last_name"]
-    search_fields = ["first_name", "last_name"]  ekle
+    search_fields = ["first_name", "last_name"]
+    search_fields=['^first_name']  #baş harfine göre arama yapmak için,
+    ordering_fields = ['first_name','last_name']  #* filter boxta hangi seçenekler çıksın istiyorsanız onu yazıyorsunuz
+    ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
 
 
 
