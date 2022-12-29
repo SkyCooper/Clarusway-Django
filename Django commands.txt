@@ -243,8 +243,11 @@ views.py içindeki view altına;
     ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
 
 
-
-
+--PERMISSIOIN (dj09)
+basıc Authotantıcatıon;
+settings, REST_FRAMEWORK = { içine ekle---> 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.BasicAuthentication' ]
+from rest_framework.permissions import IsAuthenticated  ---> import et view içine,
+permission_classes = [IsAuthenticated] viewe ekle ..
 
 
 

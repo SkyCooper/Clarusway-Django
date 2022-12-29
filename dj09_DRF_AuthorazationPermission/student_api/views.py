@@ -309,6 +309,9 @@ from .pagination import *
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 
+#? Permission
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly
+
 class StudentMVS(ModelViewSet):
     
     queryset = Student.objects.all()
@@ -322,6 +325,16 @@ class StudentMVS(ModelViewSet):
     # search_fields=['^first_name']  #baş harfine göre arama yapmak için,
     ordering_fields = ['first_name','last_name']  #* filter boxta hangi seçenekler çıksın istiyorsanız onu yazıyorsunuz
     ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
+    
+    #?permission
+    #* herkes CRUD yapabilir
+    # permission_classes = [IsAuthenticated]
+    
+    #* sadece admin olan CRUD yapabilir
+    permission_classes = [IsAdminUser]
+    
+    #* admin olan herşeyi yapar, olmayan sadece GET(read) yapar.
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     
     
     

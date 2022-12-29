@@ -42,10 +42,12 @@ INSTALLED_APPS = [
 
     # my_apps
     'student_api',
+    'user',
     
     #thirdparty
     'rest_framework',
     'django_filters',
+    'rest_framework.authtoken',
 ]
 
 MIDDLEWARE = [
@@ -145,4 +147,9 @@ REST_FRAMEWORK = {
     # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     
     # 'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
+    
+    # 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.BasicAuthentication' ]
+    
+    'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication']
+    
 }
