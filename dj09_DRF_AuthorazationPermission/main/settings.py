@@ -135,20 +135,24 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 #! pagination.py ekleyip localde düzenlediğimiz için gerek kalmadı
 REST_FRAMEWORK = {
+    # pagination
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    # 'PAGE_SIZE': 30,
+    # 'PAGE_SIZE': 5,
     
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
-    # 'PAGE_SIZE': 30,
+    # 'PAGE_SIZE': 5,
     
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.CursorPagination',
-    # 'PAGE_SIZE': 30,
+    # 'PAGE_SIZE': 4,
     
+    # filter
     # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     
+    # search
     # 'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
-    
-    # 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.BasicAuthentication' ]
+
+    # filter + search
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.SearchFilter'],
     
     'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication']
     

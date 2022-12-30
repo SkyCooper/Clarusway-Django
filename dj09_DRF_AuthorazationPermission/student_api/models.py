@@ -14,9 +14,10 @@ class Student(models.Model):  # lower_case modelname_set
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     number = models.IntegerField(blank=True, null=True)
+    
     #! CursorPagination için;
     created = models.DateTimeField(auto_now_add=True)
-    # age = models.IntegerField()
+
 
     def __str__(self):
         return f"{self.number}-{self.last_name} {self.first_name}"

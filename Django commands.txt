@@ -249,7 +249,16 @@ settings, REST_FRAMEWORK = { içine ekle---> 'DEFAULT_AUTHENTICATION_CLASSES': [
 from rest_framework.permissions import IsAuthenticated  ---> import et view içine,
 permission_classes = [IsAuthenticated] viewe ekle ..
 
+TokenAuthentication;
+'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication' ]
+'rest_framework.authtoken',
+python manage.py migrate --> çalıştır.
+python manage.py runserver
+sonra admin panelden Token ekle..
+permission_classes = [IsAdminUser] viewde bunu aktif et
 
+postmende Authorazation --> No Auth;
+Headers --> Authorazation  Token vhfosdbvodjfboıdjboıdjboıj
 
 
 

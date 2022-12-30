@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     # my_apps
     'student_api',
     
-    #thirdparty
+    # thirdparty_apps
     'rest_framework',
     'django_filters',
 ]
@@ -131,18 +131,27 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-#! pagination.py ekleyip localde düzenlediğimiz için gerek kalmadı
+#! Burada yazılanlar default olan ayarlamalar, bunlar global alanda çalışır,
+#! Eğer view içinde import edip kullanırsak o zamam local alanda çalışmış olurlar ve burada yazılsa bile onu ezerler,
+#! Bu örnekte localde kullanıp customize ettiğimiz için burada yoruma aldık, almasak bile local olnlar çalışırdı. 
+
 REST_FRAMEWORK = {
+    # pagination
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    # 'PAGE_SIZE': 30,
+    # 'PAGE_SIZE': 5,
     
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
-    # 'PAGE_SIZE': 30,
+    # 'PAGE_SIZE': 5,
     
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.CursorPagination',
-    # 'PAGE_SIZE': 30,
+    # 'PAGE_SIZE': 4,
     
+    # filter
     # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
     
+    # search
     # 'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
+
+    # filter + search
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.SearchFilter'],
 }
