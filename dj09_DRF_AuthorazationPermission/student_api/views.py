@@ -54,7 +54,7 @@ class StudentMVS(ModelViewSet):
     #* sadece admin olan CRUD yapabilir
     permission_classes = [IsAdminUser]
     
-    #* admin olan herşeyi yapar, olmayan sadece GET(read) yapar.
+    #* Authenticate olan (yani giriş yapan) herşeyi yapar, olmayan sadece GET(read) yapar.
     # permission_classes = [IsAuthenticatedOrReadOnly]
     
     #? action decarator  ile viewset'lere extra kabiliyetler yazabiliyoruz.

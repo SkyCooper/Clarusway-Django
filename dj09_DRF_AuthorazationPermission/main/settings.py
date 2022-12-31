@@ -151,9 +151,13 @@ REST_FRAMEWORK = {
     # search
     # 'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
 
-    # filter + search
-    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.SearchFilter'],
+    # filter + search + ordering
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.SearchFilter', 'rest_framework.filters.OrderingFilter'],
     
+    # BASIC authentication
+    # 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.BasicAuthentication']
+    
+    # TOKEN authentication
     'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication']
     
 }

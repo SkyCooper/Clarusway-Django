@@ -136,9 +136,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #! Bu örnekte localde kullanıp customize ettiğimiz için burada yoruma aldık, almasak bile local olnlar çalışırdı. 
 
 REST_FRAMEWORK = {
-    # pagination
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-    # 'PAGE_SIZE': 5,
+    # 'PAGE_SIZE': 2,
     
     # 'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
     # 'PAGE_SIZE': 5,
@@ -152,6 +151,6 @@ REST_FRAMEWORK = {
     # search
     # 'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
 
-    # filter + search
-    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.SearchFilter'],
+    # filter + search + ordering
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.SearchFilter', 'rest_framework.filters.OrderingFilter'],
 }

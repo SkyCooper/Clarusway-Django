@@ -197,7 +197,7 @@ settings en sonuna;
 
 hangisini kullanacaksan o kalsın diğer ikili grupları sil...
 REST_FRAMEWORK = {
-        'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 30,
     
     'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
@@ -243,26 +243,138 @@ views.py içindeki view altına;
     ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
 
 
---PERMISSIOIN (dj09)
-basıc Authotantıcatıon;
-settings, REST_FRAMEWORK = { içine ekle---> 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.BasicAuthentication' ]
-from rest_framework.permissions import IsAuthenticated  ---> import et view içine,
-permission_classes = [IsAuthenticated] viewe ekle ..
+--PERMISSIOIN / AUTHENTICATION  (dj09)
+1- BASIC Authotantıcatıon;
+settings içine;
+REST_FRAMEWORK = { 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.BasicAuthentication' ] }
 
-TokenAuthentication;
+Authotantıcatıon yapıldı, sonra permission vermek gerekiyor.
+from rest_framework.permissions import BasePermission, IsAuthenticated, IsAdminUser  ---> import et view içine,
+viewe ekle ..
+permission_classes = [IsAuthenticated] (giriş yapan herkes CRUD yapabilir) 
+permission_classes = [IsAdminUser] (sadece admin olan) CRUD yapabilir
+permission_classes = [IsAuthenticatedOrReadOnly] Authenticate olan (yani giriş yapan) herşeyi yapar, olmayan sadece GET(read) yapar.
+
+Postmende Basic Authentication işlemlerinde, Headers altında Authorazation (KEY) karşısında --> Bacic xoxoxoxoxx (VALUE) yazıyor. Buradaki xoxoxox giriş yapılan username ve password bilgilerinin Base64 ile şifrelenmiş halidir. 
+Bunu okumak için kopyalayıp base64decode gibi sitelere yapıştırırsak username ve password görünür.
+Bundan dolayı GÜVENSİZdir.
+
+2- TOKEN Authentication; (Güvenliği arttırmak için tercih ediliyor.)
+Üretilen token kullanıcı aktifken var, logout olunca siliniyor, tekrardan kullanılmıyor.
 'DEFAULT_AUTHENTICATION_CLASSES': ['rest_framework.authentication.TokenAuthentication' ]
-'rest_framework.authtoken',
-python manage.py migrate --> çalıştır.
+'rest_framework.authtoken', --> INSTALLED_APPS içine ekle. BU db kullanıcıyı ve ona ait Key tutan bir tablo oluşturuyor,
+python manage.py migrate --> çalıştır. (db değişiklik yaptığı için)
 python manage.py runserver
-sonra admin panelden Token ekle..
+
+Artık admin panelden Tokens tablosu oluştu, oradan kullanıcı için manuel olarak token ekle.
 permission_classes = [IsAdminUser] viewde bunu aktif et
 
 postmende Authorazation --> No Auth;
-Headers --> Authorazation  Token vhfosdbvodjfboıdjboıdjboıj
+Headers --> Authorazation (Key olarak) bölüm ekle --> karşısına  Token vhfosdbvodjfboıdjboıdjboıj YAZ.
+Token bir Authorazation yöntemi, daha sonra Permission durumuna göre izin verilen işlemleri yapabilir, Yani her Token sahibi herşeyi yapamaz, IsAdminUser,IsAuthenticated,IsAuthenticatedOrReadOnly vs. durumuna göre ne kadar izni varsa ona göre işlem yapabilir.
 
 
+--USER (register/login/logout) (dj09)
+Bunun için yeni bir app oluşturuyoruz (sadece bu işlemleri yapacak)
+python manage.py startapp user
+'user', --> INSTALLED_APPS içine ekle,
+Bu app için ilave model oluşturmadan Djangonun User modelinden faydalanıcaz.
 
+user içinde serializer.py dosyası oluştur.
+from rest_framework import serializers
+from django.contrib.auth.models import User  # (default user modeli import ediyoruz)
+from rest_framework.validators import UniqueValidator
 
+class RegisterSerializer(serializers.ModelSerializer): (bir serializer tanımlıyoruz.)
+    username = 
+    password = 
+    password2 =
+  
+#! yukarıdakileri yazmadan sadece aşağıdakini yazarsak User modeli birebir kopyalamış oluruz, biz yukarıdakileri yazarak İnherit aldığımız modeli override ettik, kendimize göre customize yaptık.  
+
+  class Meta:
+    model= User
+    fields = ('id', 'username', 'email', 'first_name', 'last_name', 'password', 'password2')
+
+  #? Yeni oluşturduğumuz password2 ile password aynımı, bunu konrtol etmek için validate metodunu ekliyoruz.
+  #? yazılan metodlarda indentation önemli, class Meta ile aynı hizada,
+    
+  def validate(self, data):
+      if data['password'] != data['password2']:
+          raise serializers.ValidationError(
+              {'password': 'Password fields didnt match.'}
+          )
+      return data
+
+  #? ModelSerializer kullanınca create metodu yazmaya gerek yok aslında fakat, User model içinde olmayan bir field 
+  #? (password2) kullandığımız için creat metodunu override etmek gerekli;
+  
+  def create(self, validated_data): # best practise validated_data yazılır.
+    validated_data.pop('password2') # password2 create için gerekli olmadığından dictten çıkardık
+    password = validated_data.pop('password') # password sonradan set etmek için dictten çıkardık ve değikene atadık.
+    user = User.objects.create(**validated_data) # unpack yapıldı, username=validate_data['username], email = va.......
+    # validated_data içinde artık password ve password2 yok, onu kullanarak yeni bir user create edildi.
+    user.set_password(password) 
+    # yukarıda değişkene atanan password, create edilen user'a atandı,  encrypte olarak db ye kaydedildi.
+    user.save()
+    # passwor eklenmiş yeni user save edildi.
+    return user
+
+--Daha sonra view ekliyoruz.
+önce user modeli import ediyoruz,
+from django.contrib.auth.models import User
+from rest_framework.generics import CreateAPIView
+from rest_framework.authtoken.models import Token
+
+class RegisterView(CreateAPIView):
+  queryset = User.objects.all()
+  serializer_class = RegisterSerializer
+  
+  def create(self, request, *args, **kwargs):
+    response = super().create(request, *args, **kwargs)
+    token = Token.objects.create(user_id=response.data['id'])
+    response.data['token'] = token.key
+    print(response.data)
+    return response
+
+--daha sonra urls.py içinde endpintleri belirtmek gerekli;
+önce main içinden yönlendirme yapıyoruz.
+path("user/", include("user.urls")),
+
+--sonra user içine urls.py dosyası oluşturuyoruz.
+from django.urls import path
+from .views import RegisterView
+
+from rest_framework.authtoken import views
+
+urlpatterns = [
+    path("register/", RegisterView.as_view()),
+    path('login/', views.obtain_auth_token),
+]
+
+--CORS-HEADERS;
+pip install django-cors-headers
+https://github.com/adamchainz/django-cors-headers (README bak)
+
+settings içine;
+
+INSTALLED_APPS = [ "corsheaders",  içine ekle, 
+
+MIDDLEWARE = [
+    ...,
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware", (bu default var, üzerine ekle)
+
+CORS_ALLOW_ALL_ORIGINS = True  --> ekle en sona
+
+CORS_ALLOW_METHODS = [  
+    "DELETE",
+    "GET",
+    "OPTIONS",
+    "PATCH",
+    "POST",
+    "PUT",
+] (izin verilen metodları ekle)
 
 
 
