@@ -4,7 +4,11 @@ from django.contrib.auth.models import User
 from rest_framework.generics import CreateAPIView
 from rest_framework.authtoken.models import Token
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+
 # Create your views here.
+#! register için;
 class RegisterView(CreateAPIView):
   queryset = User.objects.all()
   serializer_class = RegisterSerializer
@@ -20,3 +24,15 @@ class RegisterView(CreateAPIView):
     #? burada Response içine token field eklendi.
     # print(response.data)
     return response
+  
+
+
+#! login için;
+# ilave metod yazılmadan django'nun view içindeki obtain_auth_token kullandık.
+
+#! logout için;
+
+@api_view(['POST'])
+def logout(request):
+    request.user.auth_token.delete()
+    return Response({"message": 'User Logout: Token Deleted'})

@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 
 from rest_framework.validators import UniqueValidator
 
+
+# resmi doküman : https://www.django-rest-framework.org/api-guide/validators/#validators
 class RegisterSerializer(serializers.ModelSerializer):
   email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=User.objects.all())])
   # email default required değil, onu değiştirdik, artık zorunlu alan
@@ -49,5 +51,5 @@ class RegisterSerializer(serializers.ModelSerializer):
     user.set_password(password) 
     # yukarıda değişkene atanan password, create edilen user'a atandı,  encrypte olarak db ye kaydedildi.
     user.save()
-    # passwor eklenmiş yeni user save edildi.
+    # password eklenmiş yeni user save edildi.
     return user
