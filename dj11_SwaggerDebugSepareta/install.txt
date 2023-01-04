@@ -1,0 +1,46 @@
+python -m venv env
+source env/Scripts/Activate
+pip install django
+pip install --upgrade pip
+django-admin startproject main .
+python manage.py migrate
+python manage.py createsuperuser
+pip install pillow
+      -- main settings içine 
+      STATIC_URL = 'static/' altına ekle;
+      MEDIA_URL = 'media/'
+      MEDIA_ROOT = BASE_DIR / 'media/'
+      -- main urls içine 
+      from django.conf import settings
+      from django.conf.urls.static import static
+      urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+pip install python-decouple
+      .env dosyası ekle, sonra içine
+      SECRET_KEY=xoxoxoxoxooxoxoxoxoxoxooxoxo
+      -- main settings içine
+      from decouple import config
+      SECRET_KEY = config("SECRET_KEY")
+pip install djangorestframework
+      -- main settings içine
+      INSTALLED_APPS =>  'rest_framework', ekle
+      main içine serializers.py oluştur.
+      from rest_framework import serializers
+      class NameofSerializer(serializers.Serializer):
+        pass
+pip freeze > requirements.txt
+(YUKARIDAKİ KOMUTLARIN VE İŞLEMLERİN TAMAMI YAPILDI)
+
+
+python -m venv env
+source env/Scripts/Activate
+pip install -r requirements.txt
+(SADECE BU KOMUTLAR ÇALIŞTIRILACAK VE YUKARIDAKİ BÜTÜN PAKETLER KURULACAK)
+
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+(admin sayfası aktif, yeni app eklenebilir olarak çalışır.)
+
+
+  
+  
