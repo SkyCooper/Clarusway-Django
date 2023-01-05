@@ -1072,3 +1072,33 @@ http://127.0.0.1:8000/users/auth/
 
 #* dokuman adresinden demo proje indirilip özelliklerine bakılabilir
 https://dj-rest-auth.readthedocs.io/en/latest/demo.html
+
+
+#* signal kullanarak token oluşturma,
+  #? register olunca token oluşması signal ile yapıldığında models.py içinde yazılması lazım ama 
+  #? kalabalık olmasın diye signals.py dosyası oluşturulup orada yapmak daha uygun
+  
+users app içine signal.py dosyası oluştur.
+
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+@receiver(post_save, sender=User)
+def create_Token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)
+        
+#? model içine yazmayıp signals.py olarak ayrı bir dosyada yazdığımız için apps.py içine eklemek gerekli
+#? apps.py otomatik çalışan bir dosyadır.   ->  signals.py dosyasını çağırdı. 
+#? apps.py dosya içeriği aşağıdaki gibi olmalı. 
+
+from django.apps import AppConfig
+
+class UsersConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'users'
+    
+    def ready(self) -> None:
+        import users.signals
