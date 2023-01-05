@@ -100,7 +100,8 @@ pip install psycopg2
 pip freeze > requirements.txt
 
 
-#* Swagger için  (dj-11)
+#* Swagger için  (dj-11) (endpointler için bir dokuman oluşturmayı sağlıyor.)
+# linki => https://drf-yasg.readthedocs.io/en/stable/readme.html
 pip install drf-yasg
 pip freeze > requirements.txt
 
@@ -153,7 +154,8 @@ urlpatterns = [
 py manage.py migrate
 
 
-#* Debug Toolbar için  (dj-11)
+#* Debug Toolbar için  (dj-11) (development aşamasında proje geliştirirken bize yardımcı oluyor)
+# linki => https://django-debug-toolbar.readthedocs.io/en/latest/
 pip install django-debug-toolbar
 pip freeze > requirements.txt
 
@@ -208,6 +210,9 @@ py manage.py runserver
 5-__debug__/
 
 #* yukarıdaki url'ler ve sağ tarafta Debug-toolbar olacak şeklilde gelmesi gerekiyor.
+
+#* eğer Admin panalede CSS yok ise;
+python manage.py collectstatic
 
 
 
@@ -448,6 +453,8 @@ LOGGING = {
     }, 
 }
 
+# LOGGING link => https://docs.djangoproject.com/en/4.0/topics/logging/#logging
+
 
 #! pgAdmin uygulamasını aç ve şifreni yazarak giriş yap
 #! daha sonra Database üzerine sağ tıklayıp --> create --> database
@@ -500,3 +507,6 @@ py manage.py runserver
 5-__debug__/
 
 #* yukarıdaki url'ler ve sağ tarafta Debug-toolbar olacak şeklilde gelmesi gerekiyor.
+
+#* eğer Admin panalede CSS yok ise;
+python manage.py collectstatic

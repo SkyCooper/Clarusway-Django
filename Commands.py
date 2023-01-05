@@ -613,7 +613,8 @@ pip install psycopg2
 pip freeze > requirements.txt
 
 
-#* Swagger için  (dj-11)
+#* Swagger için  (dj-11) (endpointler için bir dokuman oluşturmayı sağlıyor.)
+# linki => https://drf-yasg.readthedocs.io/en/stable/readme.html
 pip install drf-yasg
 pip freeze > requirements.txt
 
@@ -663,10 +664,11 @@ urlpatterns = [
 ]
 
 #! daha sonra mutlaka migrate komutunu çalıştır.
-py manage.py migrate
+python manage.py migrate
 
 
-#* Debug Toolbar için  (dj-11)
+#* Debug Toolbar için  (dj-11) (development aşamasında proje geliştirirken bize yardımcı oluyor)
+# linki => https://django-debug-toolbar.readthedocs.io/en/latest/
 pip install django-debug-toolbar
 pip freeze > requirements.txt
 
@@ -721,6 +723,9 @@ py manage.py runserver
 5-__debug__/
 
 #* yukarıdaki url'ler ve sağ tarafta Debug-toolbar olacak şeklilde gelmesi gerekiyor.
+
+#* eğer Admin panalede CSS yok ise;
+python manage.py collectstatic
 
 
 
@@ -961,6 +966,8 @@ LOGGING = {
     }, 
 }
 
+# LOGGING link => https://docs.djangoproject.com/en/4.0/topics/logging/#logging
+
 
 #! pgAdmin uygulamasını aç ve şifreni yazarak giriş yap
 #! daha sonra Database üzerine sağ tıklayıp --> create --> database
@@ -1013,3 +1020,55 @@ py manage.py runserver
 5-__debug__/
 
 #* yukarıdaki url'ler ve sağ tarafta Debug-toolbar olacak şeklilde gelmesi gerekiyor.
+
+#* eğer Admin panalede CSS yok ise;
+python manage.py collectstatic
+
+
+
+
+
+#* rest-auth token kullanmak için;
+pip install dj-rest-auth
+
+#* ekle
+INSTALLED_APPS = (
+    ...,
+    'rest_framework',                   #? yoksa bunu ekle
+    'rest_framework.authtoken',         #? yoksa bunu ekle
+    ...,
+    'dj_rest_auth', #! bunu ekle
+)
+
+#* users app ekle,
+python manage.py startapp users
+
+# main urls içinden yönlendirme yap;
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("users/", include("users.urls")), #! bunu ekle,
+]
+
+# daha sonra users urls içine path ekle;
+urlpatterns = [
+    ...,
+    # path('dj-rest-auth/', include('dj_rest_auth.urls'))
+    path('auth/', include('dj_rest_auth.urls'))  # böyle kısa da yazılabilir.
+]
+
+# main -> settings kalsörü -> base.py en sonuna ekle,
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+# tekrar migrate yap ve çalıştır.
+python manage.py migrate
+python manage.py runserver
+
+#* sonuna slash / eklemeyi unutma!!!!
+http://127.0.0.1:8000/users/auth/
+
+#* dokuman adresinden demo proje indirilip özelliklerine bakılabilir
+https://dj-rest-auth.readthedocs.io/en/latest/demo.html
