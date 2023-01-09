@@ -86,7 +86,7 @@ SECRET_KEY = config("SECRET_KEY") => bu hale getir.
 
 # yeni oluşturulan .env dosyası içine boşluksuz ve tırnaksız olarak key yaz.
 # burada önemli config("SECRET_KEY") içine yazılan ile .env içine yazılanın aynı olması lazım
-SECRET_KEY=xwyt@lpf1obsnhwbd30g7z(kp7&*4hdyriv%%a0n4@0$59x
+SECRET_KEY=xwyt@lpf1obsnhwbd30g7zkp7&*4hdyriv%%a0n4@0$59x
 # https://djecrety.ir/ adresinden random key üretilebilir.
 
 
@@ -119,7 +119,7 @@ INSTALLED_APPS = [
   
 ]
 
-# main.urls dosyasına aşağıdakinin aynısını kopyala yapıştır.
+#* main.urls dosyasına aşağıdakinin aynısını kopyala yapıştır.
 from django.contrib import admin
 from django.urls import path, include
 
@@ -150,7 +150,7 @@ urlpatterns = [
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
 ]
 
-#! daha sonra mutlaka migrate komutunu çalıştır.
+#! daha sonra dosyaları SAVE ET, ve migrate komutunu çalıştır.
 py manage.py migrate
 
 
@@ -199,8 +199,7 @@ INTERNAL_IPS = [
     "127.0.0.1", 
 ]
 
-#* bütün işlemler tamamlandıktan sonra superuser oluştur ve projeyi çalıştır.
-py manage.py createsuperuser
+#* bütün işlemler tamamlandıktan sonra projeyi çalıştır.
 py manage.py runserver
 
 1-admin/
@@ -284,6 +283,25 @@ DATABASES = {
         }
     }
 
+#! createsuperuser veya başka kullanıcı oluşturduğumuz zaman,
+#! password validasyon ile uğraşmak istemiyorsak bu bölümü sadece prod.py içine koyabiliriz,
+#! böylece development aşamasında basit şifre verip geçebiliriz.
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
+
 
 #* base.py dosyası içine;
 """
@@ -329,6 +347,7 @@ INSTALLED_APPS = [
     
     #? trirdpart apps
     'rest_framework',
+    'rest_framework.authtoken',
     'drf_yasg',
 ]
 
@@ -365,20 +384,24 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+#! createsuperuser veya başka kullanıcı oluşturduğumuz zaman,
+#! password validasyon ile uğraşmak istemiyorsak bu bölümü base.py'den alıp sadece prod.py içine koyabiliriz,
+#! böylece development aşamasında basit şifre verip geçebiliriz.
+
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -453,9 +476,12 @@ LOGGING = {
     }, 
 }
 
+
+
 # LOGGING link => https://docs.djangoproject.com/en/4.0/topics/logging/#logging
 
 
+#!----------------------------------------------------------
 #! pgAdmin uygulamasını aç ve şifreni yazarak giriş yap
 #! daha sonra Database üzerine sağ tıklayıp --> create --> database
 #! Database ismini yaz, Owner postgres olarak kalacak, başka birşey eklemeden SAVE et.
@@ -474,15 +500,15 @@ DJANGO_LOG_LEVEL=INFO
 
 #* __init__.py
 ENV_NAME=dev
-#? PostgreSQL çalışır
-# ENV_NAME=dev
 #? SQLite çalışır
+# ENV_NAME=prod
+#? PostgreSQL çalışır
 
 #* dev.py
 DEBUG=True
 
 #* prod.py
-SQL_DATABASE=flight
+SQL_DATABASE=djangotemplate
 #? pgAdmin'de oluşturduğumuz database adı
 SQL_USER=postgres
 #? pgAdmin deki kullanıcı adı (değiştirme)
@@ -498,6 +524,7 @@ SQL_PORT=5432
 #* bütün işlemler tamamlandıktan sonra migrate yap, superuser oluştur ve projeyi çalıştır.
 py manage.py migrate
 py manage.py createsuperuser (daha önceden yapmadıysan)
+pip freeze > requirements.txt
 py manage.py runserver
 
 1-admin/
@@ -510,3 +537,173 @@ py manage.py runserver
 
 #* eğer Admin panalede CSS yok ise;
 python manage.py collectstatic
+
+
+#* rest-auth token kullanmak için;
+pip install dj-rest-auth
+pip freeze > requirements.txt
+
+#* base.py içine ekle
+INSTALLED_APPS = (
+    ...,
+    'rest_framework',                   #? yoksa bunu ekle
+    'rest_framework.authtoken',         #? yoksa bunu ekle
+    ...,
+    'dj_rest_auth', #! bunu ekle
+)
+
+#* users app ekle,
+python manage.py startapp users
+
+#* base.py içine ekle,
+INSTALLED_APPS = (
+    #?my apps
+    'users',
+)
+
+# main urls içinden yönlendirme yap;
+urlpatterns = [
+    path("admin/", admin.site.urls),
+    path("users/", include("users.urls")), #! bunu ekle,
+    ...............
+]
+
+#* daha sonra users klasörüne urls.py dosyası oluştur ve içine path ekle;
+from django.urls import path, include
+
+urlpatterns = [
+    path('auth/', include('dj_rest_auth.urls')),
+]
+
+# main -> settings klasörü -> base.py en sonuna ekle,
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+
+
+#* users klasörüne serializers.py dosyası ekle ve içine yapıştır.
+from rest_framework import serializers
+from django.contrib.auth.models import User
+from rest_framework.validators import UniqueValidator
+# resmi doküman : https://www.django-rest-framework.org/api-guide/validators/#validators
+from django.contrib.auth.password_validation import validate_password
+from dj_rest_auth.serializers import TokenSerializer
+
+class RegisterSerializer(serializers.ModelSerializer):
+  email = serializers.EmailField(required=True, 
+                                 validators=[UniqueValidator(queryset=User.objects.all())])
+  password = serializers.CharField(write_only=True, required=True,
+                                   validators=[validate_password], style={"input_type" : "password"} ) 
+  password2 = serializers.CharField(write_only=True, required=True, style={"input_type" : "password"}) 
+  
+  class Meta:
+    model = User
+    fields = [
+        'username',
+        'first_name',
+        'last_name',
+        'email',
+        'password',
+        'password2'
+        ]
+    
+  def validate(self, data):
+    if data['password'] != data['password2']:
+        raise serializers.ValidationError(
+            {'password': 'Password fields didnt match.'}
+        )
+    return data
+    
+
+  def create(self, validated_data): 
+    validated_data.pop('password2') 
+    password = validated_data.pop('password') 
+    user = User.objects.create(**validated_data) 
+    user.set_password(password) 
+    user.save()
+    return user
+  
+
+
+class UserTokenSerializer(serializers.ModelSerializer):
+  class Meta:
+    model = User
+    fields = ("id", "first_name", "last_name", "email")
+
+class CustomTokenSerializer(TokenSerializer):
+  user = UserTokenSerializer(read_only=True)
+  
+  class Meta(TokenSerializer.Meta):
+    fields = ("key", "user")
+
+#* views dosyasına kopyala/yapıştır,
+from rest_framework.generics import CreateAPIView
+from django.contrib.auth.models import User
+from .serializers import RegisterSerializer
+from rest_framework.authtoken.models import Token
+from rest_framework import status
+from rest_framework.response import Response
+
+class RegisterAPI(CreateAPIView):
+  queryset = User.objects.all()
+  serializer_class = RegisterSerializer
+
+  def create(self, request, *args, **kwargs):
+      serializer = self.get_serializer(data=request.data)
+      serializer.is_valid(raise_exception=True)
+      user = serializer.save()
+      token = Token.objects.get(user=user)
+      data = serializer.data
+      data["key"] = token.key
+      headers = self.get_success_headers(serializer.data)
+      return Response(data, status=status.HTTP_201_CREATED, headers=headers)
+
+      
+#* users -> urls dosyasını yeniden düzenle;
+from django.urls import path, include
+from .views import RegisterAPI
+
+urlpatterns = [
+    path('auth/', include('dj_rest_auth.urls')),
+    path('register/', RegisterAPI.as_view()),
+]
+
+      
+#* users klasörü içinde signals.py dosyası oluştur ve içine yapıştır.
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+
+
+@receiver(post_save, sender=User)
+def create_Token(sender, instance=None, created=False, **kwargs):
+  if created:
+    Token.objects.create(user=instance)
+    
+#* users apps.py içine kopyala ve yapıştır,
+from django.apps import AppConfig
+
+class UsersConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'users'
+    
+    def ready(self) -> None:
+        import users.signals
+
+
+
+# tekrar migrate yap ve çalıştır.
+python manage.py migrate
+pip freeze > requirements.txt
+python manage.py runserver
+
+#* sonuna slash / eklemeyi unutma!!!!
+http://127.0.0.1:8000/users/auth/login/
+http://127.0.0.1:8000/users/register/
+
+#* dokuman adresinden demo proje indirilip özelliklerine bakılabilir
+https://dj-rest-auth.readthedocs.io/en/latest/demo.html

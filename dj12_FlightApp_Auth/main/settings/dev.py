@@ -20,7 +20,7 @@ INTERNAL_IPS = [
 ]
 
 #! createsuperuser veya başka kullanıcı oluşturduğumuz zaman,
-#! password validasyon ile uğraşmak istemiyorsak bu base.py içinde olan bu bölümü  sadece prod.py içine koyabiliriz,
+#! password validasyon ile uğraşmak istemiyorsak base.py içinde olan bu bölümü  sadece prod.py içine koyabiliriz,
 #! böylece development aşamasında basit şifre verip geçebiliriz.
 
 # AUTH_PASSWORD_VALIDATORS = [

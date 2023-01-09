@@ -781,6 +781,25 @@ INTERNAL_IPS = [
     "127.0.0.1",
     ]
 
+#! createsuperuser veya başka kullanıcı oluşturduğumuz zaman,
+#! password validasyon ile uğraşmak istemiyorsak base.py içinde olan bu bölümü  sadece prod.py içine koyabiliriz,
+#! böylece development aşamasında basit şifre verip geçebiliriz.
+
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
+
 
 #* prod.py dosyası içine;
 from .base import *
@@ -796,6 +815,25 @@ DATABASES = {
         "ATOMIC_REQUESTS": True,
         }
     }
+
+#! createsuperuser veya başka kullanıcı oluşturduğumuz zaman,
+#! password validasyon ile uğraşmak istemiyorsak bu bölümü sadece prod.py içine koyabiliriz,
+#! böylece development aşamasında basit şifre verip geçebiliriz.
+
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 
 #* base.py dosyası içine;
@@ -878,20 +916,24 @@ WSGI_APPLICATION = 'main.wsgi.application'
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
 
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+#! createsuperuser veya başka kullanıcı oluşturduğumuz zaman,
+#! password validasyon ile uğraşmak istemiyorsak bu bölümü base.py'den alıp sadece prod.py içine koyabiliriz,
+#! böylece development aşamasında basit şifre verip geçebiliriz.
+
+# AUTH_PASSWORD_VALIDATORS = [
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+#     },
+#     {
+#         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+#     },
+# ]
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
@@ -1030,6 +1072,7 @@ python manage.py collectstatic
 
 #* rest-auth token kullanmak için;
 pip install dj-rest-auth
+pip freeze > requirements.txt
 
 #* ekle
 INSTALLED_APPS = (
@@ -1042,6 +1085,11 @@ INSTALLED_APPS = (
 
 #* users app ekle,
 python manage.py startapp users
+
+INSTALLED_APPS = (
+    ...,
+    'users',
+)
 
 # main urls içinden yönlendirme yap;
 urlpatterns = [
@@ -1075,10 +1123,11 @@ https://dj-rest-auth.readthedocs.io/en/latest/demo.html
 
 
 #* signal kullanarak token oluşturma,
+#* signal'in görevi = başka bir olayı trgger etme / tetikleme,
   #? register olunca token oluşması signal ile yapıldığında models.py içinde yazılması lazım ama 
   #? kalabalık olmasın diye signals.py dosyası oluşturulup orada yapmak daha uygun
   
-users app içine signal.py dosyası oluştur.
+#* users app içine signal.py dosyası oluştur.
 
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
