@@ -134,5 +134,21 @@ Static files:
 
 
 
-dev.py içinden debug toolbar ile ilgili ayarları kapat,
+# dev.py içinden debug toolbar ile ilgili ayarları kapat,
+from .base import *
 
+DEBUG = config("DEBUG")
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+        }
+}
+
+# bunlar hariç herşey yoruma alınacak,
+
+# buna göre .env dosyası
+SECRET_KEY=ginfconh+5hy4ja1ryor%fgdgf
+ENV_NAME=dev
+DEBUG=True
