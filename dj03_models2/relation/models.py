@@ -32,6 +32,15 @@ class Product(models.Model):
   def __str__(self):
     return self.name
   
+'''
+on_delete properties:
+    # CASCADE -> if primary deleted, delete foreing too.
+    # SET_NULL -> if primary deleted, set foreign to NULL. (null=True)
+    # SET_DEFAULT -> if primary deleted, set foreing to DEFAULT value. (default='Value')
+    # DO_NOTHING -> if primary deleted, do nothing.
+    # PROTECT -> if foreign is exist, can not delete primary.
+'''
+
   
 '''
 on_delete properties: (Profile içinde user'a verildi yukarıda)

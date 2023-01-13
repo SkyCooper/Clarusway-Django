@@ -212,6 +212,5 @@ REST_AUTH_SERIALIZERS = {
 
 # AUTH_USER_MODEL = 'users.MyUser'
 
-MEDIA_URL = '/media/'
-STATIC_ROOT = BASE_DIR / STATIC_URL
-MEDIA_ROOT = BASE_DIR / "pictures"
+MEDIA_URL = 'media/'
+MEDIA_ROOT = BASE_DIR / 'media/'
