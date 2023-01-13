@@ -1,4 +1,6 @@
-# Deploy, 11.01.2023
+# Pyton anywhere deployment, 11.01.2023
+# LMS ders linki : https://lms.clarusway.com/mod/page/view.php?id=38465
+
 # https://www.pythonanywhere.com adresinden register ol / üye girişi yap,
 
 Dashboard sekmesinde iken ,
@@ -6,7 +8,7 @@ Dashboard sekmesinde iken ,
 # bunu yeni sekmede aç.
 
 # Github reposundan deploy edilecek projenin kodunu kopyala
-# açılan linux terminaline klonla,
+# açılan Bash Console linux terminaline klonla,
 git clone https://github.com/SkyCooper/DjangoTutorial.git
 
 # daha sonra klasör içinde konumlan,
@@ -29,13 +31,15 @@ source env/bin/activate
 
 # terminalin başında (env) var ise, aktif olmuş demektir.
 
+# eğer deploy edilecek proje windows kurulu bir bilgisayarda yapılmış ise;
 # pythonanwhere ana sayfasından Files sekmesine git,
 # sol taraftaki Directories altından eklediğin klasör ismine bas,
 # hemen yanında ki Files bölümünden requirements.txt dosyasına tıklayıp aç,
 pywin32==304
 # eğer içinde bu varsa sil ve sağ üst köşeden SAVE et,
 # windowsa'a özel bir paket olduğundan ve çalıştığımız Bash console LINUX olduğu için
-# yükleme esnasında hata veriyor ve altındaki paketleri yüklemiyor. 
+# yükleme esnasında hata veriyor ve altındaki paketleri yüklemiyor.
+# eğer mac kullanıcısı isen gerek yok buna,
 
 
 # artık Bash consoledan requirements paketlerini yükle,
@@ -44,19 +48,19 @@ pip install -r requirements.txt
 # kurduktan sonra tekrar anasayfadan WEB sekmesine geçiyoruz,
 # Add a new web app, --> next
 # Manual configuration (including virtualenvs) (BUNU SEÇ)
-# versiyonu seç, --> next
+# versiyonu seç, --> next 
 
-# coopersky.pythonanywhere.com vs gibi bir url oluşturuldu,
+# nameofyourproject.pythonanywhere.com vs gibi bir url oluşturuldu,
 # şimdi bazı ayarları düzenlicez.
 
 # Bash console'dan 
 pwd
 # komutunu yaz --> (/home/coopersky/DjangoTutorial  bu geldi )
-# Code: bölümü altındaki alanlara yapıştır,
 
+# Code: bölümü altındaki alanların ikisinede aynısını yapıştır,
 Source code: /home/coopersky/DjangoTutorial
 Working directory: /home/coopersky/DjangoTutorial
-#  ikisinede aynısını yapıştır.
+
 
 WSGI configuration file:
 # sağ tık, yeni sekmede aç, 74-89 arasındaki DJANGO bölümü hariç alt-üst hepsini sil,
@@ -80,10 +84,15 @@ Virtualenv: bölümündeki yere yapıştır.
 # pythonanwhere ana sayfasından Files sekmesine git,
 # sol taraftaki Directories altından eklediğin klasör ismine bas,
 # Files tarafından  .env yaz ve "New File" tıkla, 
-(porjedeki env dosyasında ne varsa onları ekle,)
+(projedeki env dosyasında ne varsa onları ekle,)
 SECRET_KEY=&wmy$qpe^z9535mx!d%vuu7a%8_*hx275cttm)s^83!1q_mrj2
-
+ENV_NAME=dev
+DEBUG=True
+.....
+.....
+..... (projedeki env dosyasından başka birşey yazılması gerekirse ekle)
 # sağ üst köşeden SAVE et,
+
 
 # Bash console'dan
 cd ..
@@ -108,11 +117,11 @@ ALLOWED_HOSTS = ['*']
 # pythonanwhere ana sayfasından Web sekmesine git,
 # Tekrar Reload yap ve sonra üstte oluşturduğu url çalıştır.
 
-# api ana sayfası geldi fakat CSS yok ise;
+api ana sayfası geldi fakat CSS yok ise;
 # pythonanwhere ana sayfasından Files sekmesine git,
 # sol taraftaki Directories altından eklediğin klasör ismine bas,
 # sonra yine Directories tarafından main bas ve Files tarafından settings.py dosyasını aç
-STATIC_URL = 'static/' --> herhangi bir olabilir, ama best practice bunun altına;
+STATIC_URL = 'static/' --> herhangi bir yer olabilir, ama best practice bunun altına;
 # ekle;
 STATIC_ROOT = BASE_DIR / 'static'
 # SAVE et

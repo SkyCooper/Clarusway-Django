@@ -10,9 +10,15 @@
 # 6 - Projeniz kuruluma başlayacaktır. Otomatik kurulum sırasında sizden SuperUser için bilgi girmenizi isteyecektir.
 # Python projeniz 1 dakikanın altında super-user oluşturulmuş şekilde kullanımınıza hazır hale gelecektir.
 
-
 #! Windows için:
 # python django-project-creator.py project-name
 
 #! MacOS – Linux için:
 # python3 django-project-creator.py project-name
+
+
+#? Özetle Yapılması gereken;
+# 1 - Yeni bir proje klasörü aç ve içine sadece django-project-creator.py dosyasını koy,
+# 2 - Sonra burada terminali aç ve python django-project-creator.py project-name komutunu çalıştır.
+
+
