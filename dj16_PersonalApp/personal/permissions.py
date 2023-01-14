@@ -17,3 +17,13 @@ class IsStafforReadOnly(permissions.IsAdminUser):
 # O zamanda sadece staff ise yani admin ise True döner.
 
 # SAFE_METHODS = ('GET', 'HEAD', 'OPTIONS') demektir.
+
+class IsOwnerAndStaffOrReadOnly(permissions.BasePermission):
+    
+    # def has_permission(self, request, view):
+    def has_object_permission(self, request, view, obj):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+        return bool(request.user.is_staff and (obj.create_user == request.user))
+        
