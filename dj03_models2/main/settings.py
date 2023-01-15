@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     # my Apps
     'fscohort',
     'relation',
+    'frameworkrelations',
     
     # third part Apps
 ]
