@@ -63,6 +63,7 @@ class CustomTokenSerializer(TokenSerializer):
     
     class Meta(TokenSerializer.Meta):
         fields = ("key", "user")
+
         
 class ProfileSerializer(serializers.ModelSerializer):
     
@@ -80,8 +81,3 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.user_id = self.context['request'].user.id
         instance.save()
         return instance
-        
-        
-    
-    
-        

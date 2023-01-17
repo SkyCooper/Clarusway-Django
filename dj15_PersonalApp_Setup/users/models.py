@@ -25,6 +25,9 @@ from django.contrib.auth.models import User
 #* base.py içine;
 # AUTH_USER_MODEL = "users.MyUser" --> ekle
 
+#* admin.py içine;
+# ilave değişiklik yapmak gerekiyor(oraya bak.)
+
 
 #? 2
 # yeni bir tablo oluşturup, bunu onetoone ile mevcut User tablosuna bağlayarak yapma;
@@ -35,7 +38,8 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     display_name = models.CharField(max_length=30, blank=True, null=True)
     avatar = models.ImageField(upload_to="pictures", default="avatar.png")
-    # projelerde static'ler db olmaz, başka bir depolama alanında olur
+    # projelerde static'ler(image, CSS vs.) db olmaz, başka bir depolama alanında olur
+    # db de, depolama alanının adresi tutulur sadece
     # https://django-storages.readthedocs.io/en/latest/
     
     bio = models.TextField(blank=True, null=True)
@@ -43,4 +47,5 @@ class Profile(models.Model):
     def __str__(self):
         return f"{self.user.username}'s Profile'"
     
-
+# self.user.username --> Profile modelindeki user field üzerinden, 1to1 bağlı olduğu User modeline ulaşılır,
+# ulaşılan User modelinden'de username çekilebilir.

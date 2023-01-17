@@ -3,7 +3,8 @@ from .models import Profile
 
 admin.site.register(Profile)
 
-#? ilave model için 1 numaralı yöntemi kullansaydık;
+#? Custom User model için 1 numaralı yöntemi kullansaydık;
+#? admin panalde bizim oluşturduğumuz MyUser modelinin django tarafından takip edilmesi için ;
 # Register your models here.
 # from django.contrib import admin
 # from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -31,3 +32,5 @@ admin.site.register(Profile)
 #    search_fields = ('email', 'first_name', 'last_name')
 #    ordering = ('email', )
 # admin.site.register(MyUser, UserAdmin)
+
+#! eğer yukarıdaki ayarları yapmaz isek admin panel'de django default User modelini yakip etmeye devam eder.
