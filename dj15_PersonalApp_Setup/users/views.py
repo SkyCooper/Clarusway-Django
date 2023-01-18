@@ -23,8 +23,12 @@ class RegisterAPI(CreateAPIView):
         return Response(data, status=status.HTTP_201_CREATED, headers=headers)
     
 
+#? Profile sayfasını görmek / update etmek için RetrieveUpdateAPIView kullanıyoruz,
 class ProfileUpdateView(RetrieveUpdateAPIView):
     serializer_class = ProfileSerializer
     queryset = Profile.objects.all()
+    
+    #* herkes bütün profillere erişmesin diye permission tanımlıyoruz,
+    #* giriş yapmış/authentice olmuş, ve admin veya istek yapan kendisi ise
     permission_classes = [IsOwnerOrStaff, IsAuthenticated]
     

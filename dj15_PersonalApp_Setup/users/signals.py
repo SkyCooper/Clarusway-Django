@@ -18,7 +18,7 @@ def create_Token(sender, instance=None, created=False, **kwargs):
 
 
     
-# bir kullanıcı register olduğunda ona Profile otomatik create edilmesi için;  
+#? bir kullanıcı register olduğunda ona Profile otomatik create edilmesi için; 
 @receiver(post_save, sender=User)
 def create_Profile(sender, instance=None, created=False, **kwargs):
     if created:

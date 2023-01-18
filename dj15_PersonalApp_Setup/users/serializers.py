@@ -64,7 +64,10 @@ class CustomTokenSerializer(TokenSerializer):
     class Meta(TokenSerializer.Meta):
         fields = ("key", "user")
 
-        
+
+#? profile'ları görmek / update etmek için bir serializer tanımlıyoruz.
+#! bir user oluşturulduğunda, otomatik olarak profil oluşması için signals.py de metod yazdık,
+#! bir şeyin oluşması başka birşeye bağlı ise signal kullanıyoruz.
 class ProfileSerializer(serializers.ModelSerializer):
     
     user = serializers.StringRelatedField()
@@ -75,9 +78,17 @@ class ProfileSerializer(serializers.ModelSerializer):
         fields = ("id","user","user_id", "display_name","avatar", "bio")
         
 #! buradaki ProfileSerializer'ın kullanıldığı view (ProfileUpdateView)
-#! RetrieveUpdateAPIView'dan inherit edildiği için create metodu değil update metodu override edilmeli,        
+#! RetrieveUpdateAPIView'dan inherit edildiği için create metodu değil update metodu override edilmeli, 
+#? user_id istek yapan user'dan alması için;        
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
+        # validated_data'dan gelen bilgiler ile parentteki update metodunu aynen yap
+        # instance güncelle, (buradaki instance her bir profil)
+        
         instance.user_id = self.context['request'].user.id
+        # sonra bu instance içine user_id ekle, ve ona istek yapan user id'sini ata
+        
         instance.save()
+        # save et
         return instance
+        # return et
