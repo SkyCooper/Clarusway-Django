@@ -1,8 +1,16 @@
 from django.contrib import admin
 from .models import Product, Review, Category
 from django.utils import timezone
-# eklenen fotoğraflar, güvenli demek,
+#? eklenen fotoğraflar, güvenli demek,
 from django.utils.safestring import mark_safe
+#? filter import
+from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter, DropdownFilter
+#? date range filter
+from rangefilter.filters import DateRangeFilter, DateTimeRangeFilter
+
+#? import-export 
+from products.resources import ReviewResource
+from import_export.admin import ImportExportModelAdmin
 
 #? product'ların review'larını altında görmek için;
 #? TabularInline'dan inherit ederek custom bir Review model yazıyoruz
@@ -36,8 +44,11 @@ class ProductAdmin(admin.ModelAdmin):
     #? link olan editable olmaz, birden fazla link olabilir.
     # list_display_links = ("create_date", )
     
-    #? filitreleme için
-    list_filter = ("is_in_stock", "create_date")
+    #? filitreleme için (django kendisi)
+    # list_filter = ("is_in_stock", "create_date")
+    
+    #? filitreleme için (rangefilter ile)
+    list_filter = ("is_in_stock", ("create_date", DateTimeRangeFilter)) 
     
     #? sıralama (ilk açılış için) ("-name",) eksi de olabilir,
     ordering = ("-update_date",)
@@ -131,14 +142,25 @@ class ProductAdmin(admin.ModelAdmin):
 
     bring_img_to_list.short_description = "product_image"
 
-
-class ReviewAdmin(admin.ModelAdmin):
+#? import-export ekleyince inherit değişiyor
+class ReviewAdmin(ImportExportModelAdmin):
+# class ReviewAdmin(admin.ModelAdmin):
     #? list_display içine metod'da yazabiliriz, __str__ veya kendi yazdığımız metodlar,
     list_display = ('__str__', 'created_date', 'is_released')
     list_per_page = 50
     
     #?id'ye göre seçim yaptırıyor,
     raw_id_fields = ('product',)
+    
+    #? djangonun kendi filteri
+    # list_filter = ('product',)
+    
+    #? django_admin_listfilter_dropdown ile;
+    list_filter = (
+        ('product', RelatedDropdownFilter),
+    )
+    
+    resource_class = ReviewResource
 
 # yeni oluşturulan customAdmin registere eklenir,
 admin.site.register(Product, ProductAdmin)

@@ -193,45 +193,6 @@ from django.utils import timezone
 
 ---
 
-### RichText Editors
-
-    WYSIWYG (what you see is what you get)
-
-    https://djangopackages.org/grids/g/wysiwyg/
-    https://django-ckeditor.readthedocs.io/en/latest/
-
-- pip install django-ckeditor
-
-- 'ckeditor', >>> add installed_apps
-
-models.py
-
-```Python
-    from ckeditor.fields import RichTextField
-
-    description = models.TextField(blank=True) >>>> description = RichTextField()
-```
-
-- makemigrations and migrate
-
-- for extra config go to settings.py
-
-settings.py
-
-```Python
-    CKEDITOR_CONFIGS = {
-        'default' : {
-            'toolbar' : 'full',
-            'height' : 700,
-            'width' : 1000
-        }
-    }
-```
-
-- Note: ilgili template dosyasında: {{description | safe}}
-
----
-
 ### Model Relations
 
 - Add new model:
@@ -368,7 +329,7 @@ settings.py
 ```python
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'staticfiles'),
+    os.path.join(BASE_DIR, 'static'),
 ]
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
@@ -570,7 +531,7 @@ INSTALLED_APPS = (
 admin.py
 
 ```python
-from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter
+from django_admin_listfilter_dropdown.filters import RelatedDropdownFilter, DropdownFilter
 
 
 class ReviewAdmin(admin.ModelAdmin):
@@ -636,6 +597,45 @@ class ReviewAdmin(ImportExportModelAdmin):
 
     resource_class = ReviewResource
 ```
+
+### RichText Editors
+
+    WYSIWYG (what you see is what you get)
+
+    https://djangopackages.org/grids/g/wysiwyg/
+    https://django-ckeditor.readthedocs.io/en/latest/
+
+- pip install django-ckeditor
+
+- 'ckeditor', >>> add installed_apps
+
+models.py
+
+```Python
+    from ckeditor.fields import RichTextField
+
+    description = models.TextField(blank=True) >>>> description = RichTextField()
+```
+
+- makemigrations and migrate
+
+- for extra config go to settings.py
+
+settings.py
+
+```Python
+    CKEDITOR_CONFIGS = {
+        'default' : {
+            'toolbar' : 'full',
+            'height' : 700,
+            'width' : 1000
+        }
+    }
+```
+
+- Note: ilgili template dosyasında: {{description | safe}}
+
+---
 
 ### custom template (grapelli)
 
