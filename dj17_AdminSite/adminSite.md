@@ -380,7 +380,7 @@ url.py
 
 ```python
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -398,6 +398,7 @@ from django.utils.safestring import mark_safe
 # create media folder and upload defaults/clarusway.png
 product_img = models.ImageField(null=True, blank=True, default="defaults/clarusway.png", upload_to="product/")
 
+# FOR models.py
     def bring_image(self):
         if self.product_img:
             return mark_safe(f"<img src={self.product_img.url} width=400 height=400></img>")

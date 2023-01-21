@@ -21,6 +21,8 @@ class Product(models.Model):
     slug = models.SlugField(null=True, blank=True)
     #? bir ürün birden fazla kategori tablosunda olabilir,
     categories = models.ManyToManyField(Category, related_name="products")
+    #? image'ler için sonradan eklendi,
+    product_img = models.ImageField(null=True, blank=True, default="defaults/clarusway.png", upload_to="product/")
 
     class Meta:
         verbose_name = "Product"

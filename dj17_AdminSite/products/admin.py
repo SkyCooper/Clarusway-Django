@@ -1,6 +1,8 @@
 from django.contrib import admin
 from .models import Product, Review, Category
 from django.utils import timezone
+# eklenen fotoğraflar, güvenli demek,
+from django.utils.safestring import mark_safe
 
 #? product'ların review'larını altında görmek için;
 #? TabularInline'dan inherit ederek custom bir Review model yazıyoruz
@@ -22,7 +24,10 @@ class ReviewInline(admin.TabularInline):
 #? admin panelde customize için ModelAdmin inherit edilmeli
 class ProductAdmin(admin.ModelAdmin):
     #? hangi field'lar görünsün
-    list_display = ("name", "create_date", "is_in_stock", "update_date", "added_days_ago", "how_many_reviews")
+    # list_display = ("name", "create_date", "is_in_stock", "update_date", "added_days_ago", "how_many_reviews")
+    
+    #? hangi field'lar görünsün (sonradan image'da eklendi)
+    list_display = ("name", "create_date", "is_in_stock", "update_date", "added_days_ago", "how_many_reviews", "bring_img_to_list")
     
     #? edit edilmesini istediklerimiz (true/false gibi)
     list_editable = ( "is_in_stock", )
@@ -72,7 +77,9 @@ class ProductAdmin(admin.ModelAdmin):
         "classes" : ("collapse", ),
         # "fields" : ("description",),
         #? sonradan eklenen field ilave edildi
-        "fields" : ("description", "categories"),
+        # "fields" : ("description", "categories"),
+        #? sonradan eklenen image field ilave edildi
+        "fields" : ("description", "categories", "product_img", "bring_image"),
         'description' : "You can use this section for optionals settings"
     })
     )
@@ -80,6 +87,9 @@ class ProductAdmin(admin.ModelAdmin):
     #? category seçimini daha görsel hale getiriyor, yatay/dikey
     filter_horizontal = ("categories", )
     # filter_vertical = ("categories", )
+    
+    #? IMAGE için readonly_fields eklemek lazım ;
+    readonly_fields = ("bring_image",)
     
     #? default sadece delete action vardı, yeni yazdık ve actions içine ekledik.
     actions = ("is_in_stock", )
@@ -107,6 +117,19 @@ class ProductAdmin(admin.ModelAdmin):
     # def how_many_reviews(self, obj):
     #     count = obj.reviews.count()
     #     return count
+    
+    def bring_image(self, obj):
+        if obj.product_img:
+            return mark_safe(f"<img src={obj.product_img.url} width=400 height=400></img>")
+        return mark_safe(f"<h3>{obj.name} has not image </h3>")
+    
+    #? listede image gösterme:
+    def bring_img_to_list(self, obj):
+        if obj.product_img:
+            return mark_safe(f"<img src={obj.product_img.url} width=50 height=50></img>")
+        return mark_safe("******")
+
+    bring_img_to_list.short_description = "product_image"
 
 
 class ReviewAdmin(admin.ModelAdmin):
