@@ -356,7 +356,7 @@ from .models import Product, Review, Category
         })
     )
     filter_horizontal = ("categories", )
-   # fitler_vertical = ("categories", )
+   # filter_vertical = ("categories", )
 
 admin.site.register(Category)
 ```

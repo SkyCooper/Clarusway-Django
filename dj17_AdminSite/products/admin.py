@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Product, Review
+from .models import Product, Review, Category
 from django.utils import timezone
 
 #? product'ların review'larını altında görmek için;
 #? TabularInline'dan inherit ederek custom bir Review model yazıyoruz
-# class ReviewInline(admin.StackedInline): #StackedInline farklı bir görünüm aynı iş
+# class ReviewInline(admin.StackedInline): #* StackedInline farklı bir görünüm aynı iş
 class ReviewInline(admin.TabularInline):
     model = Review
     
@@ -70,10 +70,16 @@ class ProductAdmin(admin.ModelAdmin):
     }),
     ('Optionals Settings', {
         "classes" : ("collapse", ),
-        "fields" : ("description",),
+        # "fields" : ("description",),
+        #? sonradan eklenen field ilave edildi
+        "fields" : ("description", "categories"),
         'description' : "You can use this section for optionals settings"
     })
     )
+    
+    #? category seçimini daha görsel hale getiriyor, yatay/dikey
+    filter_horizontal = ("categories", )
+    # filter_vertical = ("categories", )
     
     #? default sadece delete action vardı, yeni yazdık ve actions içine ekledik.
     actions = ("is_in_stock", )
@@ -114,12 +120,13 @@ class ReviewAdmin(admin.ModelAdmin):
 # yeni oluşturulan customAdmin registere eklenir,
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Review, ReviewAdmin)
+admin.site.register(Category)
 
-# tab/sekmedeki isim 
+#! tab/sekmedeki isim 
 admin.site.site_title = "Clarusway Title"
 
-# başlıktaki isim
+#! başlıktaki isim
 admin.site.site_header = "Clarusway Admin Portal"  
 
-# Home'daki isim
+#! Home'daki isim
 admin.site.index_title = "Welcome to Clarusway Admin Portal"
