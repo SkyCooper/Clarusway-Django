@@ -3,7 +3,7 @@ from django.utils import timezone
 #? RichTextField
 from ckeditor.fields import RichTextField
 
-#? many-to-many ilişkileri görmek için category model ekledik,
+#! many-to-many ilişkileri görmek için category model ekledik,
 class Category(models.Model):
     name = models.CharField(max_length=100, verbose_name="category name")
     is_active = models.BooleanField(default=True)
@@ -35,15 +35,17 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
-    #? CustumAdmin içinde yazdığımız metodun aynısını burada yazabiliriz, obj/product yazmaya gerek kalmaz
+    #? Custum Admin içinde (admin.py deki ProductAdmin) yazdığımız metodun aynısını burada yazabiliriz,
+    #* obj/product yazmaya gerek kalmaz
+    #? burada yorumda, admin.py de aktif,
     # def added_days_ago(self):
     #     fark = timezone.now() - self.create_date
     #     return fark.days
     
-    
+    #? kaç tane yorum yapılmış, görmek için;
     #? Custum metod yazabiliriz, obj yazmaya gerek kalmaz
     #? görmek için admin.py'de fields içine eklemek gerekir.
-    #? bunun aynısını obj ile admin.py tarafında da yapabiliriz.
+    #? bunun aynısını obj ile admin.py tarafında da yapabiliriz.(orada yorum olarak var,)
     def how_many_reviews(self):
         count = self.reviews.count()
         return count

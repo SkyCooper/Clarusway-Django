@@ -23,7 +23,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     #* en üstte olacak..
-    'grappelli',
+    # 'grappelli',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
