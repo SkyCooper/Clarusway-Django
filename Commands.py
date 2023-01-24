@@ -116,7 +116,7 @@ source env/Scripts/Activate
 python manage.py createsuperuser
 
 # fakat bu kod çalışmadan migrate hatası verebilir, eğer önceden migrate yapılmamış ise;
-python manage.py migrate 	
+python manage.py migrate
 # bu komuttan sonra tekrar yukarıdaki komutu çalıştır.
 
 # Username : ( admin yazılabilir bestpractice )
