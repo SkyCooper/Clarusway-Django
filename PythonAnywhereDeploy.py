@@ -141,7 +141,9 @@ Static files:
 # artık, css yüklenmiş olarak kullanılmaya hazır.
 
 
-
+# Eğer settings parçalanmış ise;
+# Files'den dev dosyasına git. import, DEBUG, DATABASES kalsın geri kalanları yoruma al. Kaydet.
+# Yoruma alma sebebi. bunlar yerelde çalışması içindi o yüzden.
 
 # dev.py içinden debug toolbar ile ilgili ayarları kapat,
 from .base import *
@@ -154,8 +156,8 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
         }
 }
-
 # bunlar hariç herşey yoruma alınacak,
+
 
 # buna göre .env dosyası
 SECRET_KEY=ginfconh+5hy4ja1ryor%fgdgf
