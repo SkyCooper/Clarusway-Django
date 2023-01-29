@@ -39,8 +39,13 @@ class ReservationSerializer(serializers.ModelSerializer):
     car = serializers.StringRelatedField()
     car_id = serializers.IntegerField()
     customer = serializers.StringRelatedField()
+    
+    #? metod ismi yazmazsak default olarak get_reserved_days olur.
     reserved_days = serializers.SerializerMethodField()
-    total_price = serializers.SerializerMethodField()
+    
+    #? fakat metod ismi yazarsam artık o ismi kullanabilirim.
+    total_price = serializers.SerializerMethodField(method_name="price")
+    
     class Meta:
         model = Reservation
         fields = ("id", "car", "customer", "start_date", "end_date", "reserved_days", "car_id", "total_price")
@@ -62,6 +67,6 @@ class ReservationSerializer(serializers.ModelSerializer):
         return obj.end_date.day - obj.start_date.day
     
     #? Rezervasyon toplam ücreti ne kadar,
-    def get_total_price(self, obj):
+    def price(self, obj):
         return obj.car.rent_per_day * (obj.end_date - obj.start_date).days
-        # return obj.car.rent_per_day * obj.reserved_days
+        # return obj.car.rent_per_day * self.reserved_days , hata verdi bak?

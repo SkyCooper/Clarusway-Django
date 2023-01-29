@@ -6,6 +6,8 @@ from .permissions import IsStafforReadOnly
 from django.db.models import Q
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from django.utils import timezone
+
 # Create your views here.
 
 class CarMVS(ModelViewSet):
@@ -65,10 +67,16 @@ class CarMVS(ModelViewSet):
             queryset = queryset.exclude(id__in=not_available)
             # artık müsait olmayanları bulduğumuza göre, tamamından exclude ile ayırırsak geriye sadece müsaitler kalır.
         
-        return queryset        
+        return queryset   
+    
+    #todo, ilave serializer ile;  
+    # def get_serializer_class(self):
+    #     if self.request.user.is_staff:
+    #         return CarSerializer
+    #     else:
+    #         CarSerializerNotStaff     
     
     
-from django.utils import timezone
 class ReservationMVS(ModelViewSet):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
@@ -91,12 +99,7 @@ class ReservationMVS(ModelViewSet):
         print(car_reserve)
         return queryset
     
-    #todo, ilave serializer ile;  
-    # def get_serializer_class(self):
-    #     if self.request.user.is_staff:
-    #         return CarSerializer
-    #     else:
-    #         CarSerializerNotStaff
+
 
 
     
@@ -122,7 +125,7 @@ class ReservationView(ListCreateAPIView):
     serializer_class = ReservationSerializer
     permission_classes = (IsAuthenticated,)
     
-    
+    #! task, can see the list of their reservations including past ones
     #? staff/admin ise bütün rezervasyonları, değilse sadece kendi rezervasyonlarını görsün,
     def get_queryset(self):
         if self.request.user.is_staff:
@@ -134,6 +137,9 @@ class ReservationDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
     # lookup_field = 'id'
+
+    #! task, can update reservations, but can not extend end dates 
+    #! if the car is reserved by other customers on selected time.
 
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
