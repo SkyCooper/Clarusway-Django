@@ -1,8 +1,11 @@
 from .serializers import CarSerializer, ReservationSerializer
 from .models import Car, Reservation
+from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 from .permissions import IsStafforReadOnly
 from django.db.models import Q
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 # Create your views here.
 
 class CarMVS(ModelViewSet):
@@ -31,30 +34,36 @@ class CarMVS(ModelViewSet):
         # ve sadece seçtiği tarih aralığındaki müsait araçları görsün
         # bunun için frontend tarafından gönderilen parametleri yakalıyoruz,
         start = self.request.query_params.get("start")
-        print("start", start)
+        # print("start", start)
         end = self.request.query_params.get("end")
-        print(end)
+        # print(end)
         
-        #? Q parametresi bitwise operatörü ile kullanılır, ???? ne demek?
+        #? Q parametresi bitwise operatörü ile kullanılır, and/or yerine & veya | kullanılır.
         #? available olanlar için bir condition yazıyoruz
-        condition1 = Q(start_date__lt=end) #less than 9
-        condition2 = Q(end_date__gt=start) #greater than 11
+        #* https://books.agiliq.com/projects/django-orm-cookbook/en/latest/query_relatedtool.html
+        condition1 = Q(start_date__lt=end) #less than 
+        condition2 = Q(end_date__gt=start) #greater than
         
-        # not_available = Reservation.objects.filter(
-        #     end_date__gt=start, end_date__gt=start
-        # ).values_list("car_id", flat=True) 
+        #? parametre girmeden endpointin hata vermeden çalışması için;
+        if start is not None or end is not None:
+        #? yani parametre varsa if bloğu çalışsın
+        #? parametre yoksa direk return çalışsın
         
-        not_available = Reservation.objects.filter(
-            condition1 & condition2
-        ).values_list("car_id", flat=True) 
-        # önce Reservasyonlarrdan müsait olmayan araçları yazılan conditionlara göre filitreledi,
-        # daha sonra values_list ile sadece bir field aldı, car_id
-        # flat=True ise liste olarak dönmesini sağlıyor,
-        # sonuçta not_available olarak, müsait olmyan araçların id'lerinin listesi gelir,  [1,2] gibi bir liste dönüyor.
-        print(not_available)
-        
-        queryset = queryset.exclude(id__in=not_available)
-        # artık müsait olmayanları bulduğumuza göre, tamamından exclude ile ayırırsak geriye sadece müsaitler kalır.
+            # not_available = Reservation.objects.filter(
+            #     end_date__gt=start, end_date__gt=start
+            # ).values_list("car_id", flat=True) 
+            
+            not_available = Reservation.objects.filter(
+                condition1 & condition2
+            ).values_list("car_id", flat=True) 
+            # önce Reservasyonlarrdan müsait olmayan araçları yazılan conditionlara göre filitreledi,
+            # daha sonra values_list ile sadece bir field aldı, car_id
+            # flat=True ise liste olarak dönmesini sağlıyor,
+            # sonuçta not_available olarak, müsait olmyan araçların id'lerinin listesi gelir,  [1,2] gibi bir liste dönüyor.
+            print(not_available)
+            
+            queryset = queryset.exclude(id__in=not_available)
+            # artık müsait olmayanları bulduğumuza göre, tamamından exclude ile ayırırsak geriye sadece müsaitler kalır.
         
         return queryset        
     
@@ -81,6 +90,13 @@ class ReservationMVS(ModelViewSet):
         car_reserve = Reservation.objects.filter(car_id = reserve_car_id, end_date__gt=timezone.now())
         print(car_reserve)
         return queryset
+    
+    #todo, ilave serializer ile;  
+    # def get_serializer_class(self):
+    #     if self.request.user.is_staff:
+    #         return CarSerializer
+    #     else:
+    #         CarSerializerNotStaff
 
 
     
@@ -99,3 +115,41 @@ lte: küçüklük veya eşitlik karşılaştırması yapar.
 in: belirli bir liste içinde arama yapar.
     
 """
+
+
+class ReservationView(ListCreateAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    permission_classes = (IsAuthenticated,)
+    
+    
+    #? staff/admin ise bütün rezervasyonları, değilse sadece kendi rezervasyonlarını görsün,
+    def get_queryset(self):
+        if self.request.user.is_staff:
+            return super().get_queryset()
+        return super().get_queryset().filter(customer=self.request.user)
+
+
+class ReservationDetailView(RetrieveUpdateDestroyAPIView):
+    queryset = Reservation.objects.all()
+    serializer_class = ReservationSerializer
+    # lookup_field = 'id'
+
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(
+            instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        end = serializer.validated_data.get('end_date')
+        car = serializer.validated_data.get('car')
+        start = instance.start_date
+        today = timezone.now().date()
+        if Reservation.objects.filter(car=car).exists():
+            # a = Reservation.objects.filter(car=car, start_date__gte=today)
+            # print(len(a))
+            for res in Reservation.objects.filter(car=car, end_date__gte=today):
+                if start < res.start_date < end:
+                    return Response({'message': 'Car is not available...'})
+
+        return super().update(request, *args, **kwargs)

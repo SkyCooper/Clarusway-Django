@@ -57,6 +57,11 @@ class ReservationSerializer(serializers.ModelSerializer):
             )
         ]
     
-    
+    #? Reservasyon süresi toplam kaç gün,
     def get_reserved_days(self, obj):
         return obj.end_date.day - obj.start_date.day
+    
+    #? Rezervasyon toplam ücreti ne kadar,
+    def get_total_price(self, obj):
+        return obj.car.rent_per_day * (obj.end_date - obj.start_date).days
+        # return obj.car.rent_per_day * obj.reserved_days
