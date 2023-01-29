@@ -3,7 +3,8 @@ from .models import Car, Reservation
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.viewsets import ModelViewSet
 from .permissions import IsStafforReadOnly
-from django.db.models import Q
+from django.db.models import Q, Exists, OuterRef
+#? Exists --> var mı?, mevcut mu?    OuterRef --> 
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.utils import timezone
@@ -55,18 +56,30 @@ class CarMVS(ModelViewSet):
             #     end_date__gt=start, end_date__gt=start
             # ).values_list("car_id", flat=True) 
             
-            not_available = Reservation.objects.filter(
-                condition1 & condition2
-            ).values_list("car_id", flat=True) 
-            # önce Reservasyonlarrdan müsait olmayan araçları yazılan conditionlara göre filitreledi,
-            # daha sonra values_list ile sadece bir field aldı, car_id
-            # flat=True ise liste olarak dönmesini sağlıyor,
-            # sonuçta not_available olarak, müsait olmyan araçların id'lerinin listesi gelir,  [1,2] gibi bir liste dönüyor.
-            print(not_available)
+            # not_available = Reservation.objects.filter(
+            #     condition1 & condition2
+            # ).values_list("car_id", flat=True) 
+            #? önce Reservasyonlarrdan müsait olmayan araçları yazılan conditionlara göre filitreledi,
+            #? daha sonra values_list ile sadece bir field aldı, car_id
+            #? flat=True ise liste olarak dönmesini sağlıyor,
+            #? sonuçta not_available olarak, müsait olmyan araçların id'lerinin listesi gelir,  [1,2] gibi bir liste dönüyor.
+            # print(not_available)
             
-            queryset = queryset.exclude(id__in=not_available)
+            # queryset = queryset.exclude(id__in=not_available)
             # artık müsait olmayanları bulduğumuza göre, tamamından exclude ile ayırırsak geriye sadece müsaitler kalır.
-        
+            
+            #? annotate database'de kayıtlı olmayan(modelde tanımlanmamış) bir field oluşturur,
+            #? mesela A sütununda 1 den büyük olanlar True, küçük olanlar False olarak tutulsun gibi..
+            #? burada queryset'e yani Reservation tablosuna is_available diye modelde olmayan bir field ekldedik,
+            #? seçilen tarihlerde (start-end date arasında) arabaların reserve durumu (is_available) True/False olarak görünür,
+            #! eşittirden sonra konan ~ (tilde) işareti işlemi ters çeviriyor, yani reservasyonu var aslında sonuç True,
+            #! o yüzden müsait değil yani is_available = False,
+            queryset = queryset.annotate(
+                is_available=~Exists(Reservation.objects.filter(
+                    Q(car=OuterRef('pk')) & Q(
+                        start_date__lt=end) & Q(end_date__gt=start)
+                ))
+            )
         return queryset   
     
     #todo, ilave serializer ile;  
@@ -136,26 +149,41 @@ class ReservationView(ListCreateAPIView):
 class ReservationDetailView(RetrieveUpdateDestroyAPIView):
     queryset = Reservation.objects.all()
     serializer_class = ReservationSerializer
-    # lookup_field = 'id'
+    # lookup_field = 'id'   #? lookup_field tanımlanırsa <int:id> yazılabilir, yoksa <int:pk> olarak yazılır default.
 
     #! task, can update reservations, but can not extend end dates 
     #! if the car is reserved by other customers on selected time.
 
+    #? RetrieveUpdateDestroyAPIView içinden update metodunu override ediyoruz,(sadece end_date update edilsin diyor task'da)
+    
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop('partial', False)
         instance = self.get_object()
         serializer = self.get_serializer(
             instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
+        #? buraya kadar birşey değiştirmeden update metodunun aynısını yazdık,
+        
+        #? validated_data içerisinden ihyiyacımız olanları alıp değişkene atıyoruz,
         end = serializer.validated_data.get('end_date')
         car = serializer.validated_data.get('car')
+        
         start = instance.start_date
         today = timezone.now().date()
+        
+        #? update edilmek istenen araç için bir reservasyon var mı, yok mu önce ona bakıyoruz,
+        #? .exists() --> boolen bir ifade döndürür, rezervasyon varsa True döner ve if bloğu çalışır.
         if Reservation.objects.filter(car=car).exists():
             # a = Reservation.objects.filter(car=car, start_date__gte=today)
             # print(len(a))
+        #? rezervasyon varsa, arabanın rezervasyonları içinden update edilecek tarih (end_date) uygun mu? o kontrol edilir
+        #? 
             for res in Reservation.objects.filter(car=car, end_date__gte=today):
+        #? update edilecek uygun tarih (end_date) yoksa, hata mesajı döner
                 if start < res.start_date < end:
                     return Response({'message': 'Car is not available...'})
-
+        #? update edilecek uygun tarih varsa yukarıdaki if bloğu çalışmaz,
+        #? en alttaki return çalışıp update eder ve onun response mesajını gösterir.
+        
+        #? eğer araç için bir reservasyon yoksa ilk if boğu çalışmadan direk update yapar ve onun response mesajını gösterir.
         return super().update(request, *args, **kwargs)

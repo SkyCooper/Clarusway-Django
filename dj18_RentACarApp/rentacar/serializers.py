@@ -2,10 +2,12 @@ from rest_framework import serializers
 from .models import Car, Reservation
 
 class CarSerializer(serializers.ModelSerializer):
+    #? view'da annotate ile oluşturulan field önce burada tanuımlanması gerekir,
+    is_available = serializers.BooleanField()
     class Meta:
         model = Car
         fields = ("id", "plate_number", "brand", "model",
-                  "year", "gear", "fuel", "rent_per_day", "availibity")
+                  "year", "gear", "fuel", "rent_per_day", "availibity", "is_available")
         
     #! availibity ve plate_number fieldlerini admin görsün, client görmesin diye get_fields override ediyoruz,  
     def get_fields(self):
