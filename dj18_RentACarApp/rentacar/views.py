@@ -76,8 +76,8 @@ class CarMVS(ModelViewSet):
             #! o yüzden müsait değil yani is_available = False,
             queryset = queryset.annotate(
                 is_available=~Exists(Reservation.objects.filter(
-                    Q(car=OuterRef('pk')) & Q(
-                        start_date__lt=end) & Q(end_date__gt=start)
+                    Q(car=OuterRef('pk')) & 
+                    Q(start_date__lt=end) & Q(end_date__gt=start)
                 ))
             )
         return queryset   
