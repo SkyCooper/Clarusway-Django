@@ -1,8 +1,5 @@
 from django.contrib import admin
 from django.urls import path, include
-
-from django.contrib import admin 
-from django.urls import path 
  
 # Three modules for swagger:
 from rest_framework import permissions 
@@ -23,6 +20,7 @@ schema_view = get_schema_view(
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("users/", include("users.urls")),
+    path("api/", include("stock.urls")),
     # Url paths for swagger:
     path("swagger(<format>\.json|\.yaml)",schema_view.without_ui(cache_timeout=0), name="schema-json"),
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0),name="schema-swagger-ui"),
