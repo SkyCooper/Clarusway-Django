@@ -13,10 +13,13 @@ from rest_framework.decorators import action
 from .models import Student, Path
 from .serializers import StudentSerializer, PathSerializer
 
-#? pagination, filter, search
-from .pagination import *
+#? filter, search
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
+
+#? pagination,
+from .pagination import *
+from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
 
 #? Permission
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, BasePermission
@@ -38,7 +41,7 @@ class StudentMVS(ModelViewSet):
     # pagination_class = CustomCursorPagination
     
     #? filter
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    filter_backends = [OrderingFilter]
     filterset_fields = ["id", "first_name", "last_name"]
     
     #? search
