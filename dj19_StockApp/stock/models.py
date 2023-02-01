@@ -17,6 +17,7 @@ class Category(models.Model):
     
 class Brand(models.Model):
     name = models.CharField(max_length=25)
+    image = models.TextField(blank=True, null=True)
     
     class Meta:
         verbose_name = "Brand"
@@ -31,6 +32,7 @@ class Firm(models.Model):
     name = models.CharField(max_length=25)
     phone = models.CharField(max_length=25)
     address = models.CharField(max_length=25)
+    image = models.TextField(blank=True, null=True)
     
     class Meta:
         verbose_name = "Firm"
@@ -42,10 +44,12 @@ class Firm(models.Model):
 
 
 class Product(models.Model):
-    name = models.CharField(max_length=25)
+    name = models.CharField(max_length=25, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, max_length=25)
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, max_length=25)
     stock = models.SmallIntegerField()
+    created_date = models.DateField(auto_now_add=True)
+    updated_date = models.DateField(auto_now=True)
     
     class Meta:
         verbose_name = "Product"

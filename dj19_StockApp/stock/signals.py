@@ -19,17 +19,16 @@ def decrease_stock(sender, instance, created, **kwargs):
 
 
 
-#! Abdullah hocanın çift kayıt yapan signal kodu,       
- 
+#! Abdullah hocanın signal kodu,       
 # @receiver(post_save, sender=Purchases)
-# def update_stock_purchases(sender, instance, **kwargs):
-#     print('signal çalıştı', instance.product.stock)
-#     instance.product.stock += instance.quantity
-#     instance.product.save()
-#     print('signal çalıştı2', instance.product.stock)
+# def update_stock_purchases(sender, instance, created, **kwargs):
+#     if created:
+#         instance.product.stock += instance.quantity
+#         instance.product.save()
     
     
 # @receiver(post_save, sender=Sales)
-# def update_stock_sales(sender, instance, **kwargs):
-#     instance.product.stock -= instance.quantity
-#     instance.product.save()
+# def update_stock_sales(sender, instance, created, **kwargs):
+#     if created:
+#         instance.product.stock -= instance.quantity
+#         instance.product.save()
