@@ -208,6 +208,9 @@ from nameofapp.faker import run
 # fonksiyonu ismini yazarak çalışmasını sağla ve sonra shell'den çık
 run()
 exit()
+# fake datalar hazırlanan formata göre üretildi, migrate yapmaya gerek yok
+python manage.py runserver
+# artık admin panelde ve ilgili endpoint'de datalar görünür.
 
 
 #* CORS-HEADERS

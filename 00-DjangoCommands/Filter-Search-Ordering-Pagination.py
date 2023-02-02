@@ -1,6 +1,26 @@
 Pagination-Filter-Search-Ordering
 @cooper (01 Şubat 2023, Çarşamba)
 
+
+#? GLOBAL TANIMLAMA : (main --> settings içine yazarak):
+# yapılan ayar bütün endpointler için geçerli olur,
+# mesela settings içine; 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 5, yazılırsa
+# var olan bütün endpointlerde artık 5'li PageNumberPagination geçerli olur, 
+
+#? LOCAL TANIMLAMA : (view içinde import ederek, default veya customize) :
+# Sadece yazılan view'ın endpointinde geçerli olur,
+# mesela bir endpoint için 8'li PageNumberPagination yapılırken
+# başka birisi için 3'lü CustomLimitOffsetPagination yapılabilir.
+
+#* dikkat edilmesi gereken local olan global olanı zaten ezecektir,
+# yani settings içine; 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 5, yazılırsa
+# var olan bütün endpointlerde artık 5'li PageNumberPagination geçerli olur,
+# fakat değiştirmek istediğimiz view'da import edip bir CustomPagination kullanırsak
+# sadece orası değişir, diğerleri yine aynı kalır.
+
+#? Global / Local kavramı diğer ayarlar (filter , search, ordering vs..) içinde aynı mantıkla çalışır,
+
+
 #* PAGINATION İÇİN; (dj-08)
 # ilave bir paket yüklemeye gerek yok,
 #todo, A- Eğer Djangonun default pagination ayarlarını kullanacaksak, iki farklı şekilde yapılabilir,
@@ -11,13 +31,13 @@ Pagination-Filter-Search-Ordering
 
                   REST_FRAMEWORK = {
                       'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
-                      'PAGE_SIZE': 30,
+                      'PAGE_SIZE': 5,
                       
                       'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
-                      'PAGE_SIZE': 30,
+                      'PAGE_SIZE': 5,
                       
                       'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.CursorPagination',
-                      'PAGE_SIZE': 30,
+                      'PAGE_SIZE': 5,
                   }
                   
                   # view içinde ilave pagination_class = ............. 
@@ -34,6 +54,7 @@ Pagination-Filter-Search-Ordering
                   pagination_class = LimitOffsetPagination
                   pagination_class = CursorPagination
                   # (hangisini kullanacaksan adını yaz)
+                  
 
 #todo, B- Djangonun default ayarları dışında customize bir pagination kullanmak için, pagination.py ekle;
 #? böyle yapınca localde çalışır ve global olanı ezer, yani settings içinde yazılsa bile burada yazılan çalışır,
@@ -118,16 +139,13 @@ pip freeze > requirements.txt
 
 
 #* SEARCH için; (dj-08)
-# ilave bir paket yüklemeden yapıldı fakat öncesinde filter için paket yüklenmişti,
-pip install django-filter
-
-# yazılan kelimenin içinde arama yapar,
+# ilave bir paket yüklemeye gerek yok,
+#? yazılan kelimenin içinde arama yapar,
 # mesela name için data içinde cooper varsa coop yazınca bulur.
 # aynı zamanda last_name de aramaya dahilse macoopland gibi yazan birşeyide bulur ve 2 sonuç getirir.
 
 #todo, A- Eğer Djangonun default SERACH ayarlarını kullanacaksak, iki farklı şekilde yapılabilir,
         #! 1 - settings içine ekleyerek;
-                  INSTALLED_APPS = [ 'django_filters', ] # içine zaten eklenmişti
                   # en sonuna uygun bir yere DEFAULT_FILTER_BACKENDS ekle,
                   # eğer önceden REST_FRAMEWORK = { } varsa onun içine ekle, yoksa üstteki çalışmaz.
                   #? böyle yapınca global alanda tanımlanmış olur ve onu kullanır,
@@ -168,13 +186,10 @@ pip install django-filter
 
 
 #* ORDERING için; (dj-08)
-# ilave bir paket yüklemeden yapıldı fakat öncesinde filter için paket yüklenmişti,
-pip install django-filter
-
+# ilave bir paket yüklemeye gerek yok
 
 #todo, Eğer Djangonun default ORDERING ayarlarını kullanacaksak, iki farklı şekilde yapılabilir,
         #! 1 - settings içine ekleyerek;
-                  INSTALLED_APPS = [ 'django_filters', ] # içine zaten eklenmişti
                   # en sonuna uygun bir yere DEFAULT_FILTER_BACKENDS ekle,
                   # eğer önceden REST_FRAMEWORK = { } varsa onun içine ekle, yoksa üstteki çalışmaz.
                   #? böyle yapınca global alanda tanımlanmış olur ve onu kullanır,
@@ -227,7 +242,7 @@ REST_FRAMEWORK = {
     'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
 
     #? ordering
-    # 'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.OrderingFilter'],
+    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.OrderingFilter'],
     
     #? filter + search + ordering
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend', 'rest_framework.filters.SearchFilter', 'rest_framework.filters.OrderingFilter'],
@@ -245,5 +260,7 @@ from rest_framework.filters import SearchFilter
 from rest_framework.filters import OrderingFilter
 
 #? pagination,
-from .pagination import *
 from rest_framework.pagination import PageNumberPagination, LimitOffsetPagination, CursorPagination
+
+#? CUSTOM pagination,
+from .pagination import CustomPageNumberPagination, CustomLimitOffsetPagination, CustomCursorPagination
