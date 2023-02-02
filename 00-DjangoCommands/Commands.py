@@ -2,6 +2,9 @@
 #? https://youtu.be/osKPG2ripmw 
 
 # ORM-> python ile yazılan sorgu kodlarını arka plandaki database için SQL formatına çevirir.
+# BRD -> Business Requirements Document  işin isterlerinin olduğu doküman.
+# ERD -> Entity Relationship Diagram modellerin ilişki diyagramı
+
 
 #* Check the versions of Python and pip
 python --version
