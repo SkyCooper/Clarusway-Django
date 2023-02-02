@@ -1,14 +1,25 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# Create your models here.
+#? UpdateCreate modeli aslında diyagramda yok, (abstract için)
+#? ortak olan fieldlar için abstract Class yapılıp ihtiyaç olan yerde kullanılabilir,
+#? mesela her modelde created ve updated fieldları olsaydı,
+#? artık Product(models.Model)'den değil Product(UpdateCreate) den abstract edebiliriz.
+#? abstract edilenlerde created ve updated fieldları ile sonradan eklenenlerde var artık.
+class UpdateCreate(models.Model):
+    createds = models.DateField(auto_now_add=True)
+    updated = models.DateField(auto_now=True)
+    
+    class Meta:
+        abstract = True
+
 
 class Category(models.Model):
     name = models.CharField(max_length=25)
     
     class Meta:
         verbose_name = "Category"
-        verbose_name_plural = "Categorys"
+        verbose_name_plural = "Categories"
 
     def __str__(self):
         return self.name
@@ -26,14 +37,14 @@ class Brand(models.Model):
         return self.name
 
 
-class Product(models.Model):
+class Product(UpdateCreate):
     name = models.CharField(max_length=100, unique=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="c_products")
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="b_products")
     stock = models.PositiveSmallIntegerField(blank=True, default=0)
     #? eksi değer olmasın diye PositiveSmallIntegerField
-    createds = models.DateField(auto_now_add=True)
-    updated = models.DateField(auto_now=True)
+    # createds = models.DateField(auto_now_add=True)
+    # updated = models.DateField(auto_now=True)
     
     class Meta:
         verbose_name = "Product"
@@ -43,11 +54,13 @@ class Product(models.Model):
         return self.name
 
     
-class Firm(models.Model):
+class Firm(UpdateCreate):
     name = models.CharField(max_length=25, unique=True)
     phone = models.CharField(max_length=25)
     address = models.CharField(max_length=200)
     image = models.TextField()
+    # createds = models.DateField(auto_now_add=True)
+    # updated = models.DateField(auto_now=True)
     
     class Meta:
         verbose_name = "Firm"
@@ -57,7 +70,7 @@ class Firm(models.Model):
         return self.name
     
 
-class Purchases(models.Model):
+class Purchases(UpdateCreate):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     firm = models.ForeignKey(Firm, on_delete=models.SET_NULL, null=True, related_name="f_purchases")
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, related_name="b_purchases")
@@ -65,7 +78,8 @@ class Purchases(models.Model):
     quantity = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     price_total = models.DecimalField(max_digits=7, decimal_places=2, blank=True)
-    
+    # createds = models.DateField(auto_now_add=True)
+    # updated = models.DateField(auto_now=True)
     class Meta:
         verbose_name = "Purchases"
         verbose_name_plural = "Purchases"
@@ -74,14 +88,15 @@ class Purchases(models.Model):
         return f"{self.product} - {self.quantity}"
     
 
-class Sales(models.Model):
+class Sales(UpdateCreate):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     brand = models.ForeignKey(Brand, on_delete=models.SET_NULL, null=True, related_name="b_sales")
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name="p_sales")
     quantity = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     price_total = models.DecimalField(max_digits=7, decimal_places=2, blank=True)
-    
+    # createds = models.DateField(auto_now_add=True)
+    # updated = models.DateField(auto_now=True)
     class Meta:
         verbose_name = "Sales"
         verbose_name_plural = "Sales"
