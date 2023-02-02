@@ -122,9 +122,6 @@ INSTALLED_APPS = [
 #* main.urls dosyasına aşağıdakinin aynısını kopyala yapıştır.
 from django.contrib import admin
 from django.urls import path, include
-
-from django.contrib import admin 
-from django.urls import path 
  
 # Three modules for swagger:
 from rest_framework import permissions 
