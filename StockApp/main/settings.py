@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     
     # my_apps
     'account',
+    'stock',
     
     # drf
     'rest_framework',
