@@ -12,7 +12,8 @@ class UserAdminWithGroup(UserAdmin):
             groups.append(group)
 
         return ' '.join(groups)
-
+    
+#?admin panelde user grup görünsün diye;
     list_display = UserAdmin.list_display + ('group_name',)
 
 
