@@ -7,11 +7,20 @@ from rest_framework.response import Response
 from rest_framework.filters import SearchFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
-#? djangonun default permission
+#? djangonun default permission modeli
 from rest_framework.permissions import DjangoModelPermissions
+# https://www.django-rest-framework.org/api-guide/permissions/#djangomodelpermissions
 
-# from rest_framework.filters import SearchFilter, OrderingFilter
+# admin panelde herhangi bir user'a user bazında permission ataması yapılabiliyor,
+# admin panelde Users'tan bir kullanıcı üzerine tıklayınca
+# Groups ve User permissions özellikleri ayarlanabiliyor,
+# User permissions ile mevcut bütün CRUD işlemlerinden istenilen tek tek seçilebilir,
 
+# Groups ile bir grup oluşturulup, CRUD işlemlerinden istenilen tek tek seçilebilir
+# ve user o gruba tanırsa, gruba izin verilen işemleri yapabilir,
+
+# superuser olarak create edilen admin
+# veya sonradan superuser olarak işaretlenen user bütün CRUD işlemlerini yapmaya izinlidir.
 
 # Create your views here.
 class CategoryView(ModelViewSet):
@@ -21,14 +30,17 @@ class CategoryView(ModelViewSet):
     search_fields = ["name"]
     filterset_fields = ["name"]
     
-    #? djangonun default permission
+    #? djangonun default permission modeli
     permission_classes = [DjangoModelPermissions]
     
+    #! view içerisinde faklı durumlara göre farklı serializer kullanma,
     #? gelen sorguda name varsa/yoksa oan göre farklı serializer kullanacak,
-    #? onun için get_serializer_class override ediliyor,
+    #? onun için kullanılacak serializerı seçen, get_serializer_class metodu override ediliyor,
     def get_serializer_class(self):
         if self.request.query_params.get("name"):
+            #? sorgudan name varsa;
             return CategoryProductSerializer
+        #? yoksa parentten aynısını kullan; (yani CategorySerializer)
         return super().get_serializer_class()
     
 

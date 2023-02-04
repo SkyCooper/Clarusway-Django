@@ -184,3 +184,88 @@ REST_FRAMEWORK = {
 #? Permission
 from .permissions import *
 from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, BasePermission
+
+
+
+#* PERMISSION için; (dj-20_StockApp-DjangoDefaultPermission)
+# https://www.django-rest-framework.org/api-guide/permissions/#djangomodelpermissions
+
+# admin panelde herhangi bir user'a user bazında bir veya birden fazla permission ataması yapılabiliyor,
+# admin panelde Users'tan bir kullanıcı üzerine tıklayınca
+# Groups ve User permissions özellikleri ayarlanabiliyor,
+# User permissions ile mevcut bütün CRUD işlemlerinden istenilen tek tek seçilebilir,
+
+# Groups ile bir grup oluşturulup, CRUD işlemlerinden istenilen tek tek seçilebilir
+# ve user o gruba tanırsa, gruba izin verilen işemleri yapabilir,
+
+# superuser olarak create edilen admin
+# veya sonradan superuser olarak işaretlenen user bütün CRUD işlemlerini yapmaya izinlidir.
+
+
+#? böyle import edilir,
+from rest_framework.permissions import DjangoModelPermissions
+
+#? view altına eklenerek kullanılır,
+    permission_classes = [DjangoModelPermissions]
+# persission kullanılması için Authantice olmak gerekir, onun için postmen kullanırken
+# headers için Authorazation ----> Token 16dc6s4c6s4cdv65s4v64sv64s6v46sd yazmak gerekli.
+
+#! view'da sadece yukarıdaki 2 satırı yazarak permission verebiliriz,
+#! Gerisini artık her kullanıcı için admin panelden;
+#! Groups / User permissions özelliklerini ayarlamak kalıyor.
+
+# ilgili app içine signal.py ekleyerek bir user create edildiğinde
+# superuser değilse hangi grupta olsun vs.. gibi bir logic yazabiliriz.
+
+# signals.py
+from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from rest_framework.authtoken.models import Token
+from django.contrib.auth.models import Group
+
+
+@receiver(post_save, sender=User)
+def create_auth_token(sender, instance=None, created=False, **kwargs):
+    if created:
+        Token.objects.create(user=instance)  
+        user= User.objects.get(username = instance)
+        
+        #? user'ın grubunu atıyor,
+        #? hata vermemesi için önceden Read_Only vaya ismi ne verilecekse o grubun oluşturulmuş olması gerekiyot.
+        if not user.is_superuser:
+            group = Group.objects.get(name='Read_Only') 
+            user.groups.add(group)
+            user.save()
+            
+#! bu örnekte biz superuser olmayan kullanıcılara sadece GET yetkisi verdik,
+#! fakat vermesekte superuser olmayan kullanıcıların  DEFAULT get yetkisi vardır.
+
+# app.py (eklemek gerekli)
+
+    #? signal çalışsın diye;
+    def ready(self):
+        import account.signals
+
+
+# admin.py (user grup admin panelde görünsün diye)
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+
+
+class UserAdminWithGroup(UserAdmin):
+    def group_name(self, obj):
+        queryset = obj.groups.values_list('name', flat=True)
+        groups = []
+        for group in queryset:
+            groups.append(group)
+
+        return ' '.join(groups)
+    
+#?admin panelde user grup görünsün diye;
+    list_display = UserAdmin.list_display + ('group_name',)
+
+
+admin.site.unregister(User)
+admin.site.register(User, UserAdminWithGroup)

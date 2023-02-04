@@ -39,7 +39,7 @@ class Brand(models.Model):
 
 class Product(UpdateCreate):
     name = models.CharField(max_length=100, unique=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="c_products")
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, related_name="products")
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="b_products")
     stock = models.PositiveSmallIntegerField(blank=True, default=0)
     #? eksi değer olmasın diye PositiveSmallIntegerField
