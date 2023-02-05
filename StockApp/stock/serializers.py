@@ -13,9 +13,15 @@ class CategorySerializer(serializers.ModelSerializer):
     
 
 class ProductSerializer(serializers.ModelSerializer):
+    #? category isim olarak görünsün diye;
+    category = serializers.StringRelatedField()
+    #? category_id kaybolmasın, görünsün diye;
+    category_id = serializers.IntegerField()
+    
+    brand = serializers.StringRelatedField()
+    brand_id = serializers.IntegerField()
     class Meta:
         model = Product
-        # fields = "__all__"
         fields = (
             "id",
             "name",
@@ -25,6 +31,10 @@ class ProductSerializer(serializers.ModelSerializer):
             "brand_id",
             "stock",
         )
+        
+        #?  yukarıda tanımlayıp, read_only=True yapılabilirdi,
+        #? veya böyle tekrar tanımlamadan hangi field rea_only olacaksa burada yazılabilir.
+        #* neden read_only, çünkü stock miktarı purchase/sales miktarına göre güncellenecek,
         read_only_fields = ("stock",)
         
 #! 2- sadece ilgili kategoriyi, ürün sayısını ve ÜRÜNLERİNİ gösteren serializer

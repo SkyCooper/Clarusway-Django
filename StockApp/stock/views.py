@@ -63,7 +63,10 @@ class FirmView(ModelViewSet):
 class ProductView(ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    
+    filter_backends = [SearchFilter, DjangoFilterBackend]
+    filterset_fields = ["category", "brand"]
+    search_fields = ["name"]
+    permission_classes = [DjangoModelPermissions]
     
 
 class PurchasesView(ModelViewSet):
