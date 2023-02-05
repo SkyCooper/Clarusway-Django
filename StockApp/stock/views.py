@@ -47,11 +47,17 @@ class CategoryView(ModelViewSet):
 class BrandView(ModelViewSet):
     queryset = Brand.objects.all()
     serializer_class = BrandSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ["name"]
+    permission_classes = [DjangoModelPermissions]
     
 
 class FirmView(ModelViewSet):
     queryset = Firm.objects.all()
     serializer_class = FirmSerializer
+    filter_backends = [SearchFilter]
+    search_fields = ["name"]
+    permission_classes = [DjangoModelPermissions]
     
 
 class ProductView(ModelViewSet):

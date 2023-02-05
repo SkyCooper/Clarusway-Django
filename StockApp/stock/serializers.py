@@ -43,10 +43,6 @@ class CategoryProductSerializer(serializers.ModelSerializer):
     def get_product_count(self, obj):
         return Product.objects.filter(category_id = obj.id).count()
         
-
-
-
-
 class BrandSerializer(serializers.ModelSerializer):
     class Meta:
         model = Brand
@@ -56,9 +52,6 @@ class FirmSerializer(serializers.ModelSerializer):
     class Meta:
         model = Firm
         fields = ("id", "name", "phone", "address", "image")
-        
-
-
         
 class PurchasesSerializer(serializers.ModelSerializer):
     
@@ -88,6 +81,8 @@ class PurchasesSerializer(serializers.ModelSerializer):
             "createds",
             "updated",
         )
+        
+
 class SalesSerializer(serializers.ModelSerializer):
     # price_total = serializers.SerializerMethodField(method_name="total")
     class Meta:
@@ -96,3 +91,4 @@ class SalesSerializer(serializers.ModelSerializer):
         
     # def total(self,obj):
     #     return obj.price * obj.quantity
+    
