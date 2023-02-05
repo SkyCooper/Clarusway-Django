@@ -99,6 +99,7 @@ class PurchasesView(ModelViewSet):
         #bir alım yapıldı (purchase), bunu yani istek yapılan data'yı bir değişkene atıyoruz,
         purchase = request.data
         
+        #hangi product stoğu güncellenecek,
         #alım yapılan(purchase) ürünün product_id'si ile ürün tablosundaki id'si aynı olan ürünü bulup değişkene atıyoruz,
         product = Product.objects.get(id=purchase["product_id"])
         
@@ -114,7 +115,12 @@ class PurchasesView(ModelViewSet):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
+    #? bu işlemi hangi user yaptı
+    # önceki projelerde bunu serilaizerde create metodunu override ederek yapmıştık, (flightApp, rentCar)
     def perform_create(self, serializer):
+        #? aslında sadece save var, böyle olursa null gönderir,
+        # serializer.save()
+        #? içerisine user fieldi eklenerek daha kolay yapılabiliyor. 
         serializer.save(user=self.request.user) 
     
 
