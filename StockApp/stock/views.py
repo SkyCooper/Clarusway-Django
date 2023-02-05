@@ -4,7 +4,7 @@ from .models import *
 from rest_framework.viewsets import ModelViewSet
 from rest_framework import status
 from rest_framework.response import Response
-from rest_framework.filters import SearchFilter
+from rest_framework.filters import SearchFilter, OrderingFilter
 from django_filters.rest_framework import DjangoFilterBackend
 
 #? djangonun default permission modeli
@@ -72,10 +72,13 @@ class ProductView(ModelViewSet):
 class PurchasesView(ModelViewSet):
     queryset = Purchases.objects.all()
     serializer_class = PurchasesSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
+    
+    #? permission
+    permission_classes = [DjangoModelPermissions]
     
     #? filter
-    # filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ["product",]
+    filterset_fields = ["product", "firm"]
     
     #? search
     # search_fields = ["quantity"]
@@ -84,16 +87,35 @@ class PurchasesView(ModelViewSet):
     ordering_fields = ['quantity']      #* filter boxta hangi seçenekler çıksın istiyorsanız onu yazıyorsunuz
     ordering = ['price']                #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
     
+    
+    #? product stock miktarını yapılan purchase'e göre hesaplamak için,(quantity kadar arttırıcaz)
+    #? ModelViewSet içinden --> CreateModelMixin --> def create metodunu override ediyoruz,
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+        #? gelen data valid ise ve serializerden geçtiyse stock miktarını hesaplayabiliriz,
         
-        purchase = serializer.save()
-        purchase.price_total = purchase.quantity * purchase.price
-        purchase.save()
+        #! #############  ADD Product Stock ############
+        #bir alım yapıldı (purchase), bunu yani istek yapılan data'yı bir değişkene atıyoruz,
+        purchase = request.data
         
+        #alım yapılan(purchase) ürünün product_id'si ile ürün tablosundaki id'si aynı olan ürünü bulup değişkene atıyoruz,
+        product = Product.objects.get(id=purchase["product_id"])
+        
+        #bu ürünün stock miktarını alım yapılan ürün miktarı kadar arttırıyoruz
+        product.stock += purchase["quantity"]
+        
+        # ve ürünü DB'ye kayıt ediyoruz 
+        product.save()
+        #! #############################################
+        
+        #? bundan sonrası aynı, stoğu güncellenmiş olarak serializerdan geçiriyoruz.
+        self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user) 
     
 
 class SalesView(ModelViewSet):

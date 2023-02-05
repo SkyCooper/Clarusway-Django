@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-#? UpdateCreate modeli aslında diyagramda yok, (abstract için)
+#? UpdateCreate modeli aslında diyagramda yok, (abstract örnek olsun diye yaptı)
 #? ortak olan fieldlar için abstract Class yapılıp ihtiyaç olan yerde kullanılabilir,
 #? mesela her modelde created ve updated fieldları olsaydı,
 #? artık Product(models.Model)'den değil Product(UpdateCreate) den abstract edebiliriz.
@@ -43,6 +43,8 @@ class Product(UpdateCreate):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name="b_products")
     stock = models.PositiveSmallIntegerField(blank=True, default=0)
     #? eksi değer olmasın diye PositiveSmallIntegerField
+    
+    #* abstract edildiği için bunlarda vardır field olarak
     # createds = models.DateField(auto_now_add=True)
     # updated = models.DateField(auto_now=True)
     
@@ -59,6 +61,8 @@ class Firm(UpdateCreate):
     phone = models.CharField(max_length=25)
     address = models.CharField(max_length=200)
     image = models.TextField()
+    
+    #* abstract edildiği için bunlarda vardır field olarak
     # createds = models.DateField(auto_now_add=True)
     # updated = models.DateField(auto_now=True)
     
@@ -78,6 +82,14 @@ class Purchases(UpdateCreate):
     quantity = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     price_total = models.DecimalField(max_digits=7, decimal_places=2, blank=True)
+    #?------------- blank=True , null=True ----------------
+    # blank=True, serializer ile ilgilidir (frontend'ten datanın gelişi ile), yani boş bırakılabilir,
+    # null=True, DB ile ilgilidir, yani boş bırakılabilir ve DB null kayıt edilir,
+    #! eğer sadece  blank=True varsa veri boş gelebilir, ama DB kayıt edilmeden önce
+    #! bir işlem/hesaplama vs. yapılıp DB boş/null gitmesini önlemek gerekir.
+
+    
+    #* abstract edildiği için bunlarda vardır field olarak
     # createds = models.DateField(auto_now_add=True)
     # updated = models.DateField(auto_now=True)
     class Meta:
@@ -95,6 +107,8 @@ class Sales(UpdateCreate):
     quantity = models.PositiveSmallIntegerField()
     price = models.DecimalField(max_digits=7, decimal_places=2)
     price_total = models.DecimalField(max_digits=7, decimal_places=2, blank=True)
+    
+    #* abstract edildiği için bunlarda vardır field olarak
     # createds = models.DateField(auto_now_add=True)
     # updated = models.DateField(auto_now=True)
     class Meta:

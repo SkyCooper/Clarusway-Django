@@ -65,13 +65,16 @@ class FirmSerializer(serializers.ModelSerializer):
         
 class PurchasesSerializer(serializers.ModelSerializer):
     
-    user = serializers.StringRelatedField() 
+    user = serializers.StringRelatedField()
+     
     firm = serializers.StringRelatedField()
+    firm_id = serializers.IntegerField()
+    
     brand = serializers.StringRelatedField()
+    brand_id = serializers.IntegerField()
+    
     product = serializers.StringRelatedField()
     product_id = serializers.IntegerField()
-    brand_id = serializers.IntegerField()
-    firm_id = serializers.IntegerField()
     
     class Meta:
         model = Purchases
@@ -91,6 +94,7 @@ class PurchasesSerializer(serializers.ModelSerializer):
             "createds",
             "updated",
         )
+
         
 
 class SalesSerializer(serializers.ModelSerializer):
