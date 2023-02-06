@@ -160,6 +160,25 @@ class PurchasesView(ModelViewSet):
 
         return Response(serializer.data)
     
+    #? yapılan purchase silinmesi;
+    #? mevcut quantity'den stoktan çıkarılacak
+    #? ModelViewSet içinden --> DestroyModelMixin --> def destroy metodunu override ediyoruz,
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        
+        #! #############  DELETE Product Stock ############
+        #hangi product stoğu güncellenecek,
+        #alım yapılan(purchase) ürünün product_id'si ile ürün tablosundaki id'si aynı olan ürünü bulup değişkene atıyoruz,
+        product = Product.objects.get(id=instance.product_id)
+        
+        #silinen purchase quantity kadar stoktan çıkarılır.
+        product.stock -= instance.quantity
+        product.save()
+        #! #############################################
+        
+        self.perform_destroy(instance)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
 
 class SalesView(ModelViewSet):
     queryset = Sales.objects.all()
