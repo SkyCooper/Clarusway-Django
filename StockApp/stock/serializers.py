@@ -117,15 +117,53 @@ class PurchasesSerializer(serializers.ModelSerializer):
     
     def get_createds(self, obj):
         return datetime.datetime.strftime(obj.createds, "%d-%m-%Y")
-
-        
-
+    
+#? purchases serializer aynısı, firm yok sadece
 class SalesSerializer(serializers.ModelSerializer):
-    # price_total = serializers.SerializerMethodField(method_name="total")
+    
+    user = serializers.StringRelatedField()
+    
+    brand = serializers.StringRelatedField()
+    brand_id = serializers.IntegerField()
+    
+    product = serializers.StringRelatedField()
+    product_id = serializers.IntegerField()
+    
+    #? Gelen purchase datası içerisine category eklemek için;
+    category = serializers.SerializerMethodField()
+    
+    #? Gelen tarih ve saati daha okunaklı hale getirmek için;
+    time_hour = serializers.SerializerMethodField()
+    createds = serializers.SerializerMethodField()
+    
     class Meta:
         model = Sales
-        fields = ("id", "user", "product", "brand", "quantity", "price", "price_total")
-        
-    # def total(self,obj):
-    #     return obj.price * obj.quantity
+        fields = (
+            "id",
+            "user",
+            "user_id",
+            "category",
+            "brand",
+            "brand_id",
+            "product",
+            "product_id",
+            "quantity",
+            "price",
+            "price_total",
+            "createds",
+            "time_hour",
+        )
     
+    # def get_category(self, obj):
+    #     product = Product.objects.get(id=obj.product_id)
+    #     return Category.objects.get(id=product.category_id).name
+    
+    def get_category(self, obj):
+        return obj.product.category.name
+     
+    def get_time_hour(self, obj):
+        return datetime.datetime.strftime(obj.createds, "%H:%M")
+    
+    def get_createds(self, obj):
+        return datetime.datetime.strftime(obj.createds, "%d-%m-%Y")
+

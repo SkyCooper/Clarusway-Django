@@ -8,7 +8,14 @@ from .models import Purchases, Sales
 #? daha sonra post_save ile de yapabilirdik, (o zaman created da eklemek gerekirdi)
 #? fakat pre_save kayıttan önce işlem yaptığı için created gerek yok, (sender, instance, **kwargs) bunlar yeterli,
 
+#*purchase yapıldığında;
 @receiver(pre_save, sender=Purchases)
+def calculate_total_price(sender, instance, **kwargs):
+    instance.price_total = instance.quantity * instance.price
+
+    
+#*sales yapıldığında;
+@receiver(pre_save, sender=Sales)
 def calculate_total_price(sender, instance, **kwargs):
     instance.price_total = instance.quantity * instance.price
     
