@@ -1,5 +1,7 @@
 from rest_framework import serializers
 from .models import *
+import datetime
+
 
 #! 1- Bütün kategorileri ve içindeki ürün sayılarını gösteren serializer
 class CategorySerializer(serializers.ModelSerializer):
@@ -76,12 +78,20 @@ class PurchasesSerializer(serializers.ModelSerializer):
     product = serializers.StringRelatedField()
     product_id = serializers.IntegerField()
     
+    #? Gelen purchase datası içerisine category eklemek için;
+    category = serializers.SerializerMethodField()
+    
+    #? Gelen tarih ve saati daha okunaklı hale getirmek için;
+    time_hour = serializers.SerializerMethodField()
+    createds = serializers.SerializerMethodField()
+    
     class Meta:
         model = Purchases
         fields = (
             "id",
             "user",
             "user_id",
+            "category",
             "firm",
             "firm_id",
             "brand",
@@ -92,8 +102,21 @@ class PurchasesSerializer(serializers.ModelSerializer):
             "price",
             "price_total",
             "createds",
-            "updated",
+            "time_hour",
         )
+    
+    # def get_category(self, obj):
+    #     product = Product.objects.get(id=obj.product_id)
+    #     return Category.objects.get(id=product.category_id).name
+    
+    def get_category(self, obj):
+        return obj.product.category.name
+     
+    def get_time_hour(self, obj):
+        return datetime.datetime.strftime(obj.createds, "%H:%M")
+    
+    def get_createds(self, obj):
+        return datetime.datetime.strftime(obj.createds, "%d-%m-%Y")
 
         
 
