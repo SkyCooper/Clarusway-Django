@@ -121,7 +121,44 @@ class PurchasesView(ModelViewSet):
         #? aslında sadece save var, böyle olursa null gönderir,
         # serializer.save()
         #? içerisine user fieldi eklenerek daha kolay yapılabiliyor. 
-        serializer.save(user=self.request.user) 
+        serializer.save(user=self.request.user)
+        
+    #? yapılan purchase güncellenmesi;
+    #? mevcut quantity'den büyükse stock artacak, küçükse azalacak
+    #? ModelViewSet içinden --> UpdateModelMixin --> def update metodunu override ediyoruz,
+    def update(self, request, *args, **kwargs):
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        #? gelen data valid ise ve serializerden geçtiyse stock miktarını güncelleyebiliriz,
+        
+        #! #############  UPDATE Product Stock ############
+        #bir alım yapıldı (purchase), bunu yani istek yapılan data'yı bir değişkene atıyoruz,
+        purchase = request.data
+        
+        #hangi product stoğu güncellenecek,
+        #alım yapılan(purchase) ürünün product_id'si ile ürün tablosundaki id'si aynı olan ürünü bulup değişkene atıyoruz,
+        product = Product.objects.get(id=instance.product_id)
+        
+        #güncellenen yeni quantity'den mevcut quantity çıkarıldı fark bulundu
+        fark = purchase["quantity"] - instance.quantity
+        
+        #mevcut stoğa eklendi, artış varsa pozitif olacak ve stok artacak azalma varsa negatif olacak stok azalacak
+        product.stock += fark
+        
+        # ve ürünü DB'ye kayıt ediyoruz 
+        product.save()
+        #! #############################################
+        
+        #? bundan sonrası aynı, stoğu güncellenmiş olarak serializerdan geçiriyoruz.
+        self.perform_update(serializer)
+        if getattr(instance, '_prefetched_objects_cache', None):
+            # If 'prefetch_related' has been applied to a queryset, we need to
+            # forcibly invalidate the prefetch cache on the instance.
+            instance._prefetched_objects_cache = {}
+
+        return Response(serializer.data)
     
 
 class SalesView(ModelViewSet):
