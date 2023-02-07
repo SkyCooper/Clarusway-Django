@@ -536,6 +536,7 @@ SQL_PORT=5432
 #* bütün işlemler tamamlandıktan sonra decouple yükle, migrate yap, superuser oluştur ve projeyi çalıştır.
 
 pip install python-decouple
+pip install pillow
 pip freeze > requirements.txt
 python manage.py migrate
 python manage.py createsuperuser (daha önceden yapmadıysan)

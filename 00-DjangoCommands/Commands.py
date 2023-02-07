@@ -158,7 +158,7 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 
 # media_url -> hangi urlyi kullanacaksın
 # media_root -> hangi klasöre yüklemek istersin.
-# ilk resim eklendikten sonra media isimli bir klasör oluşur ve eklenen resim oaraya kayıt edilir.
+# ilk resim eklendikten sonra media isimli bir klasör oluşur ve eklenen resim oraya kayıt edilir.
 
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 # bu adresten nasıl yapılacağına bak, import vs. nasıl yapılacak...
@@ -209,8 +209,8 @@ python manage.py shell
 from nameofapp.faker import run
 
 # fonksiyonu ismini yazarak çalışmasını sağla ve sonra shell'den çık
-run()
-exit()
+    # run() --> bu fonksiyonun ismi --> name()
+    # exit()
 # fake datalar hazırlanan formata göre üretildi, migrate yapmaya gerek yok
 python manage.py runserver
 # artık admin panelde ve ilgili endpoint'de datalar görünür.

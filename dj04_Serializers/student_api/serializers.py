@@ -87,6 +87,7 @@ class PathSerializer(serializers.ModelSerializer):
             view_name='detail'
       )
       #* HyperlinkedRelatedField'den alınca tek tek her öğrencinin endpoint name'ini verir.
+      #! BURAYA DİKKAT ET !!!
       # urls içine --> name="detail" ekle yoksa hata verir.
       class Meta:
             model = Path

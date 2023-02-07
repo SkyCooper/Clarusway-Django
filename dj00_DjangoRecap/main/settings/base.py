@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     
     #? my apps
     'users',
+    'fscohort',
     
     #? trirdpart apps
     'rest_framework',
@@ -118,6 +119,10 @@ STATIC_URL = 'static/'
 #? for images
 MEDIA_URL = 'media/'
 MEDIA_ROOT = BASE_DIR / 'media/'
+
+# media_url -> hangi urlyi kullanacaksın
+# media_root -> hangi klasöre yüklemek istersin.
+# ilk resim eklendikten sonra media isimli bir klasör oluşur ve eklenen resim oraya kayıt edilir.
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
