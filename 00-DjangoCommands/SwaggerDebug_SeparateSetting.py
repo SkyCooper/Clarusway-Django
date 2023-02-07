@@ -536,9 +536,10 @@ SQL_PORT=5432
 #* bütün işlemler tamamlandıktan sonra decouple yükle, migrate yap, superuser oluştur ve projeyi çalıştır.
 
 pip install python-decouple
-py manage.py migrate
-py manage.py createsuperuser (daha önceden yapmadıysan)
-py manage.py runserver
+pip freeze > requirements.txt
+python manage.py migrate
+python manage.py createsuperuser (daha önceden yapmadıysan)
+python manage.py runserver
 
 1-admin/
 2-swagger(<format>\.json|\.yaml) [name='schema-json']
