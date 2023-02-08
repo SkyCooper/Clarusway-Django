@@ -36,13 +36,28 @@ class StudentMVS(ModelViewSet):
     # pagination_class = CustomLimitOffsetPagination
     # pagination_class = CustomCursorPagination
     
+    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter] #? hepsi beraber yazılabilir,
+    
     #? filter
-    filter_backends = [DjangoFilterBackend, SearchFilter, OrderingFilter]
-    filterset_fields = ["id", "first_name", "last_name"]
+    # pip install django-filter
+    # yazılan kelimenin aynısını arar,
+    # mesela name için data içinde cooper varsa coop yazınca bulmaz.
+    
+    # filter_backends = [DjangoFilterBackend]                 #? hangi filitrelemeyi kullanacak,
+    filterset_fields = ["id", "first_name", "last_name"]      #? nerede filitrelemeyi kullanacak,
     
     #? search
-    search_fields = ["first_name", "last_name"]
-    # search_fields=['^first_name']  #baş harfine göre arama yapmak için,
+    # ilave bir paket yüklemeye gerek yok,
+    # yazılan kelimenin içinde arama yapar,
+    # mesela name için data içinde cooper varsa coop yazınca bulur.
+    # aynı zamanda last_name de aramaya dahilse macoopland gibi yazan birşeyide bulur ve 2 sonuç getirir.
+    
+    # filter_backends = [SearchFilter]                        #? hangi aramayı kullanacak,
+    search_fields = ["first_name", "last_name"]               #? nerelerde arama yapacak,
+    # search_fields=['^first_name']                           #? baş harfine göre arama yapmak için,
+    
+    #? ordering
+    # filter_backends = [OrderingFilter]                   #? hangi sıralamayı kullanacak,
     ordering_fields = ['first_name','last_name']  #* filter boxta hangi seçenekler çıksın istiyorsanız onu yazıyorsunuz
     ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
     

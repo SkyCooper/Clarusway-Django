@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'drf_yasg',
     'dj_rest_auth',
+    'django_filters',
 ]
 
 MIDDLEWARE = [
@@ -177,10 +178,55 @@ LOGGING = {
     }, 
 }
 
+#! Burada yazılanlar default olan ayarlamalar, bunlar global alanda çalışır,
+#! Eğer view içinde import edip kullanırsak o zamam local alanda çalışmış olurlar ve burada yazılsa bile onu ezerler,
+
+#? GLOBAL TANIMLAMA : (main --> settings içine yazarak):
+# yapılan ayar bütün endpointler için geçerli olur,
+# mesela settings içine; 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 5, yazılırsa
+# var olan bütün endpointlerde artık 5'li PageNumberPagination geçerli olur, 
+
+#? LOCAL TANIMLAMA : (view içinde import ederek, default veya customize) :
+# Sadece yazılan view'ın endpointinde geçerli olur,
+# mesela bir endpoint için 8'li PageNumberPagination yapılırken
+# başka birisi için 3'lü CustomLimitOffsetPagination yapılabilir.
+
+#* dikkat edilmesi gereken local olan global olanı zaten ezecektir,
+# yani settings içine; 'rest_framework.pagination.PageNumberPagination', 'PAGE_SIZE': 5, yazılırsa
+# var olan bütün endpointlerde artık 5'li PageNumberPagination geçerli olur,
+# fakat değiştirmek istediğimiz view'da import edip bir CustomPagination kullanırsak
+# sadece orası değişir, diğerleri yine aynı kalır.
+
+#? Global / Local kavramı diğer ayarlar (filter , search, ordering vs..) içinde aynı mantıkla çalışır
 
 REST_FRAMEWORK = {
+    #? authentication
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ]
+    ],
+    
+    #? pagination
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 2,
+    
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 5,
+    
+    'DEFAULT_PAGINATION_CLASS':'rest_framework.pagination.CursorPagination',
+    'PAGE_SIZE': 4,
+    
+    #? filter
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    
+    #? search
+    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.SearchFilter'],
+
+    #? ordering
+    'DEFAULT_FILTER_BACKENDS': ['rest_framework.filters.OrderingFilter'],
+    
+    #? filter + search + ordering
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend',
+                                'rest_framework.filters.SearchFilter',
+                                'rest_framework.filters.OrderingFilter'],
 }
 

@@ -7,6 +7,6 @@ admin.site.register(Student)
 admin.site.register(Path)
 
 
-admin.site.register(Profile)
-admin.site.register(Address)
-admin.site.register(Product)
+# admin.site.register(Profile)
+# admin.site.register(Address)
+# admin.site.register(Product)
