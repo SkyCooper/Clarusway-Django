@@ -22,6 +22,7 @@ class Student(models.Model): #!Student isimli bir tablo oluştu db içinde
     first_name = models.CharField(max_length=50) #! Tablonun sütunları, field'lar
     last_name = models.CharField(max_length=50) #! içindekiler field option type
     number = models.IntegerField(default=1111) # default değer atandı, yazılmazsa 1111 alır
+    age = models.IntegerField(default=44) # default değer atandı, yazılmazsa 1111 alır
     
     about = models.TextField(blank=True, null=True) # boş bırakılabilir, null olabilir.
     #?------------- blank=True , null=True ----------------

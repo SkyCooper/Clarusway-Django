@@ -79,15 +79,19 @@ class PathSerializer(serializers.ModelSerializer):
     # students = ... (sanki böyle bir field varmış demektir.)
     # bundan dolayı burada students tanımlanabilir.
     
-    # students = StudentSerializer(many=True)
+    students = StudentSerializer(many=True)
     #* StudentSerializer'den alınca postmen çıktısı çok kalabalık oluyor.
     
-    students = serializers.HyperlinkedRelatedField(
-        many=True,
-        read_only=True,
-        view_name='detail'
-    )
+    # students = serializers.HyperlinkedRelatedField(
+    #     many=True,
+    #     read_only=True,
+    #     view_name='detail'
+    # )
     #* HyperlinkedRelatedField'den alınca tek tek her öğrencinin endpoint name'ini verir.
+    #! BURAYA DİKKAT ET !!!
+    # urls içine --> name="detail" ekle yoksa hata verir.
+    
+    #* HyperlinkedRelatedField olursa postmen çıktısı;
     # {
     #     "id": 1,
     #     "path_name": "AWS",
@@ -100,8 +104,7 @@ class PathSerializer(serializers.ModelSerializer):
     # },
     
     
-    #! BURAYA DİKKAT ET !!!
-    # urls içine --> name="detail" ekle yoksa hata verir.
+
     
     class Meta:
         model = Path

@@ -10,6 +10,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         required=True,
         validators = [UniqueValidator(queryset=User.objects.all())]
         )
+    # email default required değil, onu değiştirdik, artık zorunlu alan
+    # email uniq olsun, değilse validation error dönsün onun için ekledik ve yukarıda import ettik (UniqueValidator)
     
     password = serializers.CharField(
         write_only = True,
@@ -22,6 +24,10 @@ class RegisterSerializer(serializers.ModelSerializer):
         required = True,
         style = {"input_type" : "password"}
     )
+    # confirmation için tanımlandı, aslında modelde yok onun için zorunlu tanımladık.
+    
+    # first_name = serializers.CharField(required=True)
+    # first_name zorunlu olsun isteseydik böyle yapmak gerekirdi.
   
 #! yukarıdakileri yazmadan sadece aşağıdakini yazarsak User modeli birebir kopyalamış oluruz, biz yukarıdakileri yazarak İnherit aldığımız modeli override ettik, kendimize göre customize yaptık.  
 
@@ -34,6 +40,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         'email',
         'password',
         'password2']
+    # bunlar User model'de olan alanlar, + password2 biz ekledik.
 
   #? Yeni oluşturduğumuz password2 ile password aynımı, bunu konrtol etmek için validate metodunu ekliyoruz.
   #? yazılan metodlarda indentation önemli, class Meta ile aynı hizada,

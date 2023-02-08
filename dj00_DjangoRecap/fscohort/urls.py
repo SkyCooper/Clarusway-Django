@@ -48,7 +48,7 @@ router.register("path", PathMVS)
 #* tek farkı [.format] özelliği, bu örnekte /api/.json yazarsak bize bir endpoint veriyor.
 
 urlpatterns = [
-    path('', homefs),
+    # path('', homefs),
 
     #! function views
     # path('path/', path_api),

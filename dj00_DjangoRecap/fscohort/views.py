@@ -31,6 +31,9 @@ from rest_framework.pagination import PageNumberPagination, LimitOffsetPaginatio
 #? CUSTOM pagination,
 from .pagination import CustomPageNumberPagination, CustomLimitOffsetPagination, CustomCursorPagination
 
+#? Permission
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, IsAuthenticatedOrReadOnly, BasePermission
+
 
 
 
@@ -398,6 +401,16 @@ class StudentMVS(ModelViewSet):
     # filter_backends = [OrderingFilter]                   #? hangi sıralamayı kullanacak,
     ordering_fields = ['first_name','last_name']  #* filter boxta hangi seçenekler çıksın istiyorsanız onu yazıyorsunuz
     ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
+    
+    #? permission
+    #* Authenticate olan (yani giriş yapan) herkes CRUD yapabilir, olmayan hiçbir işlem yapamaz.
+    permission_classes = [IsAuthenticated]
+    
+    #* sadece admin olan CRUD yapabilir
+    # permission_classes = [IsAdminUser]
+    
+    #* Authenticate olan (yani giriş yapan) herşeyi yapar, olmayan sadece GET(read) yapar.
+    # permission_classes = [IsAuthenticatedOrReadOnly]
     
     #? action decarator  ile viewset'lere extra kabiliyetler yazabiliyoruz..
     #? bir class yapısı içinde olduğumuzdan içine method yazabiliriz.

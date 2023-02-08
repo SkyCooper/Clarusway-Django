@@ -51,7 +51,7 @@ class StudentMVS(ModelViewSet):
     ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
     
     #? permission
-    #* herkes CRUD yapabilir
+    #* Authenticate olan (yani giriş yapan) herkes CRUD yapabilir, olmayan hiçbir işlem yapamaz.
     # permission_classes = [IsAuthenticated]
     
     #* sadece admin olan CRUD yapabilir

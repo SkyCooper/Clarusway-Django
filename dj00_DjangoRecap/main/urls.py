@@ -46,7 +46,7 @@ urlpatterns = [
     #! 2-kendi url dosyasından yönlendirme
     # her dosyanın içine urls.py isimli bir dosya oluşturulur.
     # include kullanarak app içinden urls'e yönlendirme yapılır.
-    path('fs/', include('fscohort.urls')),
+    path('api/', include('fscohort.urls')),
 ]
 
 # for images

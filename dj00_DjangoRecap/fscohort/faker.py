@@ -26,7 +26,9 @@ def run():
             Student.objects.create(path = new_path,
                                    first_name = fake.first_name(),
                                    last_name = fake.last_name(),
-                                   number = fake.pyint())
+                                   number = fake.pyint(),
+                                   age = fake.pyint()
+                                   )
 
     print('Finished')
 
