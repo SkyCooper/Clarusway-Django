@@ -24,7 +24,7 @@ def home(request):
 # - DELETE  --  (DB de kayıt silme)
 # - PATCH   --  (DB de kayıt değişikliği(kısmi update)  private)
 
-    """  ilave açıklma :
+"""  ilave açıklma :
 # GET: Sunucudan bir belge veya veri almak için kullanılır. GET isteği yalnızca veriyi okumak için kullanılmalıdır, çünkü GET isteği tarayıcı ve proxy sunucuları tarafından önbelleğe alınabilir ve bu nedenle birkaç kez çalıştırılabilir.
 # POST: Sunucuya bir belge veya veri göndermek için kullanılır. POST isteği, veritabanı güncelleştirmesi gibi veri oluşturan ve değiştiren işlemler için kullanılır.
 # PUT: Sunucuya bir belge veya veri yüklemek için kullanılır. PUT isteği, bir belge veya verinin tamamının yerine koyulması için kullanılır.

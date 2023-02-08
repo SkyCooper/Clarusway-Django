@@ -88,9 +88,21 @@ class PathSerializer(serializers.ModelSerializer):
         view_name='detail'
     )
     #* HyperlinkedRelatedField'den alınca tek tek her öğrencinin endpoint name'ini verir.
+    # {
+    #     "id": 1,
+    #     "path_name": "AWS",
+    #     "students": [
+    #         "http://127.0.0.1:8000/api/student/5",
+    #         "http://127.0.0.1:8000/api/student/6",
+    #         "http://127.0.0.1:8000/api/student/7",
+    #         "http://127.0.0.1:8000/api/student/9"
+    #     ]
+    # },
+    
     
     #! BURAYA DİKKAT ET !!!
     # urls içine --> name="detail" ekle yoksa hata verir.
+    
     class Meta:
         model = Path
         # fields = "__all__"
