@@ -8,6 +8,12 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 
+from .models import Profile
+from .serializers import ProfileSerializer
+from rest_framework.generics import RetrieveUpdateAPIView
+from .permissions import IsOwnerOrStaff
+from rest_framework.permissions import IsAuthenticated
+
 
 #! register için;
 class RegisterView(CreateAPIView):
@@ -40,3 +46,12 @@ class RegisterView(CreateAPIView):
 def logout(request):
     request.user.auth_token.delete()
     return Response({"message": 'User Logout: Token Deleted'})
+
+
+
+
+#! profile için;
+class ProfileUpdateView(RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    permission_classes = [IsOwnerOrStaff, IsAuthenticated]

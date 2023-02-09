@@ -35,6 +35,7 @@ class Student(models.Model): #!Student isimli bir tablo oluştu db içinde
     
     avatar = models.ImageField(blank=True, null=True, upload_to='student_pictures')
     # upload_to='student_pictures' => eklenecek resimler, media altında student_pictures diye bir klasöre kayıt edilsin demek
+    # default = "default.png" yazılsaydı, resim eklenmezse media içindeki default.png'yi alsın demektir.
     
     # avatar = models.FileField(blank=True, null=True) #!FileField da kullanılabilir
     
@@ -92,17 +93,17 @@ class Student(models.Model): #!Student isimli bir tablo oluştu db içinde
 #! -------------------  Models Relations Dj03 ------------------------
 #! -------------------------------------------------------------------
 
-class Profile(models.Model):
+class MyProfile(models.Model):
     bio = models.TextField(blank=True)
     image = models.ImageField(upload_to='profile', blank=True, null=True) 
     # upload_to='profile' => eklenecek resimler, media altında profile diye bir klasör oluşsun 
     # ve oraya kayıt edilsin demek
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    myuser = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     # hangi kullanıcı ile ilişkili buradan belirtiyoruz. User tablosu(modeli) ile OneToOne ilişki kuruldu.
     # on_delete=models.CASCADE
     
     def __str__(self):
-        return self.user.username
+        return self.myuser.username
         # bu user ait username görünsün demek
         
         

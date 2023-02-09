@@ -3,6 +3,9 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
+#todo, profile modeli
+from .models import Profile
+
 #* signal kullanarak token oluşturma,
 #* signal'in görevi = başka bir olayı trgger etme / tetikleme,
 
@@ -21,5 +24,14 @@ def create_Token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
         
+        
+        
+#todo, bir kullanıcı register olduğunda ona Profile otomatik create edilmesi için;  
+@receiver(post_save, sender=User)
+def create_Profile(sender, instance=None, created=False, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+        
 #? model içine yazmayıp signals.py olarak ayrı bir dosyada yazdığımız için apps.py içine eklemek gerekli
 #? apps.py otomatik çalışan bir dosyadır.   ->  signals.py dosyasını çağırır.
+

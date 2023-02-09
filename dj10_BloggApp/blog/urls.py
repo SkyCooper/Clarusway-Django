@@ -8,8 +8,16 @@ router.register('category', CategoryView)
 router.register('blog', BlogView)
 
 
+#? 1inci yöntem
 urlpatterns = [
     path('', include(router.urls))
 ]
 
-# urlpatterns += router.urls
+
+#? 2nci yöntem
+# urlpatterns = router.urls  # yukarıdaki urlpatterns tanımlazmazsa = olmalı
+
+
+#? 3üncü yöntem
+# urlpatterns = [ ]
+# urlpatterns += router.urls  # yukarıdaki urlpatterns tanımlnırsa += olmalı

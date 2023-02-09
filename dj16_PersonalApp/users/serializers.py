@@ -80,8 +80,3 @@ class ProfileSerializer(serializers.ModelSerializer):
         instance.user_id = self.context['request'].user.id
         instance.save()
         return instance
-        
-        
-    
-    
-        

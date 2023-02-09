@@ -5,6 +5,9 @@ from .views import RegisterView
 from .views import logout
 from rest_framework.authtoken import views
 
+#? profile için;
+from .views import ProfileUpdateView
+
 urlpatterns = [
     path('auth/', include('dj_rest_auth.urls')),
     #? dj_rest_auth, paketi içinde default url'ler mevcut;
@@ -26,4 +29,6 @@ urlpatterns = [
     
     path('logout/', logout),
         # user/ logout/
+        
+    path("profile/<int:pk>/", ProfileUpdateView.as_view()),
 ]

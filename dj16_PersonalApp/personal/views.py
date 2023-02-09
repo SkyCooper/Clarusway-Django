@@ -75,7 +75,7 @@ class DynamicDepartmentView(generics.ListAPIView):
     def get_queryset(self):
         name = self.kwargs["department"]
         return Department.objects.filter(name__iexact = name)
-  
+
 class CustomDynamicDepartmentView(generics.RetrieveAPIView):
     serializer_class = DepartmentDynamicSerializer
     queryset = Department.objects.all()

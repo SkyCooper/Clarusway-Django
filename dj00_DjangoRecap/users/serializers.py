@@ -4,6 +4,9 @@ from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
 from dj_rest_auth.serializers import TokenSerializer
 
+#? ilave porfile modeli
+from .models import Profile
+
 class RegisterSerializer(serializers.ModelSerializer):
 
     email = serializers.EmailField(
@@ -76,3 +79,21 @@ class CustomTokenSerializer(TokenSerializer):
     
     class Meta(TokenSerializer.Meta):
         fields = ("key", "user")
+        
+#? ilave porfile serializer
+class ProfileSerializer(serializers.ModelSerializer):
+    
+    user = serializers.StringRelatedField()
+    user_id = serializers.IntegerField(required=False)
+    
+    class Meta:
+        model = Profile
+        fields = ("id","user","user_id", "display_name","avatar", "bio")
+        
+#! buradaki ProfileSerializer'ın kullanıldığı view (ProfileUpdateView)
+#! RetrieveUpdateAPIView'dan inherit edildiği için create metodu değil update metodu override edilmeli,        
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        instance.user_id = self.context['request'].user.id
+        instance.save()
+        return instance

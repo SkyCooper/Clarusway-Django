@@ -8,4 +8,4 @@
 
 ### fscohort klasöründe; model-serializer-view-url ile ilgili bütün işlemler,
 
-### user klasöründe; kullanıcı işlemleri ile ilgli notlar vardır.
+### user klasöründe; kullanıcı işlemleri ve kullanıcıya ilave profil oluşturulması ile ilgli notlar vardır.
