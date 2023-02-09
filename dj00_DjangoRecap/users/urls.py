@@ -19,11 +19,11 @@ urlpatterns = [
     path("register/", RegisterView.as_view()),
         # user/ register/
     
-    # path('login/', views.obtain_auth_token),
+    path('login/', views.obtain_auth_token),
     #? obtain_auth_token bir login endpoint  oluşturuyor. username ve password giriliyor,
     #? db'de eğer bu user için bir token varsa onu getiriyor, yoksa yeni bir token create ediyor ve onu getiriyor.
         # user/ login/
     
-    # path('logout/', logout),
+    path('logout/', logout),
         # user/ logout/
 ]

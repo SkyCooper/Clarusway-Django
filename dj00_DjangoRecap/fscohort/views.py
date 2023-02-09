@@ -400,7 +400,7 @@ class StudentMVS(ModelViewSet):
     #? ordering
     # filter_backends = [OrderingFilter]                   #? hangi sıralamayı kullanacak,
     ordering_fields = ['first_name','last_name']  #* filter boxta hangi seçenekler çıksın istiyorsanız onu yazıyorsunuz
-    ordering = ['last_name']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
+    ordering = ['id']  #* default olarak ilk açıldığında buraya yazdığımıza göre sıralıyor
     
     #? permission
     #* Authenticate olan (yani giriş yapan) herkes CRUD yapabilir, olmayan hiçbir işlem yapamaz.

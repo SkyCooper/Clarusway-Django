@@ -5,8 +5,9 @@ from rest_framework.authtoken.models import Token
 
 #* signal kullanarak token oluşturma,
 #* signal'in görevi = başka bir olayı trgger etme / tetikleme,
-  #? register olunca token oluşması signal ile yapıldığında models.py içinde yazılması lazım ama 
-  #? kalabalık olmasın diye signals.py dosyası oluşturulup orada yapmak daha uygun
+
+#? register olunca token oluşması signal ile yapıldığında models.py içinde yazılması lazım ama 
+#? kalabalık olmasın diye signals.py dosyası oluşturulup orada yapmak daha uygun
 
 
 #! yeni bir user oluşturulduğunda ona token oluşturması için receiver dekoratoru ile yazılan metod;
