@@ -195,3 +195,79 @@ class UsersConfig(AppConfig):
     
     def ready(self) -> None:
         import users.signals
+        
+
+
+
+#! ***********************************************
+#! users klasörünü başka bir projeden kopyalarsak;
+#! ***********************************************
+
+#* rest-auth token kullanmak için;
+pip install dj-rest-auth
+pip freeze > requirements.txt
+
+#* python setup.py egg_info did not run successfully.
+# eğer böyle bir hata alırsan,
+pip install --upgrade setuptools
+# sonra tekrar dj-rest-auth yükle,
+
+#* ekle
+INSTALLED_APPS = (
+    ...,
+    'rest_framework',                   #? yoksa bunu ekle
+    'rest_framework.authtoken',         #? yoksa bunu ekle
+    ...,
+    'dj_rest_auth', #! bunu ekle
+)
+
+#* ekle
+INSTALLED_APPS = (
+    ...,
+    'users',
+)
+
+# main -> settings kalsörü  en sonuna ekle,
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ]
+}
+
+# migrate yap ve çalıştır.
+python manage.py migrate
+python manage.py runserver
+
+
+# eğer pillow kurmak gerekirse 
+#* IMAGE (resim) işleme eklentisi kurma 
+pip install pillow
+pip freeze > requirements.txt
+# kurulum yapılan her paketten sonra güncel olarak txt içine işlemek için yukarıdaki komutu çalıştır.
+
+# main settings içine 
+STATIC_URL = 'static/' ---> bunun altına ekle;
+1-
+MEDIA_URL = 'media/'
+2-
+MEDIA_ROOT = BASE_DIR / 'media/'
+
+# media_url -> hangi urlyi kullanacaksın
+# media_root -> hangi klasöre yüklemek istersin.
+# ilk resim eklendikten sonra media isimli bir klasör oluşur ve eklenen resim oraya kayıt edilir.
+
+# https://docs.djangoproject.com/en/4.1/howto/static-files/
+# bu adresten nasıl yapılacağına bak, import vs. nasıl yapılacak...
+
+# main urls içine aşağıdaki importları yaz ve urlpatterns ekle.
+3-
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns +=  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+# tekrar migrate yap ve çalıştır.
+python manage.py migrate
+python manage.py runserver
+
