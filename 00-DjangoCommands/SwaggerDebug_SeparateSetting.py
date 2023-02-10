@@ -512,9 +512,10 @@ DJANGO_LOG_LEVEL=INFO
 
 #* __init__.py
 ENV_NAME=dev
-#? PostgreSQL çalışır
-# ENV_NAME=dev
-#? SQLite çalışır
+#? development (geliştirme) ortamı --> SQLite çalışır
+
+# ENV_NAME=prod
+#? production (ürün) ortamı -->PostgreSQL çalışır
 
 #* dev.py
 DEBUG=True
