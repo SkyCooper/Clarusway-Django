@@ -1,4 +1,8 @@
 
+#! ***********************************************
+#! users klasörünü en baştan yapmak için;
+#! ***********************************************
+
 #* rest-auth token kullanmak için;
 pip install dj-rest-auth
 pip freeze > requirements.txt
@@ -196,6 +200,92 @@ class UsersConfig(AppConfig):
     def ready(self) -> None:
         import users.signals
         
+#! ***********************************************
+#! users klasörünü içine Profile model eklemek için;
+#! ***********************************************
+
+# models.py içine;
+from django.db import models
+from django.contrib.auth.models import User
+
+#? açıklama
+# yeni bir tablo oluşturup, bunu onetoone ile mevcut User tablosuna bağlayarak yapma;
+# böylece mevcut User'lara ilave fieldlar ekleyebiliriz.
+# Şimdi bu yöntemi kullanıp her bir User'ın Profile bilgilerini tutacağımız bir Profile Tablosu eklicez,
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    display_name = models.CharField(max_length=30, blank=True, null=True)
+    bio = models.TextField(blank=True, null=True)
+    
+    avatar = models.ImageField(upload_to="profile_pictures", default="avatar.png")
+    # upload_to='student_pictures' => eklenecek resimler, media altında student_pictures diye bir klasöre kayıt edilsin demek
+    # default = "avatar.png" , resim eklenmezse media ana klasörü içindeki avatar.png'yi alsın demektir.
+    
+    # projelerde static'ler db olmaz, başka bir depolama alanında olur
+    # https://django-storages.readthedocs.io/en/latest/
+    
+    def __str__(self):
+        return f"{self.user.username}'s Profile"
+
+
+
+# serializers.py içine;
+#? ilave porfile serializer
+class ProfileSerializer(serializers.ModelSerializer):
+    
+    user = serializers.StringRelatedField()
+    user_id = serializers.IntegerField(required=False)
+    
+    class Meta:
+        model = Profile
+        fields = ("id","user","user_id", "display_name","avatar", "bio")
+        
+#! buradaki ProfileSerializer'ın kullanıldığı view (ProfileUpdateView)
+#! RetrieveUpdateAPIView'dan inherit edildiği için create metodu değil update metodu override edilmeli,        
+    def update(self, instance, validated_data):
+        instance = super().update(instance, validated_data)
+        instance.user_id = self.context['request'].user.id
+        instance.save()
+        return instance
+
+
+
+# view.py içine;
+from .models import Profile
+from .serializers import ProfileSerializer
+from rest_framework.generics import RetrieveUpdateAPIView
+from .permissions import IsOwnerOrStaff
+from rest_framework.permissions import IsAuthenticated
+
+#! profile için;
+class ProfileUpdateView(RetrieveUpdateAPIView):
+    serializer_class = ProfileSerializer
+    queryset = Profile.objects.all()
+    permission_classes = [IsOwnerOrStaff, IsAuthenticated]
+
+
+
+
+# urls.py içine;
+#? profile için;
+from .views import ProfileUpdateView
+
+urlpatterns = [ path("profile/<int:pk>/", ProfileUpdateView.as_view()), ] #ekle
+
+
+
+# signals.py içine;
+from .models import Profile
+
+#? bir kullanıcı register olduğunda ona Profile otomatik create edilmesi için;  
+@receiver(post_save, sender=User)
+def create_Profile(sender, instance=None, created=False, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+
 
 
 
