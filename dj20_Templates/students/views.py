@@ -28,7 +28,8 @@ def home(resquest):
         
     }
     # return render(resquest, 'home.html', context)
-    return render(resquest, 'students/home.html', context)
+    # return render(resquest, 'students/home.html', context)
+    return render(resquest, 'students/index.html', context)
 
 
 '''

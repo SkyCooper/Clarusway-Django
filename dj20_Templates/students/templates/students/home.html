@@ -1,50 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Document</title>
-    </head>
-    <body>
-        <h1>Hello this is STUDENTS homepage..</h1>
-        <h2>context title value : {{ title }}</h2>
-        <hr />
-        <p>{{ desc }}</p>
-        <p>{{ number }}</p>
-        <hr />
-        <p>{{ list }}</p>
-        <p>{{ list.0 }}</p>
-        <p>{{ list.2 }}</p>
-        <p>{{ list.2.2 }}</p>
-        <hr />
-        <p>{{ dict }}</p>
-        <p>{{ dict.key1 }}</p>
-        <hr />
 
-        <ul>
-            {% for i in list %}
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
 
-            <li>{{ i }}</li>
+<body>
+    <h1>Hello this is STUDENTS homepage..</h1>
+    <h2>context title value : {{ title }}</h2>
+    <hr />
+    <p>{{ desc }}</p>
+    <p>{{ number }}</p>
+    <hr />
+    <p>{{ list }}</p>
+    <p>{{ list.0 }}</p>
+    <p>{{ list.2 }}</p>
+    <p>{{ list.2.2 }}</p>
+    <hr />
+    <p>{{ dict }}</p>
+    <p>{{ dict.key1 }}</p>
+    <hr />
 
-            {% endfor %}
-        </ul>
-        <hr />
+    <ul>
+        {% for i in list %}
 
-        {% if number == 4285 %}
-        <p>Number is 4285</p>
-        {% else %}
-        <p>Not a 4285</p>
-        {% endif %}
+        <li>{{ i }}</li>
 
-        <hr />
-        <p>Add number value {{ number | add:'15' }}</p>
-        <p>Real number value {{ number }}</p>
+        {% endfor %}
+    </ul>
+    <hr />
 
-        <hr />
-        <p>{{ dict_list|dictsort:"age" }}</p>
+    {% if number == 4285 %}
+    <p>Number is 4285</p>
+    {% else %}
+    <p>Not a 4285</p>
+    {% endif %}
 
-        <hr />
-        <p>{{ desc|truncatechars:7 }}</p>
-    </body>
+    <hr />
+    <p>Add number value {{ number | add:'15' }}</p>
+    <p>Real number value {{ number }}</p>
+
+    <hr />
+    <p>{{ dict_list|dictsort:"age" }}</p>
+
+    <hr />
+    <p>{{ desc|truncatechars:7 }}</p>
+
+</body>
+
 </html>
