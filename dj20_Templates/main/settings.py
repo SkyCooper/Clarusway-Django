@@ -56,7 +56,7 @@ ROOT_URLCONF = 'main.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates', 
-        #? ninja templates de kullanılabilir,
+        #? jinja templates de kullanılabilir,
         'DIRS': [BASE_DIR / 'templates'], 
         #? Global templates klasör adresleri (path)
         #? root'daki templates klasörünü tara, önce buraya bakar,

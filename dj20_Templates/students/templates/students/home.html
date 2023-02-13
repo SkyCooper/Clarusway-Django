@@ -36,5 +36,15 @@
         {% else %}
         <p>Not a 4285</p>
         {% endif %}
+
+        <hr />
+        <p>Add number value {{ number | add:'15' }}</p>
+        <p>Real number value {{ number }}</p>
+
+        <hr />
+        <p>{{ dict_list|dictsort:"age" }}</p>
+
+        <hr />
+        <p>{{ desc|truncatechars:7 }}</p>
     </body>
 </html>
