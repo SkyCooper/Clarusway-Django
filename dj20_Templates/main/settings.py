@@ -55,9 +55,14 @@ ROOT_URLCONF = 'main.urls'
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
-        'APP_DIRS': True,
+        'BACKEND': 'django.template.backends.django.DjangoTemplates', 
+        #? ninja templates de kullanılabilir,
+        'DIRS': [BASE_DIR / 'templates'], 
+        #? Global templates klasör adresleri (path)
+        #? root'daki templates klasörünü tara, önce buraya bakar,
+        'APP_DIRS': True, 
+        #? Application içinde templates klasörü kullanılacak mı? (true/false)
+        #? yani bu dizindeki templates klasörünü tara, oraya bak 
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',

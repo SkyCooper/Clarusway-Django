@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>Hello this is STUDENTS homepage..</h1>
+        <h2>context title value : {{ title }}</h2>
+        <hr />
+        <p>{{ desc }}</p>
+        <p>{{ number }}</p>
+        <hr />
+        <p>{{ list }}</p>
+        <p>{{ list.0 }}</p>
+        <p>{{ list.2 }}</p>
+        <p>{{ list.2.2 }}</p>
+        <hr />
+        <p>{{ dict }}</p>
+        <p>{{ dict.key1 }}</p>
+        <hr />
+
+        <ul>
+            {% for i in list %}
+
+            <li>{{ i }}</li>
+
+            {% endfor %}
+        </ul>
+        <hr />
+
+        {% if number == 4285 %}
+        <p>Number is 4285</p>
+        {% else %}
+        <p>Not a 4285</p>
+        {% endif %}
+    </body>
+</html>
