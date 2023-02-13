@@ -5,11 +5,11 @@ from rest_framework import routers
 
 router = routers.DefaultRouter()
 
-router.register("category", CategoryMVS)
-router.register("brand", BrandMVS )
-router.register("firm", FirmMVS )
-router.register("product", ProductMVS )
-router.register("purchases", PurchasesMVS )
-router.register("sales", SalesMVS )
+router.register("categories", CategoryView)
+router.register("brands", BrandView )
+router.register("firms", FirmView )
+router.register("products", ProductView )
+router.register("purchases", PurchasesView )
+router.register("sales", SalesView )
 
 urlpatterns = router.urls

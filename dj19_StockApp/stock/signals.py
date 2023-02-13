@@ -1,34 +1,25 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
-from .models import Purchases, Sales, Product
+from .models import Purchases, Sales
 
 
-@receiver(post_save, sender=Purchases)
-def increase_stock(sender, instance, created, **kwargs):
-    if created:
-        product = Product.objects.get(id=instance.product_id)
-        product.stock += instance.quantity
-        product.save()
-        
-@receiver(post_save, sender=Sales)
-def decrease_stock(sender, instance, created, **kwargs):
-    if created:
-        product = Product.objects.get(id=instance.product_id)
-        product.stock -= instance.quantity
-        product.save()
+#? pre_save --> yani DB'ye kayıt edilmeden önce price_total hesaplansın diye;
+#? çünkü price_total null=True değil, öyle olsaydı önce null değer atar
+#? daha sonra post_save ile de yapabilirdik, (o zaman created da eklemek gerekirdi)
+#? fakat pre_save kayıttan önce işlem yaptığı için created gerek yok, (sender, instance, **kwargs) bunlar yeterli,
 
+#*purchase yapıldığında;
+@receiver(pre_save, sender=Purchases)
+def calculate_total_price(sender, instance, **kwargs):
+    instance.price_total = instance.quantity * instance.price
 
-
-#! Abdullah hocanın signal kodu,       
-# @receiver(post_save, sender=Purchases)
-# def update_stock_purchases(sender, instance, created, **kwargs):
-#     if created:
-#         instance.product.stock += instance.quantity
-#         instance.product.save()
+    
+#*sales yapıldığında;
+@receiver(pre_save, sender=Sales)
+def calculate_total_price(sender, instance, **kwargs):
+    instance.price_total = instance.quantity * instance.price
     
     
-# @receiver(post_save, sender=Sales)
-# def update_stock_sales(sender, instance, created, **kwargs):
-#     if created:
-#         instance.product.stock -= instance.quantity
-#         instance.product.save()
+#! signal kullanınca apps.py içine ready metodunu eklemeyi UNUTMA!!!!
+    # def ready(self):
+    #     import stock.signals

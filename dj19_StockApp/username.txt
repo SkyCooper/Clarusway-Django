@@ -1,2 +1,5 @@
-admin  admin
-cooper Test123.
+admin           Test123*
+cooper          Test123*
+test            Test123*
+super           Test123*
+halil           Test123*
