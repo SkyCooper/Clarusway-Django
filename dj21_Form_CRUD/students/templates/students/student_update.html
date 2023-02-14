@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Student Update
+{% endblock title %}
+
+
+
+{% block body %}
+<h2>Student Update</h2>
+<form action="" method="POST" enctype="multipart/form-data">
+    <!-- enctype="multipart/form-data" form ile image upload ederken hata vermemesi için yazmak lazım -->
+    <!-- CSRF token missing. hatası almamak için -->
+    {% csrf_token %}
+
+    <!-- {{ form }} -->
+    {{ form.as_p }}
+    <button type="submit">Update</button>
+</form>
+{% endblock body %}

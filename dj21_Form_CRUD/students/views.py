@@ -2,6 +2,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Student
 
+from .forms import StudentForm
+from django.shortcuts import redirect
+
+from django.shortcuts import get_object_or_404
+
 
 # Create your views here.
 
@@ -99,3 +104,41 @@ def student_list(request):
     }
     
     return render(request, "students/student_list.html", context)
+
+
+def student_add(request):
+    form = StudentForm()
+    
+    if request.method == 'POST':
+        # print("POST :", request.POST)
+        # print("FILES :", request.FILES)
+        
+        form = StudentForm(request.POST, request.FILES)
+        
+        if form.is_valid():
+            form.save()
+            
+            #? artık form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
+            #? redirect için url tarafında belittiğimiz ismi yazmak daha mantıklı redirect("name")
+            return redirect("student_list")
+            # return redirect("/list") # path ile yazılması
+    
+    context = {
+        "form" : form
+    }
+    
+    return render(request, "students/student_add.html", context)
+
+
+def student_update(request, id):
+    # students = Student.objects.all()
+    students = get_object_or_404(Student, id=id)
+    
+    #? formu yukarıdaki obje ile doldurmak için;
+    form = StudentForm(instance=students)
+    
+    context = {
+        "form" : form
+    }
+    
+    return render(request, "students/student_update.html", context)
