@@ -7,7 +7,6 @@ from django.http import HttpResponse
 #     return HttpResponse("<h1> Hello FS-12</h1>")
 
 
-#* https://docs.djangoproject.com/en/4.1/ref/templates/builtins/#
 #? DTL ile yapılması;
 def home(resquest):
     
@@ -31,7 +30,7 @@ def home(resquest):
         }
     
     #? render fonksiyonu aldığı parametreler;
-    # def render(request, template_name, context=None, content_type=None, status=None, using=None)
+    #* def render(request, template_name, context=None, content_type=None, status=None, using=None)
     # request yani bir istek geldi, 
     # template_name, bu istek gelince hangi template çalışacak,
     # context, ismi değişebilir, template içine değişken aktarmak için key/value şeklinde tanımlanıyor.
@@ -43,7 +42,7 @@ def home(resquest):
     #? students içinde bulunan templates klasörü içindeki home.html çalışır,
     # return render(resquest, 'students/home.html', context)
 
-    #? students içinde bulunan templates klasörü içindeki index.html çalışır,
+    #? students içinde bulunan templates klasörü içindeki index.html (root base.html'den inherit edilen) çalışır,
     return render(resquest, 'students/index.html', context)
 
 
@@ -53,7 +52,9 @@ değişkenler çift süslü içine yazılır,
 başında ve sonunda boşluk bırakılırsa daha iyi olur, bazen hata verebiliyor.
 
 
-{% command %}
+{% tags %}
+[Tags reference](https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#ref-templates-builtins-tags)
+
 komutlar açılış/kapanış blokları halinde yazılır,
 
 {% block title %}
@@ -64,8 +65,9 @@ Index Home
 <li>{{ i }}</li>
 {% endfor %}
 
-
 | -- filter
+[Filters reference](https://docs.djangoproject.com/en/3.2/ref/templates/builtins/#ref-templates-builtins-filters)
+
 filitreleme için pipe işareti ( | ) kullanılır,
 {{ context'ten alınan değişken | yapılacak filitreleme işlemi }}
 filter işlemi sadece çıktıyı etkiler, esas değer değişmez
