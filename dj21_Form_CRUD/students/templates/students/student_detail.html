@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+Student Info
+{% endblock title %}
+
+
+
+{% block body %}
+<h2>Student Info</h2>
+
+<!-- resim yoksa/varsa ona göre hata vermesin diye -->
+{% if student.image %}
+
+<img src="{{ student.image.url}}" alt="">
+
+{% endif %}
+
+<hr>
+{{ student.first_name}} <br>
+{{ student.last_name}} <br>
+{{ student.number}}
+{% endblock body %}

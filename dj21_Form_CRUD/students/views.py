@@ -131,14 +131,34 @@ def student_add(request):
 
 
 def student_update(request, id):
-    # students = Student.objects.all()
-    students = get_object_or_404(Student, id=id)
+    # student = Student.objects.all()
+    student = get_object_or_404(Student, id=id)
     
     #? formu yukarıdaki obje ile doldurmak için;
-    form = StudentForm(instance=students)
+    form = StudentForm(instance=student)
+    
+    if request.method == 'POST':
+        form = StudentForm(request.POST, request.FILES, instance=student)
+        if form.is_valid():
+            form.save()
+            
+            #? artık form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
+            #? redirect için url tarafında belittiğimiz ismi yazmak daha mantıklı redirect("name")
+            return redirect("student_list")
+            # return redirect("/list") # path ile yazılması
     
     context = {
         "form" : form
     }
     
     return render(request, "students/student_update.html", context)
+
+def student_detail(request, id):
+    student = get_object_or_404(Student, id=id)
+
+    context = {
+        "student" : student
+    }
+    
+    return render(request, "students/student_detail.html", context)
+
