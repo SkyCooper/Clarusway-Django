@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from .models import Student
+
 
 # Create your views here.
 
@@ -85,3 +87,15 @@ içinde listeler olan dicti age'e göre sırala; {{ dict_list|dictsort:"age" }}
 
 desc valuesinin ilk 7 karakterini göster ;{{ desc|truncatechars:7 }}
 '''
+
+
+def student_list(request):
+    #? Student modeldeki bütün objeleri alıp değişkene atadık,
+    students = Student.objects.all()
+    
+    #? bu student değişkeni value olacak şekilde yeniden tanımladık,
+    context = {
+        "students" : students
+    }
+    
+    return render(request, "students/student_list.html", context)

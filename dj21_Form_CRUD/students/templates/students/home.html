@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>Hello this is STUDENTS homepage..</h1>
+
+    <!--* {{ variables }} -->
+    <!-- Simple Variables: {{ title }}
+    Object Attributes: {{ page.title }}
+    Dictionary Lookups: {{ dict.key }}
+    List Indexes: {{ list_items.0 }} -->
+
+    <!--? context içindeki title keyine karşılık olan value döner, = cooper -->
+    <h2>context title value : {{ title }}</h2>
+    <hr />
+
+    <p>{{ desc }}</p>
+    <p>{{ number }}</p>
+    <hr />
+
+
+    <p>{{ list }}</p>
+    <!--? DTL içerisinde nokta notasyonu ile erişim sağlanır. -->
+    <!--? context içindeki listenin sıfırıncı indexine karşılık olan value döner, = a -->
+    <p>{{ list.0 }}</p>
+    <p>{{ list.2 }}</p>
+    <!--? context içindeki listenin ikinci indexindeki listeden ikinci indexteki value döner, = 33 -->
+    <p>{{ list.2.2 }}</p>
+    <hr />
+
+    <p>{{ dict }}</p>
+    <!--? context içindeki dictten key1'in valuesu döner, = value1 -->
+    <p>{{ dict.key1 }}</p>
+    <hr />
+
+    <!--* {% tags %} -->
+    <!-- Display Logic: {% if %}...{% endif %}
+    Loop Control: {% for x in y %}...{% endfor %}
+    Block Declaration: {% block content %}...{% endblock %}
+    Content Import: {% include "header.html" %}
+    Inheritance: {% extends "base.html" %} -->
+    <ul>
+        <!--todo, açılış bloğu -->
+        {% for i in list %}
+
+        <li>{{ i }}</li>
+
+        {% endfor %}
+        <!--todo, kapanış bloğu -->
+    </ul>
+    <hr />
+
+    <!--todo, açılış bloğu -->
+    {% if number == 4285 %}
+    <p>Number is 4285</p>
+    {% else %}
+    <p>Not a 4285</p>
+    {% endif %}
+    <!--todo, kapanış bloğu -->
+
+
+    <!--* | -- filter -->
+    <!-- Change Case: {{ name|title }}
+    Truncation: {{ post_content|truncatewords:50 }}
+    Date Formatting: {{ order_date|date:"D M Y" }}
+    List Slicing: {{ list_items|slice:":3" }} -->
+    <hr />
+    <p>Add number value {{ number | add:'15' }}</p>
+    <p>Real number value {{ number }}</p>
+
+    <hr />
+    <p>{{ dict_list|dictsort:"age" }}</p>
+
+    <hr />
+    <p>{{ desc|truncatechars:7 }}</p>
+
+</body>
+
+</html>
