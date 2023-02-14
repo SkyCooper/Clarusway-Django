@@ -162,3 +162,21 @@ def student_detail(request, id):
     
     return render(request, "students/student_detail.html", context)
 
+
+def student_delete(request, id):
+    student = get_object_or_404(Student, id=id)
+    
+    if request.method == 'POST':
+        student.delete()
+            
+        #? artık form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
+        #? redirect için url tarafında belittiğimiz ismi yazmak daha mantıklı redirect("name")
+        return redirect("student_list")
+        # return redirect("/list") # path ile yazılması
+
+    context = {
+        "student" : student
+    }
+    
+    return render(request, "students/student_delete.html", context)
+
