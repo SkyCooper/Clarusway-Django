@@ -1,15 +1,19 @@
+<!-- base.html'den inherit edildi, yol belirtmeye gerek yok,
+root içindeki, templates kalörü altındaki base.html'e bakar.  -->
 {% extends 'base.html' %}
 
+<!--! static çalışması için açılış/kapanış blokları üstünde bu komut yazılmalı  -->
 {% load static %}
 {% block link %}
+<!--? static, students içindeki static klasörü altındaki main.css çalışır ve yazılar kırmızı olur. -->
 <link rel="stylesheet" href="{% static 'students/main.css' %}">
 {% endblock link %}
 
 {% block title %}
-home
+Index Home
 {% endblock title %}
 
 
 {% block body %}
-<h1>Hello this is home page.....</h1>
+<h1>Hello this is (students / INDEX.html) home page.....</h1>
 {% endblock body %}

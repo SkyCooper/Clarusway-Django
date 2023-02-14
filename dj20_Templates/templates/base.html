@@ -5,18 +5,36 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!--? static -->
+
+    <!--? static, root directory içindeki static klasörü altındaki main.css çalışır ve yazılar mavi olur. -->
+    <!-- bunu kullanmak için settings.py içine;
+        STATICFILES_DIRS = [
+        BASE_DIR / 'static'] 
+        eklemek gerekir. -->
+
+    <!--todo, açılış bloğu -->
     {% block link %}
     <link rel="stylesheet" href="{% static 'main.css'}" />
     {% endblock link %}
+    <!--todo, kapanış bloğu -->
 
-    <title>{% block title %}Documents{% endblock title %}</title>
+    <!-- artık bu bloklar arasında yazılan yerler değişken olarak kullanılabilir
+    yani base.html çağırılırsa title Documents olarak yazar,
+    fakat bundan inherit edilerek hazırlanan students/index.html çağırılırsa Index Home yazar.-->
+    <title>
+        {% block title %}
+        Documents
+        {% endblock title %}
+    </title>
+
 </head>
 
 <body>
+
     {% block body %}
     <h1>Hello this is BASE.html homepage..</h1>
     {% endblock body %}
+
 </body>
 
 </html>

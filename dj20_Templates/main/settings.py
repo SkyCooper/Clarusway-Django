@@ -59,6 +59,8 @@ TEMPLATES = [
         #? jinja templates de kullanılabilir,
         
         'DIRS': [BASE_DIR / 'templates'],
+        #! Default boş liste olarak gelir, içini biz yazıyoruz. Bestpractise bu ismi kullanıyoruz, değişebilir
+        # fakat students içindeki klasör ismi MUTLAKA templates olmak zorunda,
         #? Global templates klasör adresleri (path)
         #? root'daki templates klasörünü tara, önce buraya bakar,
         
