@@ -195,8 +195,11 @@ def student_update(request, id):
     
     return render(request, "students/student_update.html", context)
 
-
+#* bir öğrenci bilgilerine bakmak için;
+#? tek bir öğrenciye bakmak için id kullanmak gerekli,
 def student_detail(request, id):
+    
+    #? hangi öğrenci,(id'si benim yazdığım id ile eşleşen)
     student = get_object_or_404(Student, id=id)
 
     context = {

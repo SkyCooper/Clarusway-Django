@@ -9,16 +9,36 @@ Student Info
 
 {% block body %}
 <h2>Student Info</h2>
+<hr>
 
-<!-- resim yoksa/varsa ona göre hata vermesin diye -->
+<p>student.image.url, bize image'ın adresini verir. <br> Eğer image varsa, yoksa uyarı mesajı gelir. </p>
 {% if student.image %}
-
-<img src="{{ student.image.url}}" alt="">
-
+{{ student.image.url}}
+{% else %}
+<p>Bu kullanıcıya ait resim eklenmediği için adresi yoktur.</p>
 {% endif %}
 
 <hr>
+<p>Görmek istediğimiz bilgileri alıp yazıyoruz;</p>
+
 {{ student.first_name}} <br>
 {{ student.last_name}} <br>
 {{ student.number}}
+
+<hr>
+
+<!-- resim yoksa/varsa ona göre hata vermesin diye bir condition yazıyoruz, 
+bu hatanın önüne geçmek için default image tanımlanabilir,
+veya image alanı zorunlu yapılabilirdi,
+-->
+{% if student.image %}
+
+<p>resmi görmek için img tagı kullanıp src'sine student.image.url yazmak gerekli </p>
+<img src="{{ student.image.url}}" alt="">
+
+{% else %}
+<p>Bu kullanıcıya ait resim eklenmemiştir.</p>
+
+{% endif %}
+
 {% endblock body %}
