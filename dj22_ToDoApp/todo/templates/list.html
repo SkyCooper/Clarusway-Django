@@ -17,6 +17,10 @@
 
 <hr>
 <p> table olarak sergilemek için; </p>
+
+<a href="">
+    <button> Add Todo </button>
+</a>
 <!--? artık bootstrap class larını kullanabilirim -->
 <table class="table table-bordered table-striped">
     <thead>
@@ -33,7 +37,7 @@
             <td> {{todo.title}}</td>
             <td> {{todo.description}}</td>
 
-            <!--? get_FIELDNAME_display formatı choices kullandığımız fieldların value'sunu göstermek için kullanılır. -->
+            <!--? get_FIELDNAME_display formatı choices kullandığımız fieldların value'sunu göstermek için kullanılır.   {{ todo.get_priority_display }}   -->
             <td>
                 {% if todo.priority == 1 %}
                 <b class="text-danger"> {{ todo.get_priority_display }} </b>
@@ -52,6 +56,10 @@
                 {% else %}
                 <b class="text-info"> {{ todo.get_status_display }} </b>
                 {% endif %}
+            </td>
+            <td>
+                <a href="/update/{{ todo.id }}">Update</a>
+                <a href="/delete/{{ todo.id }}" onclick="return confirm('are you sure?')">Delete</a>
             </td>
 
         </tr>
