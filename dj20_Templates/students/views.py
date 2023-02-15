@@ -42,6 +42,9 @@ def home(resquest):
     #? students içinde bulunan templates klasörü içindeki home.html çalışır,
     # return render(resquest, 'students/home.html', context)
 
+    #? root'da bulunan templates klasörü içindeki base.html çalışır,
+    # return render(resquest, 'base.html', context)
+
     #? students içinde bulunan templates klasörü içindeki index.html (root base.html'den inherit edilen) çalışır,
     return render(resquest, 'students/index.html', context)
 
