@@ -16,3 +16,13 @@ urlpatterns = [
     path('detail/<int:id>', student_detail, name="student_detail"),
     path('delete/<int:id>/', student_delete, name="student_delete"),
 ]
+
+#! burada name kullanmanın amacı, 
+# name için istediğimiz ismi yazabiliriz, 
+# kullanma mantığı şöyle, bir sayfada name kullanırsak, path değişse bile hata vermez,
+# fakat path kullanırsak, path değişince hangi sayfada kullandıysak oranında değişmesi lazım.
+# Mesela view'da kullanımı
+    # 1-name; redirect("student_list")
+    # 2-path; redirect("/list")
+    # eğer urls.py içinden path api/student/list vs. gibi değişse 1 numara yinede çalışır,
+    # fakat 2 numara hata verir, redirect("/api/student/list") tekrar böyle düzenlemek gerekir.

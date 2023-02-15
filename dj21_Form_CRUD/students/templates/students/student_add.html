@@ -8,14 +8,30 @@ Student Add
 
 
 {% block body %}
-<h2>Student Add</h2>
+<h1>Student Add</h1>
+<!--* 1- def student_add view'u içinde context'e atanan form değişkenini kullanmka için form tagı açıyoruz önce,
+    2- method="POST" olarak belirliyoruz, DB'ye kayıt yapılacak,
+    3- formu kayıt etmek için submit tipinde bir button eklenecek,
+    4- form ile yetkisiz giriş yapılmasın/dışarıdan fake müdahale olmasın diye csrf_token komutunu yazıyoruz, (bu token oluşturmayı ve kontrolü django kendisi arka planda yapıyor.)
+    5- file upload edileceği zaman (image/file) form tagı içine enctype="multipart/form-data" eklemek gerekiyor,
+    
+-->
+
 <form action="" method="POST" enctype="multipart/form-data">
     <!-- enctype="multipart/form-data" form ile image upload ederken hata vermemesi için yazmak lazım -->
     <!-- CSRF token missing. hatası almamak için -->
     {% csrf_token %}
 
-    <!-- {{ form }} -->
+    <!-- <hr>
+    <h3> form default as_table gibi davranır ve yanyana görünüm olur;</h3>
+    {{ form }} -->
+
+    <hr>
+
+    <h3> form as_p ile alt alta görünüm olur;</h3>
     {{ form.as_p }}
+
+    <span>buton tipi SUBMIT olmalı!!!</span>
     <button type="submit">Add</button>
 </form>
 {% endblock body %}

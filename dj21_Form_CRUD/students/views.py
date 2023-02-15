@@ -1,10 +1,14 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-#? form dersi importları
+#todo, form dersi importları
+#? modeli import ediyoruz
 from .models import Student
 
+#? forms.py içinde oluşturduğumuz Form import ediliyor.
 from .forms import StudentForm
+
+#? yönlendirme yapmak için
 from django.shortcuts import redirect
 
 from django.shortcuts import get_object_or_404
@@ -119,23 +123,38 @@ def student_list(request):
     return render(request, "students/student_list.html", context)
 
 
+
+#* yeni bir öğrenci oluşturmak/create etmek için;
+#? burada serializer görevine yapacak form yapısını kullanıyoruz,
+#? app içinde forms.py isimli bir dosya oluşturuyoruz.
 def student_add(request):
+    # 1-context içine form'dan gelen data'yı koymak için onu bir değişkene atıyoruz,
     form = StudentForm()
     
     if request.method == 'POST':
-        # print("POST :", request.POST)
-        # print("FILES :", request.FILES)
         
+        #? request.POST ile forma girilen dataları yakalayabiliyoruz,
+        print("POST :", request.POST)
+        # POST : <QueryDict: {'csrfmiddlewaretoken': ['HlpQpP1ZcxD4gBSlLHo2oDAKSOY2jsVqSFeRSneCrQwWbAaRQ2TOkkAibvm7V8GB'], 'first_name': ['Kahramanmaraş'], 'last_name': ['DEPREMİ'], 'number': ['06022023'], 'image': ['']}>
+        
+        #? aslında image yukarıda var fakat daha kolay ulaşmak için; 
+        print("FILES :", request.FILES)
+        # FILES : <MultiValueDict: {'image': [<InMemoryUploadedFile: avatar-tie.png (image/png)>]}>
+        
+        # 2-data boş gitmemesi için içine, yukarıda örnek çıktıları verilen dataları ekliyoruz.
         form = StudentForm(request.POST, request.FILES)
         
+        # eğer gelen datalar uygunsa kayıt et.
         if form.is_valid():
             form.save()
             
             #? artık form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
-            #? redirect için url tarafında belittiğimiz ismi yazmak daha mantıklı redirect("name")
-            return redirect("student_list")
+            #? redirect için url tarafında belittiğimiz ismi yazmak daha kullanışlı redirect("name")
+            #? urls.py içinde name ile ilgili açıklama notu var.
+            return redirect("student_list") # name ile yazılması
             # return redirect("/list") # path ile yazılması
     
+    # 3-değişkene atanan StudentForm()'u kullanabilmek için context içine value olarak atıyoruz,
     context = {
         "form" : form
     }
