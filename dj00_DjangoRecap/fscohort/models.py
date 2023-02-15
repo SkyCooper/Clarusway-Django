@@ -30,6 +30,8 @@ class Student(models.Model): #!Student isimli bir tablo oluştu db içinde
     # null=True, DB ile ilgilidir, yani boş bırakılabilir ve DB null kayıt edilir,
     #! eğer sadece  blank=True varsa veri boş gelebilir, ama DB kayıt edilmeden önce
     #! bir işlem/hesaplama vs. yapılıp DB boş/null gitmesini önlemek gerekir.
+    # CharField null=True belirtilmese bile boş bırakılınca DB'ye otomatik null kayıt edilir,
+    # IntegerField, DateTimeField ise  DB'ye kayıt esnasında hata verir.
     
     files = models.FileField(blank=True, null=True, upload_to='student_files')
     
