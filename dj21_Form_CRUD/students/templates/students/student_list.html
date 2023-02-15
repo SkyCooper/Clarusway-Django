@@ -6,11 +6,45 @@ Student List
 {% endblock title %}
 
 
+<!-- students olarak contexten gelen veri bir queryset,
+    aynı liste gibi for ile döngüde kullanılabilir. -->
 
 {% block body %}
+<h1>Student List</h1>
+
+
+{{ students }}
+<p>Yukarıdaki gelen objenin tamamı, Queryset</p>
+
+<hr>
+
+<p> str metodunda belirtilen hali; </p>
 <ul>
     {% for student in students %}
+    <!--* modelde belirttiğimiz str metodu nasılsa öyle görünür çıktısı -->
+    <li> {{ student }} </li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+<p> isimler'in yanına numara eklemek istersek; </p>
+<ul>
+    {% for student in students %}
+    <!--* nokta notasyonu ile number'a ulaşılabilir. -->
     <li> {{ student.number }} - {{ student }} </li>
     {% endfor %}
 </ul>
+
+<hr>
+
+<p> sadece isim ve numara </p>
+<ul>
+    {% for student in students %}
+    <!--* nokta notasyonu ile number'a ulaşılabilir. -->
+    <li> {{ student.number }} - {{ student.first_name }} </li>
+    {% endfor %}
+</ul>
+
+
 {% endblock body %}

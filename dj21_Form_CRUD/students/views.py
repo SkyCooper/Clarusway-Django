@@ -1,5 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+
+#? form dersi importları
 from .models import Student
 
 from .forms import StudentForm
@@ -93,16 +95,27 @@ içinde listeler olan dicti age'e göre sırala; {{ dict_list|dictsort:"age" }}
 desc valuesinin ilk 7 karakterini göster ;{{ desc|truncatechars:7 }}
 '''
 
+#! Django form işlemleri;
+# önce bir model oluşturup, sonra bu modeli admin panele tanıtıp, admin panelden birkaç tane öğrenci ekledik.
+# daha sonra CRUD işlemleri için function-based view'lar yazdık.
+# genel bir mantık olarak bütün hepsinde context tanımlayıp,
+# return render(request, "students/student_list.html", context) bunu yazıyoruz.
+# yazılan her view için root içindeki base.html'den inherit ederek app içinde aynı isimli bir html dosyası oluşturduk,
+# her view için app/urls içinde bir path tanımladık,
 
+#* öğrencileri listelemek/görüntülemek için,
 def student_list(request):
+    #? bütün öğrencileri görüntüleyebilmek için
     #? Student modeldeki bütün objeleri alıp değişkene atadık,
     students = Student.objects.all()
+    #? gelen data bir queryset'tir.
     
-    #? bu student değişkeni value olacak şekilde yeniden tanımladık,
+    #? bu student değişkeni context içinde value olacak şekilde yeniden tanımladık,
     context = {
         "students" : students
     }
     
+    #? ve context içindeki herşeyi kullanabilmek için student_list.html içine aktardık.
     return render(request, "students/student_list.html", context)
 
 
@@ -152,6 +165,7 @@ def student_update(request, id):
     }
     
     return render(request, "students/student_update.html", context)
+
 
 def student_detail(request, id):
     student = get_object_or_404(Student, id=id)
