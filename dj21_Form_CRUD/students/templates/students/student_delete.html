@@ -10,13 +10,17 @@ Student Delete
 {% block body %}
 <h2>Student Delete</h2>
 
+<p> DİKKAT : form işlemi olduğundan csrf_token komutu eklemek gerekli,</p>
+
 <form action="" method="POST">
     {% csrf_token %}
-    <p>Are you sure delete {{ student }} !!</p>
+    <p>Are you sure delete İD NO : {{ id }} - STUDENT : {{ student }} !!</p>
     <button type="submit">YES</button>
 </form>
 
-<!-- bu buton form dışında olması gerekiyor, yoksa silme yapar -->
+<!-- bu buton form dışında olması gerekiyor, yoksa silme yapar,
+bunu href="http://127.0.0.1:8000/list/" böyle yazabiliriz,
+veya DTL ile url, adrese git, "name", hangi adrese git şeklinde yazabiliriz. -->
 <a href="{% url 'student_list' %}">
     <button>No</button>
 </a>

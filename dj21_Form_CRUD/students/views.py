@@ -209,19 +209,24 @@ def student_detail(request, id):
     return render(request, "students/student_detail.html", context)
 
 
+#* bir öğrenci silmek için;
 def student_delete(request, id):
+    
+    #? hangi öğrenci,(id'si benim yazdığım id ile eşleşen)
     student = get_object_or_404(Student, id=id)
     
     if request.method == 'POST':
+        # bu öğrenciyi sil.
         student.delete()
             
-        #? artık form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
-        #? redirect için url tarafında belittiğimiz ismi yazmak daha mantıklı redirect("name")
+        # form sayfasında kalmasın, sildikten olduktan sonra başka yere yönlendirilsin;
         return redirect("student_list")
-        # return redirect("/list") # path ile yazılması
-
+    
+    
+    # eğer id'yi de kullanmak istiyorsam contexte eklemek gerekli
     context = {
-        "student" : student
+        "student" : student,
+        "id" : id
     }
     
     return render(request, "students/student_delete.html", context)
