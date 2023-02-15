@@ -16,6 +16,48 @@
 </ul>
 
 <hr>
+<p> table olarak sergilemek için; </p>
+<!--? artık bootstrap class larını kullanabilirim -->
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <td>title</td>
+            <td>description</td>
+            <td>priority</td>
+            <td>status</td>
+        </tr>
+    </thead>
+    <tbody>
+        {% for todo in todos %}
+        <tr>
+            <td> {{todo.title}}</td>
+            <td> {{todo.description}}</td>
+
+            <!--? get_FIELDNAME_display formatı choices kullandığımız fieldların value'sunu göstermek için kullanılır. -->
+            <td>
+                {% if todo.priority == 1 %}
+                <b class="text-danger"> {{ todo.get_priority_display }} </b>
+                {% elif todo.priority == 2 %}
+                <b class="text-warning"> {{ todo.get_priority_display }} </b>
+                {% else %}
+                <b class="text-info"> {{ todo.get_priority_display }} </b>
+                {% endif %}
+            </td>
+
+            <td>
+                {% if todo.status == "c" %}
+                <b class="text-danger"> {{ todo.get_status_display }} </b>
+                {% elif todo.status == "w" %}
+                <b class="text-warning"> {{ todo.get_status_display }} </b>
+                {% else %}
+                <b class="text-info"> {{ todo.get_status_display }} </b>
+                {% endif %}
+            </td>
+
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 
 
 {% endblock container %}
