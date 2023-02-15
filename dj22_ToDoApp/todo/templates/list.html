@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+<h1>ToDo List</h1>
+
+{% block container %}
+{{ todos }}
+<p>Yukarıdaki gelen objenin tamamı, Queryset</p>
+<hr>
+
+<p> str metodunda belirtilen hali; </p>
+<ul>
+    {% for todo in todos %}
+    <!--* modelde belirttiğimiz str metodu nasılsa öyle görünür çıktısı -->
+    <li> {{ todo }} </li>
+    {% endfor %}
+</ul>
+
+<hr>
+
+
+{% endblock container %}
