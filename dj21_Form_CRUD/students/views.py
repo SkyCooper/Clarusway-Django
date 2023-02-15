@@ -162,22 +162,32 @@ def student_add(request):
     return render(request, "students/student_add.html", context)
 
 
+#* var olan bir öğrenciyi güncellemek/update etmek için;
+#? tek bir öğrenci update edileceği için id kullanmak gerekli,
+# yukarıdaki create/add ile çok benzer, sadece instance=student eklemek gerekiyor.
 def student_update(request, id):
-    # student = Student.objects.all()
+    
+    # get_object_or_404, eğer update edilmek istenen öğrenci yoksa (mesela id:315 yok)
+    # crush olmadan 404 hatsaı versin diye kullanıyoruz,
+    #? hangi öğrenci update edilecek,(id'si benim yazdığım id ile eşleşen)
     student = get_object_or_404(Student, id=id)
     
-    #? formu yukarıdaki obje ile doldurmak için;
+    #? form boş olarak gelmesin, yukarıdaki obje bilgileri ile gelsin;
+    # 1-bunu bir değişkene atıyoruz
     form = StudentForm(instance=student)
     
     if request.method == 'POST':
+        # 2-data boş gitmemesi için içine verileri ekliyoruz,
+        # instance=student bunu eklemezsek yeni bir öğrenci create eder,
+        # ekleyince değikliğe göre update ediyor.
         form = StudentForm(request.POST, request.FILES, instance=student)
+        
+        # form uygunsa kayıt et
         if form.is_valid():
             form.save()
             
-            #? artık form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
-            #? redirect için url tarafında belittiğimiz ismi yazmak daha mantıklı redirect("name")
+            # form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
             return redirect("student_list")
-            # return redirect("/list") # path ile yazılması
     
     context = {
         "form" : form
