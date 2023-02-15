@@ -60,13 +60,14 @@ TEMPLATES = [
         
         'DIRS': [BASE_DIR / 'templates'],
         #! Default boş liste olarak gelir, içini biz yazıyoruz. Bestpractise bu ismi kullanıyoruz, değişebilir
-        # fakat students içindeki klasör ismi MUTLAKA templates olmak zorunda,
-        #? Global templates klasör adresleri (path)
+        # fakat app (students) içindeki klasör ismi MUTLAKA templates olmak zorunda,
+        #? Burası Global templates klasör adresleri (path)
         #? root'daki templates klasörünü tara, önce buraya bakar,
         
         'APP_DIRS': True, 
         #? Application içinde templates klasörü kullanılacak mı? (true/false)
         #? True -> yani bu dizindeki templates klasörünü tara, oraya bak 
+        #? fakat bunu yaparken templates içinde app ile aynı isimde bir klasör daha eklemek gerekli,
         
         'OPTIONS': {
             'context_processors': [
@@ -129,10 +130,19 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
-#? static;
+#! static;
+#? aynı root da yapılan templates klasörü gibi, global olan static'ler için bir yol (path) yazıyoruz,
+#? isim değişebilir, fakat bestpractise static kullanmak tavsiye edilir,
+#? yine aynı şekilde local olarak app için static tanımlanacak ise app içine static klasörü
+#? ve içine yine app ile aynı isimli bir klasör daha oluşturuyoruz.
+
+#* {% static 'main.css' %} --> root static içindeki main.css
+#* {% static 'students/main.css' %} --> app içindeki static içindeki appname içindeki main.css
+
 STATICFILES_DIRS = [
     BASE_DIR / 'static'
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
