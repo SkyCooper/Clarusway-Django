@@ -1,13 +1,17 @@
 <!-- base.html'den inherit edildi, yol belirtmeye gerek yok,
-root içindeki, templates kalörü altındaki base.html'e bakar.  -->
+settings içinde -- 'DIRS': [BASE_DIR / 'templates'], yazdığımız için
+root içindeki, templates klasörü altındaki base.html'e bakar.  -->
 {% extends 'base.html' %}
 
-<!--! static çalışması için açılış/kapanış blokları üstünde bu komut yazılmalı  -->
+<!--? static çalışması için açılış/kapanış blokları üstünde bu komut yazılmalı  -->
 {% load static %}
+
+
 {% block link %}
 <!--? static, students içindeki static klasörü altındaki main.css çalışır ve yazılar kırmızı olur. -->
 <link rel="stylesheet" href="{% static 'students/main.css' %}">
 {% endblock link %}
+
 
 {% block title %}
 Index Home
@@ -16,4 +20,5 @@ Index Home
 
 {% block body %}
 <h1>Hello this is (students / INDEX.html) home page.....</h1>
+<p>Yazı KIRMIZI renk çünkü, students'daki static klasörü içindeki main.css bağlı</p>
 {% endblock body %}
