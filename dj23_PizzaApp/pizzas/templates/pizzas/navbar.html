@@ -12,8 +12,26 @@
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="#">Pizzas</a></li>
 
+
+
+
+                {% if user.is_authenticated %}
+
+                <!--? logout sayfasına yönlendirme -->
+                <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
+
+                {% else %}
+
                 <!--? register sayfasına yönlendirme -->
                 <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
+
+                <!--? login sayfasına yönlendirme -->
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
+
+                {% endif %}
+
+
+
             </ul>
         </div>
 </nav>

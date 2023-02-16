@@ -1,6 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 #? djangonun default user creation formu
 
+from django.contrib.auth.forms import AuthenticationForm
+#? djangonun default user authantication formu
+
 from django.contrib.auth.models import User
 #? kullanacağımız modeli import ediyoruz.
 
@@ -34,8 +37,15 @@ class UserForm(UserCreationForm):
         help_text=("* Enter the same password as before, for verification."),
     )
 
-
-
+#? forms import etmeden AuthenticationForm'dan inherit ederek form oluşturuyoruz.
+class LoginForm(AuthenticationForm):
+    username = UsernameField(widget=forms.TextInput(attrs={"autofocus": True, 'class' : "rounded border border-warning form-control shadow-lg m-2", "placeHolder" :"username"}))
+    
+    password = forms.CharField(
+    label=("Password"),
+    widget=forms.PasswordInput(attrs={'class' : "rounded border border-warning form-control shadow-lg m-2", "placeHolder" :"password"}),
+)
+    
 
 #* https://docs.djangoproject.com/en/4.1/topics/forms/
 #! burada önemli bir özellik Django Form validasyonu kendisi yapıyor,
