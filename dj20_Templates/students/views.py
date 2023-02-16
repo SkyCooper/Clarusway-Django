@@ -10,6 +10,9 @@ from django.http import HttpResponse
 #? DTL ile yapılması;
 def home(resquest):
     
+    #? context yapısı ile kullanılacak değişneknler key/value olarak yazılıp, ilgili html'e aktarılır,
+    
+    
     context = {
         'title' : 'cooper',
         'desc' : 'this is description',
@@ -29,6 +32,9 @@ def home(resquest):
                         ]
         }
     
+    #! veya diğer bir yöntem olarak context tanımlamadan render içinde key/value olarak direkt yazılabilirdi;
+    # return render(resquest, 'students/index.html', {'title' : 'cooper', 'desc' : 'this is description'})
+    
     #? render fonksiyonu aldığı parametreler;
     #* def render(request, template_name, context=None, content_type=None, status=None, using=None)
     # request yani bir istek geldi, 
@@ -47,6 +53,9 @@ def home(resquest):
 
     #? students içinde bulunan templates klasörü içindeki index.html (root base.html'den inherit edilen) çalışır,
     return render(resquest, 'students/index.html', context)
+
+
+
 
 
 '''

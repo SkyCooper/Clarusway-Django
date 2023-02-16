@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-<h1>ToDo List</h1>
+<h2>ToDo List</h2>
 
 {% block container %}
 {{ todos }}
@@ -16,11 +16,25 @@
 </ul>
 
 <hr>
-<p> table olarak sergilemek için; </p>
+<p> yeni todo eklemek için tablo üzerine bir buton ekledik.
+    (liste aşağıya doğru uzayıp sonra buton altta kaybolmasın
+    diye) VE add url'e yönlendirme yaptık.
+</p>
 
-<a href="">
-    <button> Add Todo </button>
+<!--* hardcode klasik yazım -->
+<!-- <a href="/add1"> -->
+
+<!--* DTL ile yazım -->
+<a href=" {% url 'todo_add1' %}">
+    <button class="btn btn-success"> Add Todo </button>
 </a>
+
+
+<br>
+<hr>
+
+
+<p> TABLO olarak sergilemek için; </p>
 <!--? artık bootstrap class larını kullanabilirim -->
 <table class="table table-bordered table-striped">
     <thead>
@@ -38,6 +52,8 @@
             <td> {{todo.description}}</td>
 
             <!--? get_FIELDNAME_display formatı choices kullandığımız fieldların value'sunu göstermek için kullanılır.   {{ todo.get_priority_display }}   -->
+
+            <!--* bootstarp class'ları var olduğundan artık bir condition yazıp duruma göre renklendirme yapabiliriz, <b> tagı bold olması için yazıların -->
             <td>
                 {% if todo.priority == 1 %}
                 <b class="text-danger"> {{ todo.get_priority_display }} </b>
@@ -48,6 +64,8 @@
                 {% endif %}
             </td>
 
+
+            <!--* html uzantılı sayfalarda  çift tırnak " " kullanmak gerekiyor, tek tırnak ' ' hata verbiliyor. -->
             <td>
                 {% if todo.status == "c" %}
                 <b class="text-danger"> {{ todo.get_status_display }} </b>
