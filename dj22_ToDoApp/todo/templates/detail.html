@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+
+{% block container %}
+<h2>ToDo Detail</h2>
+
+<p>Görmek istediğimiz bilgileri alıp yazıyoruz;</p>
+
+{{ todo.title }} <br>
+{{ todo.description }} <br>
+{{ todo.status}}
+{{ todo.priority}}
+
+{% endblock container %}

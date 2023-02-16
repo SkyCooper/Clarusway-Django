@@ -5,6 +5,8 @@ from .views import (
     todo_add2,
     todo_update,
     todo_delete,
+    
+    todo_detail,
 )
 
 urlpatterns = [
@@ -16,4 +18,6 @@ urlpatterns = [
     
     path('update/<int:pk>', todo_update, name='todo_update'),
     path('delete/<int:pk>', todo_delete, name='todo_delete'),
+    
+    path('detail/<int:pk>', todo_detail, name='todo_detail'),
 ]

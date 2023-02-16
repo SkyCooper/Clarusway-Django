@@ -1,16 +1,27 @@
 {% extends 'base.html' %}
 
-<h2>ToDo Add</h2>
 
 
 {% block container %}
-<form action="" method="POST">
+<h2>ToDo Add</h2>
+
+<!--* 1- def todo_add view'u içinde context'e atanan form değişkenini kullanmak için form tagı açıyoruz önce,
+    2- method="POST" olarak belirliyoruz, DB'ye kayıt yapılacak,
+    3- formu kayıt etmek için submit tipinde bir button/input eklenecek,
+    4- form ile yetkisiz giriş yapılmasın/dışarıdan fake müdahale olmasın diye csrf_token komutunu yazıyoruz, (bu token oluşturmayı ve kontrolü django kendisi arka planda yapıyor.)
+    5- file upload edileceği zaman (image/file) form tagı içine enctype="multipart/form-data" eklemek gerekiyor,
+    
+-->
+
+<form action="" method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}
     <table>
-        {{ todo }}
+        <!-- form default as_table gibi davranır -->
+
+        {{ form }}
     </table>
-    <input type="submit">
+    <input class="btn btn-outline-info" type="submit" value="Add Todo">
 </form>
 
 {% endblock container %}

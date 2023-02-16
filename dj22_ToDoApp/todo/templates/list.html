@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
-<h2>ToDo List</h2>
 
 {% block container %}
+<h2>ToDo List</h2>
+
 {{ todos }}
 <p>Yukarıdaki gelen objenin tamamı, Queryset</p>
 <hr>
@@ -39,10 +40,10 @@
 <table class="table table-bordered table-striped">
     <thead>
         <tr>
-            <td>title</td>
-            <td>description</td>
-            <td>priority</td>
-            <td>status</td>
+            <td><b>TITLE</b></td>
+            <td><b>DESCRIPTION</b></td>
+            <td><b>PRIORITY</b></td>
+            <td>STATUS</td>
         </tr>
     </thead>
     <tbody>
@@ -75,8 +76,14 @@
                 <b class="text-info"> {{ todo.get_status_display }} </b>
                 {% endif %}
             </td>
+
+            <!--? update ve delete işlemleri için birek link/buton ekledik. -->
             <td>
-                <a href="/update/{{ todo.id }}">Update</a>
+                <a href="/update/{{ todo.id }}">
+                    <button>Update</button>
+                </a>
+
+                <!--? tıklandığı zaman bir mesaj ile sorması için; onclick="return confirm('are you sure?')" -->
                 <a href="/delete/{{ todo.id }}" onclick="return confirm('are you sure?')">Delete</a>
             </td>
 

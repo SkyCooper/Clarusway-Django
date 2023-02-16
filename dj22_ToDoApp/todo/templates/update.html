@@ -1,8 +1,17 @@
 {% extends 'base.html' %}
 
-<h2>ToDo Update</h2>
 
 {% block container %}
+<h2>ToDo Update</h2>
+
+<!--* 1- view içinde context'e atanan form değişkenini kullanmak için form tagı açıyoruz önce,
+    2- method="POST" olarak belirliyoruz, DB'ye kayıt yapılacak,
+    3- formu kayıt etmek için submit tipinde bir input/button eklenecek,
+    4- form ile yetkisiz giriş yapılmasın/dışarıdan fake müdahale olmasın diye csrf_token komutunu yazıyoruz, (bu token oluşturmayı ve kontrolü django kendisi arka planda yapıyor.)
+    5- file upload edileceği zaman (image/file) form tagı içine enctype="multipart/form-data" eklemek gerekiyor,
+    
+-->
+
 <form action="" method="POST">
     {% csrf_token %}
     <table>{{form}}</table>
