@@ -32,6 +32,9 @@ def todo_add1(request):
     if form.is_valid():
         form.save()
         
+        #? başarılı bir kayıt yapılmış ise mesaj dönsün,
+        messages.success(request,'New Todo Successfully ADD')
+        
     #? sonra işlem bitince list sayfasına yönlendir.
         return redirect('todo_list')
 
