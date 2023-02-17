@@ -6,31 +6,25 @@
     <div class="container-fluid ">
         <a class="navbar-brand alert-warning" href="/">
             <img src="{% static 'images/nadia.jpeg' %}" alt="Hi!" width="80" height="80">
-            Garden Pizza</a>
+            Nadia's Garden Pizza</a>
 
         <div class="collapse navbar-collapse" id="navbars-host">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="#">Pizzas</a></li>
 
-
-
+                <!--todo, eğer authenticate olmuşsa yani giriş yapmışsa sadece logout görünsün, değilse register ve login görünsün diye bir condition yazdık.  -->
 
                 {% if user.is_authenticated %}
-
                 <!--? logout sayfasına yönlendirme -->
                 <li class="nav-item"><a class="nav-link" href="{% url 'logout' %}">Logout</a></li>
 
-                {% else %}
 
+                {% else %}
                 <!--? register sayfasına yönlendirme -->
                 <li class="nav-item"><a class="nav-link" href="{% url 'register' %}">Register</a></li>
-
                 <!--? login sayfasına yönlendirme -->
                 <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Login</a></li>
-
                 {% endif %}
-
-
 
             </ul>
         </div>

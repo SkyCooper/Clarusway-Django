@@ -17,11 +17,11 @@ from .forms import UserForm, LoginForm
 # Create your views here.
 
 def register(request):
-    # form = UserCreationForm()
-    form = UserForm()
+    form = UserCreationForm()
+    # form = UserForm()
     if request.method == 'POST':
-        # form = UserCreationForm(request.POST)
-        form = UserForm(request.POST)
+        form = UserCreationForm(request.POST)
+        # form = UserForm(request.POST)
         if form.is_valid():
             form.save()
             # form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;

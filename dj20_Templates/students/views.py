@@ -8,6 +8,12 @@ from django.http import HttpResponse
 
 
 #? DTL ile yapılması;
+
+#? django bir template ararken app'lerin altındaki templates klasörlerine bakıyor,
+#? bunun için app içindeki klasör isminin templates olması ZORUNLU
+#? "students/index.html" bunu yazınca bu view bulunduğu app içindeki templates klasörüne bakıyor,
+#? yani ; students/templates/students/index.html
+
 def home(resquest):
     
     #? context yapısı ile kullanılacak değişneknler key/value olarak yazılıp, ilgili html'e aktarılır,

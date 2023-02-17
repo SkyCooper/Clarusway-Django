@@ -5,8 +5,7 @@
 .homeImage {
     background-image: url("../images/nadiasgarden.jpg");
     height: calc(100vh - 106px);
-    width: 100vw;
-    background-repeat: no-repeat;
+    background-size: cover;
     background-position: center;
 }
 
