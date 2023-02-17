@@ -2,15 +2,22 @@
 
 
 {% block container %}
-<h2>ToDo List FBV</h2>
+<h2>ToDo List Class Based</h2>
 
-{{ todos }}
+<!--? "object_list" view class tarafından türetilen data ismi sabit rastgele belirlenmiş değil. -->
+<!--todo, FBV kullanırken {{ todos }} gibi yazmıştık, contexten alıp, CBV kullanırken böyle olmalı -->
+
+{{ object_list }}
 <p>Yukarıdaki gelen objenin tamamı, Queryset</p>
 <hr>
 
 <p> str metodunda belirtilen hali; </p>
 <ul>
-    {% for todo in todos %}
+
+    <!--? "object_list" view class tarafından türetilen data ismi sabit rastgele belirlenmiş değil. -->
+    <!--todo, FBV kullanırken {{ todos }} gibi yazmıştık, contexten alıp, CBV kullanırken böyle olmalı -->
+
+    {% for todo in object_list %}
     <!--* modelde belirttiğimiz str metodu nasılsa öyle görünür çıktısı -->
     <li> {{ todo }} </li>
     {% endfor %}
@@ -23,11 +30,11 @@
 </p>
 
 <!--* hardcode klasik yazım -->
-<!-- <a href="/addcb"> -->
+<!-- <a href="/add1"> -->
 
 <!--* DTL ile yazım -->
-<!-- <a href=" {% url 'todo_add1fb' %}"> -->
-<button class="btn btn-success"> Add Todo </button>
+<a href=" {% url 'todo_addcb' %}">
+    <button class="btn btn-success"> Add Todo </button>
 </a>
 
 
@@ -47,7 +54,11 @@
         </tr>
     </thead>
     <tbody>
-        {% for todo in todos %}
+
+        <!--? "object_list" view class tarafından türetilen data ismi sabit rastgele belirlenmiş değil. -->
+        <!--todo, FBV kullanırken {{ todos }} gibi yazmıştık, contexten alıp, CBV kullanırken böyle olmalı -->
+
+        {% for todo in object_list %}
         <tr>
             <td> {{todo.title}}</td>
             <td> {{todo.description}}</td>
@@ -79,12 +90,12 @@
 
             <!--? update ve delete işlemleri için birek link/buton ekledik. -->
             <td>
-                <a href="/updatefb/{{ todo.id }}">
+                <a href="/updatecb/{{ todo.id }}">
                     <button>Update</button>
                 </a>
 
-                <!--? tıklandığı zaman bir mesaj ile sorması için; onclick="return confirm('are you sure?')" -->
-                <a href="/deletefb/{{ todo.id }}" onclick="return confirm('are you sure?')">Delete</a>
+                <!--? tıklandığı zaman bir mesaj ile sorması için; onclick="return confirm('are you sure?')" eklenebilir, ama zaten delete için başka sayfaya gidip oradan silme yapacağı için mesaj oraya yazıldı. -->
+                <a href="/deletecb/{{ todo.id }}">Delete</a>
             </td>
 
         </tr>

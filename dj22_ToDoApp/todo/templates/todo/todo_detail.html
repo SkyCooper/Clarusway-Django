@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block container %}
+
+<hr>
+<h2>Todo Detail Class Based</h2>
+<p><a href="{% url 'todo_listcb' %}" class="btn btn-primary">LIST</a></p>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>priority</th>
+            <th>title</th>
+            <th>created_date</th>
+            <th>status</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                {% if todo.priority == 1 %}
+                <b class="text-danger">{{ todo.get_priority_display }}</b>
+                {% elif todo.priority == 2 %}
+                <b class="text-warning">{{ todo.get_priority_display }}</b>
+                {% else %}
+                <b class="text-info">{{ todo.get_priority_display }}</b>
+                {% endif %}
+            </td>
+            <td>{{ todo.title }}</td>
+            <td>{{ todo.created_date }}</td>
+            <td>
+                {% if todo.status == "P" %}
+                <b class="text-danger">{{ todo.get_status_display }}</b>
+                {% else %}
+                <b class="text-success">{{ todo.get_status_display }}</b>
+                {% endif %}
+            </td>
+            <td>
+                | <a href="/updatecb/{{ todo.id }}">Update CB</a>
+
+                <!--? tıklandığı zaman bir mesaj ile sorması için; onclick="return confirm('are you sure?')" eklenebilir, ama zaten delete için başka sayfaya gidip oradan silme yapacağı için mesaj oraya yazıldı. -->
+                | <a href="/deletecb/{{ todo.id }}">Delete CB</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<b>Description:</b> <br> {{ todo.description }}
+<hr>
+<b>Add:</b> <br> {{ todo.created_date }}
+<b>Update:</b> <br> {{ todo.updated_date }}
+
+{% endblock container %}

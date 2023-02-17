@@ -4,7 +4,21 @@ from .forms import TodoForm
 from django.contrib import messages
 
 
-# Create your views here.
+#? Class Based imports
+from django.urls import reverse_lazy
+from django.views.generic import(
+    ListView,
+    CreateView,
+    UpdateView,
+    DeleteView,
+    DetailView,
+)
+
+
+#! -------------------------
+#! Function Based View
+#! -------------------------
+
 #* todo'ları listelemek/görüntülemek için,
 def todo_list(request):
     #? bütün todo'ları görüntüleyebilmek için
@@ -36,7 +50,7 @@ def todo_add1(request):
         messages.success(request,'New Todo Successfully ADD')
         
     #? sonra işlem bitince list sayfasına yönlendir.
-        return redirect('todo_list')
+        return redirect('todo_listfb')
 
     #? context yapısı kurmadan direk içine key/value olarak yazabiliriz.
     return render(request,'add.html',{'form':form})
@@ -63,7 +77,7 @@ def todo_add2(request):
             #? artık form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
             #? redirect için url tarafında belittiğimiz ismi yazmak daha kullanışlı redirect("name")
             #? urls.py içinde name ile ilgili açıklama notu var.
-            return redirect("todo_list") # name ile yazılması
+            return redirect("todo_listfb") # name ile yazılması
             # return redirect("/list") # path ile yazılması
     
     
@@ -103,7 +117,7 @@ def todo_update(request, pk):
         # form uygunsa kayıt et ve yönlendir.
         if form.is_valid():
             form.save()
-            return redirect('todo_list')
+            return redirect('todo_listfb')
     return render(request,'update.html',{'form':form, "todo":todo})
 
 #* var olan bir todo'yu silmek için;
@@ -111,4 +125,78 @@ def todo_delete(request, pk):
     #? sadece id'si benim yazdığım id olan todo gelsin ve silsin
     todo = Todo.objects.get(id=pk)
     todo.delete()
-    return redirect('todo_list')
+    return redirect('todo_listfb')
+
+
+#! -------------------------
+#! Class Based View
+#! -------------------------
+
+
+#? CBV kullanırken verilecek isim hangi viewdan inherit edilecekse onunla aynı olmak zorunda
+#? AppnameListView, AppnameCreateView vs..
+
+#? App içindeki templates klasörüne app ile aynı isimde bir klasör daha eklemek gerekli,
+#? templates/todo şeklinde, ve artık bütün html dosyaları burada olmak zorunda,
+
+#? FBV kullanırken context ile değişken gibi bütün todo'ları todos ismi ile template aktardık,
+#? fakat CBV context yapısı yok, onun yerine "object_list" kullanıyoruz,
+#? bu isim sabit bizim bütün todo'lar bunun içinde ve CBV yapısı ile otomatikmen template aktarılıyor,
+#? biz ilave birşey yapmadan template tarafında "object_list" ile kullanıyoruz,
+
+
+#? template için kullanılacak isimlerde mutlaka CBV bizden istediği gibi verilmeli,
+#? template_name_suffix = "_list", hangi view hangi suffix belirtmişse öyle yazmak gerekiyor, todo_list.html gibi
+#!  Not :: isterseniz class larda  template_name = 'todo/todo_delete.html' ile django nun isteği dışına çıkabilirsiniz
+
+
+
+#* listemele için sadece kullanılacak model yazmak yeterli
+#* context olmadığından, kullanılacak template içinde "object_list" kullanmak zorunlu
+#! template_name_suffix = "_list",
+class TodoListView(ListView):
+    model=Todo
+    #! template_name = 'todo/mytodolist.html' vs yazılarak default _list harici başka isim yazılabilir.
+
+
+
+#* yeni bir todo eklemek için hangi model kullanılacak,
+#* hangi form kullanılarak todo oluşturulacak,
+#* redirect yerine success_url ile yönlendirme yapılacak,
+#! template_name_suffix = "_form",
+
+class TodoCreateView(CreateView):
+    model=Todo
+    form_class=TodoForm
+    success_url=reverse_lazy('todo_listcb')
+    
+
+
+
+#* update için hangi model kullanılacak,
+#* hangi form kullanılarak todo update edilecek,
+#* redirect yerine success_url ile yönlendirme yapılacak,
+#! template_name_suffix = "_form",
+    
+class TodoUpdateView(UpdateView):
+    model = Todo
+    form_class = TodoForm
+    success_url = reverse_lazy('todo_listcb')
+
+
+
+#* hangi model kullanılacak,
+#* silme işleminden sonra redirect yerine success_url ile yönlendirme yapılacak,
+#! template_name_suffix = "_confirm_delete"
+class TodoDeleteView(DeleteView):
+    model=Todo
+    success_url = reverse_lazy('todo_listcb')
+
+
+
+
+#* detail için hangi model kullanılacak,
+#! template_name_suffix = "_detail",
+class TodoDetailView(DetailView):
+    model = Todo
+        

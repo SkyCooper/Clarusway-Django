@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block container %}
+<h1>ToDo List DELETE Class Based</h1>
+
+<form action="" method="POST">
+    {% csrf_token %}
+
+    <input type="submit" value="Delete Todo" onclick="return confirm('Are you sure?')" />
+
+</form>
+
+{% endblock container %}
