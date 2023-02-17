@@ -19,15 +19,14 @@
 
     <!--? yeni bir todo eklendiğinde başarılı ise bir mesajdırmak için gerekli olan kod bloğu -->
     {% if messages %}
-    {% for message in messages %}
-    {% if message.tags == "error" %}
-    <div class="alert alert-danger">{{ message }}</div>
-    {% else %}
-    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% for message in messages %}
+            {% if message.tags == "error" %}
+                <div class="alert alert-danger">{{ message }}</div>
+            {% else %}
+                <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+            {% endif %}
+        {% endfor %}
     {% endif %}
-    {% endfor %}
-    {% endif %}
-    {% block container %}{% endblock container %}
 
     <!-- ?  bootstarp kullanmak için: getbootstrap.com adresinden CSS ve SCRIPT cdn linklerini base.html'e kopyalamak gerekiyor. 2-SCRIPT cdn linki -->
 
