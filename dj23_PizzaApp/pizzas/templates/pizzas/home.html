@@ -4,9 +4,9 @@
 {% block container %}
 <h2>Home Page</h2>
 
-
+<!--? eğer kullanıcı login olmuş / is_authenticated ise -->
 {% if user.is_authenticated %}
-
+<!--? istek yapan user'ın username bilgisini göster -->
 <h1> Welcome {{ request.user.username }}</h1>
 
 {% endif %}

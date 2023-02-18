@@ -59,14 +59,31 @@ def register(request):
 
 
 def user_login(request):
-    form = LoginForm()
+#* A-yapılan istek get ise form boş olarak gelsin
+    #? 1-default AuthenticationForm ile yapma;
+    # form = AuthenticationForm()
     
+    #? 2- AuthenticationForm inherit edilerek yeni bir form ile yapma;
+    form = LoginForm()
+
+    #* B-yapılan istek post ise, form içine yazılan bilgilerle user login olsun,
     if request.method == 'POST':
+        # form = AuthenticationForm(request, data=request.POST)
+        
+        #? herzaman request.POST yazıyorduk, burada onu FARKLI yazdık.
         form = LoginForm(request, data=request.POST)
         if form.is_valid():
+            
+            #? formun içinden get_user() metodu ile user çekip bir değişkene atadık,
             user = form.get_user()
+            
+            #? djangonun default login fonksiyonuna yukarıda yakaladığımız user'ı ekliyoruz
             login(request, user)
+            
+            #? başarılı bir login işlemi olduysa mesaj versin
             messages.success(request, 'You are now logged in')
+            
+            #? işlem tamamlanınca home sayfasına gitsin
             return redirect('home')
         
     context = {
@@ -74,7 +91,16 @@ def user_login(request):
     }
     return render(request,'users/login.html', context)
 
+
+
+#? logout olduğunda ilave bir template render etmesine gerek yok,
+#? işlemi yapsın ve home sayfasına gitsin,
 def user_logout(request):
+    #? djangonun default logout fonksiyonu gelen isteğe göre işlemleri arka planda yapıyor.
     logout(request)
+    
+    #? başarılı ise mesaj yazdırıyor,
     messages.success(request, 'Succesfully loged out')
+    
+    #? ve home sayfasına gidiyor,
     return redirect("home")

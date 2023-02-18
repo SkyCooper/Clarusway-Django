@@ -9,10 +9,10 @@ from django.contrib.auth.models import User
 
 from django import forms
 from django.contrib.auth import password_validation
-from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.contrib.auth.forms import UsernameField
 
 
-#? UserCreationForm'dan inherit ederek form oluşturuyoruz.
+#? Register için UserCreationForm'dan inherit ederek form oluşturuyoruz.
 class UserForm(UserCreationForm):
 #?1- UserCreationForm'da email yok böyle yaparak basitçe email'de ekleyebiliriz, css eklemeden   
     # class Meta:
@@ -47,9 +47,12 @@ class UserForm(UserCreationForm):
 
 
 
-#? AuthenticationForm'dan inherit ederek form oluşturuyoruz.
+#? Login için AuthenticationForm'dan inherit ederek form oluşturuyoruz.
 class LoginForm(AuthenticationForm):
-    username = UsernameField(widget=forms.TextInput(attrs={"autofocus": True, 'class' : "rounded border border-warning form-control shadow-lg m-2", "placeHolder" :"username"}))
+    
+    username = UsernameField(
+        widget=forms.TextInput(attrs={"autofocus": True, 'class' : "rounded border border-warning form-control shadow-lg m-2", "placeHolder" :"username"}),
+        label=("Username"))
     
     password = forms.CharField(
     label=("Password"),
