@@ -17,13 +17,23 @@ from .forms import UserForm, LoginForm
 # Create your views here.
 
 def register(request):
-    form = UserCreationForm()
-    # form = UserForm()
+    # form = UserCreationForm()
+    form = UserForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        # form = UserForm(request.POST)
+        # form = UserCreationForm(request.POST)
+        form = UserForm(request.POST)
         if form.is_valid():
-            form.save()
+            # form.save()
+            
+            user = form.save()
+            login(request, user)
+            
+            # username = form.cleaned_data.get("username")
+            # password = form.cleaned_data.get("password2")
+            # user = authenticate(username=username, password=password)
+            # login(request, user)        
+            
+            
             # form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
             return redirect("home")
     
