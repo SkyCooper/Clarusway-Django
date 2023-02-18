@@ -1,10 +1,15 @@
 from django.shortcuts import render,redirect
 
-#? djangonun default user creation formu
+#? 1-djangonun default user creation formu (register işlemleri için)
 from django.contrib.auth.forms import UserCreationForm
+#? 2-UserCreationForm inherit edilerek yeni bir form ile yapma
+from .forms import UserForm
 
-#? djangonun default user creation formu
+#? 1-djangonun default user Authentication formu
 from django.contrib.auth.forms import AuthenticationForm
+#? 2-AuthenticationForm inherit edilerek yeni bir form ile yapma
+from .forms import LoginForm
+
 
 #? djangonun default login/logout fonksiyonu
 from django.contrib.auth import login, logout
@@ -12,16 +17,23 @@ from django.contrib.auth import login, logout
 #? djangonun default user creation formu
 from django.contrib import messages
 
-from .forms import UserForm, LoginForm
 
 # Create your views here.
 
 def register(request):
+#* A-yapılan istek get ise form boş olarak gelsin
+    
+    #? 1-default UserCreationForm ile yapma;
     # form = UserCreationForm()
+    
+    #? 2- UserCreationForm inherit edilerek yeni bir form ile yapma;
     form = UserForm()
+    
+    #* B-yapılan istek post ise, form içine yazılan bilgilerle bir user create etsin
     if request.method == 'POST':
         # form = UserCreationForm(request.POST)
         form = UserForm(request.POST)
+        
         if form.is_valid():
             # form.save()
             
@@ -34,7 +46,7 @@ def register(request):
             # login(request, user)        
             
             
-            # form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
+            #? form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
             return redirect("home")
     
     context = {
@@ -42,6 +54,8 @@ def register(request):
     }
     
     return render(request,'users/register.html', context)
+
+
 
 
 def user_login(request):

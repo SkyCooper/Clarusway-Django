@@ -12,14 +12,20 @@ from django.contrib.auth import password_validation
 from django.contrib.auth.forms import UserCreationForm, UsernameField
 
 
-#? forms import etmeden UserCreationForm'dan inherit ederek form oluşturuyoruz.
+#? UserCreationForm'dan inherit ederek form oluşturuyoruz.
 class UserForm(UserCreationForm):
-    
+#?1- UserCreationForm'da email yok böyle yaparak basitçe email'de ekleyebiliriz, css eklemeden   
     # class Meta:
     #     model = User
     #     fields = ("username", "email", "password1", "password2" )
 
 
+#?2- veya böyle tek tek fieldlara özelleştirebiliriz, css ekleyebiliriz.
+# field tiplerini değiştirebiliriz, kalabalık görünen label'lar yerine boş atama yapabiliriz,
+# help_text, password1 için kendi validasyon metnini,password2 için bizim yazdığımız metni kullanabiliriz.
+# autofocus ile imleç orda olur render olduğunda, placeHolder ile içine yazı yazılır,
+# class ile bootstrap eklendiğinden onun isimleri ile css verebiliriz,
+     
     username = UsernameField(
         label=(""),
         widget=forms.TextInput(attrs={"autofocus": True,'class' : "rounded border border-warning form-control shadow-lg m-2", "placeHolder" :"username"})
@@ -37,7 +43,11 @@ class UserForm(UserCreationForm):
         help_text=("* Enter the same password as before, for verification."),
     )
 
-#? forms import etmeden AuthenticationForm'dan inherit ederek form oluşturuyoruz.
+
+
+
+
+#? AuthenticationForm'dan inherit ederek form oluşturuyoruz.
 class LoginForm(AuthenticationForm):
     username = UsernameField(widget=forms.TextInput(attrs={"autofocus": True, 'class' : "rounded border border-warning form-control shadow-lg m-2", "placeHolder" :"username"}))
     
