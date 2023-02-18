@@ -14,7 +14,7 @@ from .forms import LoginForm
 #? djangonun default login/logout fonksiyonu
 from django.contrib.auth import login, logout
 
-#? djangonun default user creation formu
+#? bir işlem yapıldığında mesaj vermek için
 from django.contrib import messages
 
 
@@ -37,14 +37,17 @@ def register(request):
         if form.is_valid():
             # form.save()
             
+            #todo, 1-register olunca aynı anda login olsun
+            # bunu anlamak için alttaki login view bak,
+            # form save olunca oluşan user değişkene atandı ve login fon içine koyduk,
             user = form.save()
             login(request, user)
             
+            #todo, 2-register olunca aynı anda login olsun
             # username = form.cleaned_data.get("username")
             # password = form.cleaned_data.get("password2")
             # user = authenticate(username=username, password=password)
             # login(request, user)        
-            
             
             #? form sayfasında kalmasın, save olduktan sonra başka yere yönlendirilsin;
             return redirect("home")
@@ -81,6 +84,7 @@ def user_login(request):
             login(request, user)
             
             #? başarılı bir login işlemi olduysa mesaj versin
+            # .success mesajın tag'ı
             messages.success(request, 'You are now logged in')
             
             #? işlem tamamlanınca home sayfasına gitsin
@@ -93,14 +97,13 @@ def user_login(request):
 
 
 
-#? logout olduğunda ilave bir template render etmesine gerek yok,
-#? işlemi yapsın ve home sayfasına gitsin,
 def user_logout(request):
     #? djangonun default logout fonksiyonu gelen isteğe göre işlemleri arka planda yapıyor.
     logout(request)
     
     #? başarılı ise mesaj yazdırıyor,
-    messages.success(request, 'Succesfully loged out')
+    messages.warning(request, 'Succesfully logout !')
     
-    #? ve home sayfasına gidiyor,
+    #? logout olduğunda ilave bir template render etmesine gerek yok,
+    #? işlemi yapsın ve home sayfasına gitsin
     return redirect("home")
