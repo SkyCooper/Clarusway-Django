@@ -1,0 +1,20 @@
+{% extends 'pizzas/base.html' %}
+
+
+{% block container %}
+<h1>Pizzas Page</h1>
+<div>
+    <ul>
+
+        {% for pizza in pizzas %}
+
+        <li> {{ pizza }}</li>
+
+        {% endfor %}
+
+    </ul>
+</div>
+
+
+
+{% endblock container %}

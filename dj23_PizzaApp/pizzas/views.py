@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Pizza
 
 # Create your views here.
 
@@ -9,3 +10,13 @@ from django.shortcuts import render
 
 def home(requset):
     return render(requset, "pizzas/home.html")
+
+
+def pizzas(request):
+    pizzas = Pizza.objects.all()
+    
+    context = {
+        "pizzas" : pizzas
+    }
+    
+    return render(request, 'pizzas/pizzas.html', context)
