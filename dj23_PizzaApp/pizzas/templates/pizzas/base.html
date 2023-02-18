@@ -24,6 +24,8 @@
             MEDIA_URL = '/media/'
             MEDIA_ROOT = os.path.join(BASE_DIR, 'media') -->
 
+    <!--? root'a eklenen static/css altındaki style.css aktifolması için, link ile bağlamak gerekli, ve MUTLAKA en üstte load static komutunu yazmak gerekiyor. -->
+    <!--?  DTL ile link yazılması -->
     <link rel="stylesheet" href="{% static 'css/style.css'%}">
 
     <title>Pizza App</title>
@@ -53,6 +55,7 @@
     <!-- <script src="../../../static/js/timeout.js"></script> -->
     <!--? DTL ile yazılması -->
     <script src="{% static 'js/timeout.js' %}"></script>
+
 </body>
 
 </html>
