@@ -1,0 +1,46 @@
+{% extends 'pizzas/base.html' %}
+{% block container %}
+
+
+<div class="d-flex flex-column justify-content-center mx-auto mt-5 col-md-6">
+
+    <div class="alert alert-warning text-center p-1">
+        <!--? kim sipariş verdiyese onun username bilgisi gelsin diye -->
+        <h1>{{user.username | upper}}'s Orders</h1>
+    </div>
+
+    {% for order in orders %}
+    <div class="card m-2 shadow p-2">
+        <div class="row g-0 d-flex justify-content-between">
+
+            <div class="col-md-1 d-flex align-items-center">
+                <!--? image ul için = order.pizza.image.url -->
+                <img src="{{order.pizza.image.url}}" style=" border-radius: 50%; width: 60px; height: 60px" alt="...">
+            </div>
+
+            <div class="col-md-5 d-flex justify-content-start flex-fill">
+
+                <div class="card-body">
+                    <p class="card-title"><strong>Pizza:</strong> {{order.pizza}} 🍕 <strong>Size:</strong>
+                        {{order.size}} 🍕 <strong>Q :</strong> {{order.quantity}} </p>
+                </div>
+
+            </div>
+            <div class="col-md-2 d-flex align-items-center rounded">
+
+                <!--? update ve delete işlemleri için gerekli butonlar, mantık hepsinde aynı bir link ile yönlendirme yapılıyor, o url gidince bir view çalışıyor, o view'da gerekli işlemleri yapıyor. -->
+
+                <!--todo, belirli bir order update/delete olacağından url ile birlikte id de gönderilir. -->
+
+                <a href="{% url 'update_orders' order.id %}"> <button class=" btn btn-warning me-2">Update</button></a>
+                <a href="{% url 'delete_orders' order.id %}"><button class=" btn btn-danger me-2">Delete</button></a>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+
+{% endblock container %}

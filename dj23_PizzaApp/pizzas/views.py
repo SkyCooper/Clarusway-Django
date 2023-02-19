@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Pizza
+from .models import Pizza, Order
 
 from .forms import PizzaForm
 
@@ -55,3 +55,47 @@ def order_view(request, id):
         'form': form
     }
     return render(request, 'pizzas/order.html', context)
+
+
+def my_orders(request):
+    
+    #? verilen siparişlerden user'ı istek yapan user eşit olan siparişleri bir değişkene atadık,
+    orders = Order.objects.filter(user=request.user)
+    context = {
+        'orders': orders
+    }
+    return render(request, 'pizzas/my_orders.html', context)
+
+
+def update_order_view(request, id):
+#? sadece belirli bir order update edileceğinden id gerekiyor,
+#? order_view'dan farklı olarak form dolu gelecek,
+
+    #? update olacak id'li order alındı
+    order = Order.objects.get(id=id)
+    
+    #? id'si order edilen pizza id'sine eşit olan pizza alındı
+    pizza = Pizza.objects.get(id=order.pizza.id)
+    
+    #? ve son olarak PizzaForm içinde order olacak şekilde dolu olarak çağırıldı,
+    form = PizzaForm(instance=order)
+    
+    if request.method == 'POST':
+        
+        #? instance=order olmazsa update olmaz, yeniden order create eder.
+        form = PizzaForm(request.POST, instance=order)
+        if form.is_valid():
+            order.save()
+            return redirect('my_orders')
+    context = {
+        'order': order,
+        'pizza': pizza,
+        "form" : form
+    }
+    return render(request, 'pizzas/update_order.html', context)
+
+def delete_order_view(request, id):
+#? ilave bir template tanımlamaya gerek yok, işlemi yapacak ve tekrar sipariş sayfasına dönecek
+    order = Order.objects.get(id=id)
+    order.delete()
+    return redirect('my_orders')

@@ -1,0 +1,38 @@
+{% extends 'pizzas/base.html' %}
+{% block container %}
+
+<div class="col-lg-3 mx-auto d-flex justify-content-center align-items-center mt-5">
+
+    <div class="card" style="width: 100%;">
+        <img src="{{pizza.image.url}}" class="card-img-top" alt="...">
+
+        <div class="card-body">
+            <h5 class="card-title">{{pizza.name}}</h5>
+            <p class="card-text">
+            <ul>
+
+                <li>
+                    {{pizza.toppings.all |join:", "}}
+                </li>
+                <li>
+                    <strong> {{pizza.price}} $</strong>
+                </li>
+
+            </ul>
+            </p>
+            <div>
+
+                <form action="" method="POST">
+                    {% csrf_token %}
+                    {{form}}
+                    <br>
+                    <input class="btn btn-primary" type="submit" value="Order">
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock container %}
