@@ -2,19 +2,59 @@
 
 
 {% block container %}
-<h1>Pizzas Page</h1>
+
+<!--? en basit hali ile pizzaları görmek için -->
+<!-- <h1>Pizzas Page</h1>
 <div>
     <ul>
-
         {% for pizza in pizzas %}
-
         <li> {{ pizza }}</li>
-
         {% endfor %}
-
     </ul>
+</div> -->
+
+<!--? bootstrap class'ları ile ccs verip card yapısı ile pizzaları görmek için; -->
+<div class="d-flex justify-content-around flex-wrap mt-5">
+
+    {% for pizza in pizzas %}
+    <div class="card m-5 shadow" style="max-width: 640px;">
+        <div class="row g-0">
+
+            <!--? image varsa göstersin yoksa hata vermesin diye -->
+            {% if pizza.image %}
+            <div class="col-md-4">
+                <!--? image varsa url böyle tanımlanıyor. -->
+                <img src="{{pizza.image.url}}" class="img-fluid rounded-start" style="height: 100%;" alt="...">
+            </div>
+            {% endif %}
+
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{pizza.name}}</h5>
+                    <p class="card-text">
+                    <ul>
+                        <li>
+                            <!--? pizza içindekilerinin hepsini yanyana , ile ayırarak göstersin diye -->
+                            {{pizza.toppings.all |join:", "}}
+                        </li>
+                        <li>
+                            <strong> {{pizza.price}} $</strong>
+                        </li>
+                    </ul>
+                    </p>
+
+                    <!--? eğer kullanıcı login ise order butonunu görsün, order butonuna basınca order.html yönlendirilsin, burada ilave pizza.id parametresini de ekliyoruz -->
+                    {% if user.is_authenticated %}
+                    <p class="card-text"><a href="{% url 'order' pizza.id %}"><button
+                                class=" btn btn-warning ms-1">Order</button></a></p>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
 </div>
-
-
 
 {% endblock container %}

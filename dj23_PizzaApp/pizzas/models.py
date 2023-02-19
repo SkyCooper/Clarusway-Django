@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+#? toppings, yani içindeki malzemleri böyle ayrı bir tablo yapmak projeyi genişletmek için daha uygun,
+#? böylece her yeni eklenen malzeme direk pizza tablosunda görünür.
 class Topping(models.Model):
     name = models.CharField(max_length=100)
     
