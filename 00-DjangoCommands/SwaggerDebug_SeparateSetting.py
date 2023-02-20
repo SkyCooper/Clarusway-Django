@@ -553,3 +553,64 @@ python manage.py runserver
 
 #* eğer Admin panalede CSS yok ise;
 python manage.py collectstatic
+
+
+
+#! -----------------------------------------------------------------------------------------
+#! BİR PROJEDE PROD VE DEV OLARAK AYIRMADAN DB OLARAK SQLITE YERİNE POSTGRESQL KULLANMAK İÇİN
+#! -----------------------------------------------------------------------------------------
+
+# yeni bir proje başlattın ve DB olarak postgres kullanmak istiyorsun o zaman
+# öncelikle env aktif olduğundan emin ol ve psycopg2 install et
+
+pip install psycopg2
+pip freeze > requirements.txt
+
+# daha sonra main/settings içinden DATABASE bölümünü böyle değiştir.
+
+#? 1-Eğer decople kurmadıysan;
+DATABASES = {
+    'default': {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        
+        #* bununla aynı isimde pgAdmin'de  db dreate etmek gerekiyor
+        "NAME": "student_deneme",
+        "USER": "postgres",
+        
+        #* pgAdmin açılış şifresi
+        "PASSWORD": "Mysky2012**",
+        "HOST": "localhost",
+        "PORT": "5432",
+        "ATOMIC_REQUESTS": True,
+    }
+}
+
+#? 2-Eğer decople KURULU ise;
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql_psycopg2",
+        "NAME": config("SQL_DATABASE"),
+        "USER": config("SQL_USER"),
+        "PASSWORD": config("SQL_PASSWORD"),
+        "HOST": config("SQL_HOST"),
+        "PORT": config("SQL_PORT"),
+        "ATOMIC_REQUESTS": True,
+        }
+    }
+
+#? decople KURULU ise .env dosyası;
+#* pgAdmin'de oluşturduğumuz database adı
+SQL_DATABASE=student_deneme
+SQL_USER=postgres
+#* pgAdmin'e girdiğimiz şifre
+SQL_PASSWORD=Mysky2012**
+SQL_HOST=localhost
+SQL_PORT=5432
+
+# daha sonra sırasıyla
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver
+
+# artık admin panelden ilgili modele giriş yapılırsa pgAdmin'de oluşturulan DB içindeki tabloda görünür.
