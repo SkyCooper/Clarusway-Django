@@ -4,9 +4,20 @@
 
 <div class="d-flex flex-column justify-content-center mx-auto mt-5 col-md-6">
 
+        {% if messages %}
+        {% for message in messages %}
+        {% if message.tags == "warning" %}
+        <div id="warning" class="message rounded col-md-2">{{ message }}</div>
+        {% else %}
+        <div id="success" class="message rounded col-md-2">{{ message }}</div>
+        {% endif %}
+        {% endfor %}
+        {% endif %}
+
+
     <div class="alert alert-warning text-center p-1">
         <!--? kim sipariş verdiyese onun username bilgisi gelsin diye -->
-        <h1>{{user.username | upper}}'s Orders</h1>
+        <h1>{{user.username | title}}'s Orders</h1>
     </div>
 
     {% for order in orders %}
@@ -33,7 +44,10 @@
                 <!--todo, belirli bir order update/delete olacağından url ile birlikte id de gönderilir. -->
 
                 <a href="{% url 'update_orders' order.id %}"> <button class=" btn btn-warning me-2">Update</button></a>
-                <a href="{% url 'delete_orders' order.id %}"><button class=" btn btn-danger me-2">Delete</button></a>
+
+                <!--? tıklandığı zaman bir mesaj ile sorması için; onclick="return confirm('Are you sure?')" -->
+                <a href="{% url 'delete_orders' order.id %}"><button onclick="return confirm('Are you sure?')"
+                        class=" btn btn-danger me-2">Delete</button></a>
 
             </div>
         </div>

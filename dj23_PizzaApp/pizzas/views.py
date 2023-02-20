@@ -3,6 +3,9 @@ from .models import Pizza, Order
 
 from .forms import PizzaForm
 
+from django.contrib import messages
+
+
 # Create your views here.
 
 #? django bir template ararken app'lerin altındaki templates klasörlerine bakıyor,
@@ -86,6 +89,7 @@ def update_order_view(request, id):
         form = PizzaForm(request.POST, instance=order)
         if form.is_valid():
             order.save()
+            messages.success(request, "Your Order Updated")
             return redirect('my_orders')
     context = {
         'order': order,
@@ -98,4 +102,5 @@ def delete_order_view(request, id):
 #? ilave bir template tanımlamaya gerek yok, işlemi yapacak ve tekrar sipariş sayfasına dönecek
     order = Order.objects.get(id=id)
     order.delete()
+    messages.warning(request, "Your Order Deleted")
     return redirect('my_orders')
