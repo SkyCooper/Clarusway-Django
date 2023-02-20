@@ -67,7 +67,13 @@ def my_orders(request):
     context = {
         'orders': orders
     }
-    return render(request, 'pizzas/my_orders.html', context)
+    
+    #? modal açılarak işlem yapılması
+    return render(request, 'pizzas/my_orders1.html', context)
+
+    #? direkt işlem yapılması
+    # return render(request, 'pizzas/my_orders.html', context)
+
 
 
 def update_order_view(request, id):

@@ -1,0 +1,98 @@
+{% extends 'pizzas/base.html' %}
+{% block container %}
+
+
+<div class="d-flex flex-column justify-content-center mx-auto mt-5 col-md-6">
+
+    {% if messages %}
+    {% for message in messages %}
+    {% if message.tags == "warning" %}
+    <div id="warning" class="message rounded col-md-2">{{ message }}</div>
+    {% else %}
+    <div id="success" class="message rounded col-md-2">{{ message }}</div>
+    {% endif %}
+    {% endfor %}
+    {% endif %}
+
+
+    <div class="alert alert-warning text-center p-1">
+        <!--? kim sipariş verdiyese onun username bilgisi gelsin diye -->
+        <h1>{{user.username | title}}'s Orders</h1>
+    </div>
+
+    <!--? eğer sipariş varsa görünsün yoksa sipariş ver butonu görünsün -->
+    {% if orders|length %}
+
+    {% for order in orders %}
+    <div class="card m-2 shadow p-2">
+        <div class="row g-0 d-flex justify-content-between">
+
+            <div class="col-md-1 d-flex align-items-center">
+                <!--? image ul için = order.pizza.image.url -->
+                <img src="{{order.pizza.image.url}}" style=" border-radius: 50%; width: 60px; height: 60px" alt="...">
+            </div>
+
+            <div class="col-md-5 d-flex justify-content-start flex-fill">
+
+                <div class="card-body">
+                    <p class="card-title"><strong>Pizza:</strong> {{order.pizza}} 🍕 <strong>Size:</strong>
+                        {{order.size}} 🍕 <strong>Q :</strong> {{order.quantity}} </p>
+                </div>
+
+            </div>
+
+            <!--? Order edit için Button trigger modal -->
+            <div class="col-md-2 d-flex align-items-center rounded">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Edit Order
+                </button>
+            </div>
+
+            <!--?  Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Which action do you want to do?
+                        </div>
+                        <div class="modal-footer">
+                            <!--todo, belirli bir order update/delete olacağından url ile birlikte id de gönderilir. -->
+                            <a href="{% url 'update_orders' order.id %}"> <button
+                                    class=" btn btn-warning me-2">Update</button></a>
+                            <!--? tıklandığı zaman bir mesaj ile sorması için; onclick="return confirm('Are you sure?')" -->
+                            <a href="{% url 'delete_orders' order.id %}"><button
+                                    onclick="return confirm('Are you sure?')"
+                                    class=" btn btn-danger me-2">Delete</button></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {% endfor %}
+
+
+    <!--? aktif bir sipariş yoksa yeni sipariş için yönlendirme yapılsın -->
+    {% else %}
+    <div class="d-flex align-items-center justify-content-around">
+        <h3 class="alert alert-warning text-center p-1">Don't have any active order</h3>
+        <a href="{% url 'pizzas' %}">
+            <button class=" btn btn-success me-2">Order Now</button>
+        </a>
+    </div>
+
+    {% endif %}
+
+
+
+
+</div>
+
+
+{% endblock container %}
