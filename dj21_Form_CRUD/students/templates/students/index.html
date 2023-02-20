@@ -16,4 +16,37 @@ Index Home
 
 {% block body %}
 <h1>Hello this is (students / INDEX.html) home page.....</h1>
+
+<h3>
+    Bu app için geçerli path'ler;
+</h3>
+
+<p>
+    path('', home, name="home"), ----> ŞU ANDA BURADASINIZ <br>
+    <a href="{% url 'student_list' %}">
+        path('list/', student_list, name="student_list"), <br>
+    </a>
+
+    <a href="{% url 'student_add' %}">
+        path('add/', student_add, name="student_add"),<br>
+    </a>
+
+<h3>detail/ update ve delete için id gerekir.</h3> <br>
+
+<a href="http://127.0.0.1:8000/detail/7">
+    path('detail/<int:id>', student_detail, name="student_detail"),<br>
+</a>
+
+<a href="http://127.0.0.1:8000/update/7">
+    path('update/<int:id>', student_update, name="student_update"),<br>
+</a>
+
+<a href="http://127.0.0.1:8000/delete/7">
+    path('delete/<int:id>/', student_delete, name="student_delete"),<br>
+</a>
+
+
+
+
+</p>
 {% endblock body %}
