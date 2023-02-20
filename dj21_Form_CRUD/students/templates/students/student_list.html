@@ -14,11 +14,11 @@ Student List
 
 
 {{ students }}
-<p>Yukarıdaki gelen objenin tamamı, Queryset</p>
+<h3>Yukarıdaki gelen objenin tamamı, Queryset</h3>
 
 <hr>
 
-<p> str metodunda belirtilen hali; </p>
+<h3> str metodunda belirtilen hali; </h3>
 <ul>
     {% for student in students %}
     <!--* modelde belirttiğimiz str metodu nasılsa öyle görünür çıktısı -->
@@ -28,7 +28,7 @@ Student List
 
 <hr>
 
-<p> isimler'in yanına numara eklemek istersek; </p>
+<h3> isimler'in yanına numara eklemek istersek; </h3>
 <ul>
     {% for student in students %}
     <!--* nokta notasyonu ile number'a ulaşılabilir. -->
@@ -38,11 +38,15 @@ Student List
 
 <hr>
 
-<p> sadece isim ve numara </p>
+<h3> Üzerine tıklayıca detayı görünmesi için </h3>
 <ul>
     {% for student in students %}
-    <!--* nokta notasyonu ile number'a ulaşılabilir. -->
-    <li> {{ student.number }} - {{ student.first_name }} </li>
+
+    <!--? link verilerek üzerine tıklanan öğrenci detayı görülebilir, bunun için url yanına student.id ile id eklenir. -->
+    <a href="{% url 'student_detail' student.id %}">
+        <!--* nokta notasyonu ile number'a ulaşılabilir. -->
+        <li> {{ student.number }} - {{ student.first_name }} </li>
+    </a>
     {% endfor %}
 </ul>
 

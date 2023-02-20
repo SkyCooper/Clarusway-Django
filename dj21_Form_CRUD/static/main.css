@@ -1,3 +1,16 @@
 h1 {
     color: blue;
 }
+
+h2 {
+    color: rgb(0, 234, 255);
+}
+
+p {
+    color: blueviolet;
+}
+
+img {
+    width: 200px;
+    height: 200px;
+}

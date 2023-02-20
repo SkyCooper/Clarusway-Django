@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
-
+{% load static %}
+{% block link %}
+<!--? static, root içindeki static klasörü altındaki main.css çalışır ve  ===== h2 turkuaz, p  mor olur. -->
+<link rel="stylesheet" href="{% static 'main.css' %}">
+{% endblock link %}
 
 {% block title %}
 Student Delete

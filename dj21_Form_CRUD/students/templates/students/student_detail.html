@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load static %}
+{% block link %}
+<!--? static, students içindeki static klasörü altındaki main.css çalışır ve h1 kırmızı, h2 yeşil resim küçük olur. -->
+<link rel="stylesheet" href="{% static 'students/main.css' %}">
+{% endblock link %}
 
 
 {% block title %}
@@ -8,6 +13,7 @@ Student Info
 
 
 {% block body %}
+<h1>ne renk</h1>
 <h2>Student Info</h2>
 <hr>
 
@@ -40,5 +46,14 @@ veya image alanı zorunlu yapılabilirdi,
 <p>Bu kullanıcıya ait resim eklenmemiştir.</p>
 
 {% endif %}
+
+<div>
+    <a href="{% url 'student_update' student.id %}">
+        <button>UPDATE</button>
+    </a>
+    <a href="{% url 'student_delete' student.id %}">
+        <button>DELETE</button>
+    </a>
+</div>
 
 {% endblock body %}
