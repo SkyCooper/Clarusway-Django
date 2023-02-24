@@ -599,10 +599,8 @@ DATABASES = {
     }
 
 #? decople KURULU ise .env dosyası;
-#* pgAdmin'de oluşturduğumuz database adı
 SQL_DATABASE=student_deneme
 SQL_USER=postgres
-#* pgAdmin'e girdiğimiz şifre
 SQL_PASSWORD=Mysky2012**
 SQL_HOST=localhost
 SQL_PORT=5432
